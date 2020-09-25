@@ -1,0 +1,25 @@
+﻿@model IEnumerable<MyMvcApplication.Models.IndexModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>This is the Index</h2>
+
+<table>
+    <thread>
+        <tr>
+            <td>ID</td>
+            <td>Description</td>
+            <td>Comments</td>
+        </tr>
+    </thread>
+    @foreach (MyMvcApplication.Models.IndexModel item in Model)
+    {
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.Description</td>
+            <td>@item.Comments</td>
+        </tr>
+    }
+</table>
