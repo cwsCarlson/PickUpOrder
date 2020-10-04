@@ -1,4 +1,4 @@
-﻿using MyMvcApplication.Models;
+﻿using PickUpOrder.Models;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -8,28 +8,36 @@ namespace MyMvcApplication.Controllers
 	{
 		public ActionResult Index()
 		{
-			List<IndexModel> newList = new List<IndexModel>();
+			List<MenuItem> testMenu = new List<MenuItem>();
 
-			IndexModel newIndexModel = new IndexModel
+			MenuItem testItem1 = new MenuItem
 			{
-				ID = 1,
-				Description = "First Item",
-				Comments = "This is the first instance of the Model"
+				Name = "Main Course 1",
+				Description = "A nice course.",
+				Price = 500
 			};
 
-			IndexModel newIndexModel2 = new IndexModel
+			MenuItem testItem2 = new MenuItem
 			{
-				ID = 2,
-				Description = "Second Item",
-				Comments = "This is the second instance of the Model"
+				Name = "Main Course 2",
+				Description = "The deluxe package.",
+				Price = 1000
+			};
+
+			MenuItem testItem3 = new MenuItem
+			{
+				Name = "Fountain Drink",
+				Description = "Just soda.",
+				Price = 100
 			};
 
 			// Add the items to the list
-			newList.Add(newIndexModel);
-			newList.Add(newIndexModel2);
+			testMenu.Add(testItem1);
+			testMenu.Add(testItem2);
+			testMenu.Add(testItem3);
 
 			// Send the model to view.
-			return View(newList);
+			return View(testMenu);
 		}
 	}
 }

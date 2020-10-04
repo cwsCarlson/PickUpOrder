@@ -1,25 +1,26 @@
-﻿@model IEnumerable<MyMvcApplication.Models.IndexModel>
+﻿@model IEnumerable<PickUpOrder.Models.MenuItem>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>This is the Index</h2>
+<h2>Welcome to the menu.</h2>
 
 <table>
     <thread>
         <tr>
-            <td>ID</td>
-            <td>Description</td>
-            <td>Comments</td>
+            <td>Name</td>
+            <td>Price (cents)</td>
         </tr>
     </thread>
-    @foreach (MyMvcApplication.Models.IndexModel item in Model)
+    @foreach (PickUpOrder.Models.MenuItem item in Model)
     {
         <tr>
-            <td>@item.ID</td>
+            <td>@item.Name</td>
+            <td>@item.Price</td>
+        </tr>
+        <tr>
             <td>@item.Description</td>
-            <td>@item.Comments</td>
         </tr>
     }
 </table>
