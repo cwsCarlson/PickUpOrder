@@ -1,3 +1,4 @@
+D:\source\repos\PickUpOrder\PickUpOrder\obj\Debug\PickUpOrder.csproj.CoreCompileInputs.cache
 D:\source\repos\PickUpOrder\PickUpOrder\bin\PickUpOrder.dll.config
 D:\source\repos\PickUpOrder\PickUpOrder\bin\PickUpOrder.dll
 D:\source\repos\PickUpOrder\PickUpOrder\bin\PickUpOrder.pdb
@@ -28,6 +29,8 @@ D:\source\repos\PickUpOrder\PickUpOrder\bin\roslyn\vbc.rsp
 D:\source\repos\PickUpOrder\PickUpOrder\bin\roslyn\VBCSCompiler.exe
 D:\source\repos\PickUpOrder\PickUpOrder\bin\roslyn\VBCSCompiler.exe.config
 D:\source\repos\PickUpOrder\PickUpOrder\bin\Antlr3.Runtime.dll
+D:\source\repos\PickUpOrder\PickUpOrder\bin\EntityFramework.dll
+D:\source\repos\PickUpOrder\PickUpOrder\bin\EntityFramework.SqlServer.dll
 D:\source\repos\PickUpOrder\PickUpOrder\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 D:\source\repos\PickUpOrder\PickUpOrder\bin\Microsoft.Web.Infrastructure.dll
 D:\source\repos\PickUpOrder\PickUpOrder\bin\Newtonsoft.Json.dll
@@ -39,6 +42,8 @@ D:\source\repos\PickUpOrder\PickUpOrder\bin\System.Web.WebPages.Deployment.dll
 D:\source\repos\PickUpOrder\PickUpOrder\bin\System.Web.WebPages.dll
 D:\source\repos\PickUpOrder\PickUpOrder\bin\System.Web.WebPages.Razor.dll
 D:\source\repos\PickUpOrder\PickUpOrder\bin\WebGrease.dll
+D:\source\repos\PickUpOrder\PickUpOrder\bin\EntityFramework.xml
+D:\source\repos\PickUpOrder\PickUpOrder\bin\EntityFramework.SqlServer.xml
 D:\source\repos\PickUpOrder\PickUpOrder\bin\System.Web.Helpers.xml
 D:\source\repos\PickUpOrder\PickUpOrder\bin\System.Web.Mvc.xml
 D:\source\repos\PickUpOrder\PickUpOrder\bin\System.Web.Optimization.xml
@@ -49,8 +54,7 @@ D:\source\repos\PickUpOrder\PickUpOrder\bin\System.Web.WebPages.Razor.xml
 D:\source\repos\PickUpOrder\PickUpOrder\bin\Newtonsoft.Json.xml
 D:\source\repos\PickUpOrder\PickUpOrder\bin\Antlr3.Runtime.pdb
 D:\source\repos\PickUpOrder\PickUpOrder\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\source\repos\PickUpOrder\PickUpOrder\obj\Debug\PickUpOrder.csprojAssemblyReference.cache
-D:\source\repos\PickUpOrder\PickUpOrder\obj\Debug\PickUpOrder.csproj.CoreCompileInputs.cache
 D:\source\repos\PickUpOrder\PickUpOrder\obj\Debug\PickUpOrder.csproj.CopyComplete
 D:\source\repos\PickUpOrder\PickUpOrder\obj\Debug\PickUpOrder.dll
 D:\source\repos\PickUpOrder\PickUpOrder\obj\Debug\PickUpOrder.pdb
+D:\source\repos\PickUpOrder\PickUpOrder\obj\Debug\PickUpOrder.csprojAssemblyReference.cache

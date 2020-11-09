@@ -1,0 +1,6 @@
+D:\source\repos\PickUpOrder\PickUpOrderDB\bin\Debug\PickUpOrderDB.dacpac
+D:\source\repos\PickUpOrder\PickUpOrderDB\bin\Debug\PickUpOrderDB.dll
+D:\source\repos\PickUpOrder\PickUpOrderDB\bin\Debug\PickUpOrderDB.pdb
+D:\source\repos\PickUpOrder\PickUpOrderDB\obj\Debug\PickUpOrderDB.dll
+D:\source\repos\PickUpOrder\PickUpOrderDB\obj\Debug\PickUpOrderDB.pdb
+D:\source\repos\PickUpOrder\PickUpOrderDB\obj\Debug\PickUpOrderDB.sqlprojAssemblyReference.cache

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PickUpOrder.Models.MenuItem>
+﻿@using PickUpOrder.Models
 
 @{
     ViewBag.Title = "Index";
@@ -13,14 +13,25 @@
             <td>Price (cents)</td>
         </tr>
     </thread>
-    @foreach (PickUpOrder.Models.MenuItem item in Model)
+    @foreach (PickUpOrder.Models.MenuItem item in ViewBag.Menu)
     {
         <tr>
             <td>@item.Name</td>
             <td>@item.Price</td>
+            <td>@Html.ActionLink("Add to Order", "AddToOrder", "Index", new { id = item.ID }, null)</td>
         </tr>
         <tr>
             <td>@item.Description</td>
         </tr>
     }
 </table>
+
+<h2>Order details</h2>
+<h2>Number of orders: @ViewBag.NumOrders</h2>
+@foreach (PickUpOrder.Models.MenuItem item in ViewBag.OrderItems)
+{
+    <tr>
+        <td>@item.Name</td>
+        <td>@item.Price</td>
+    </tr>
+}

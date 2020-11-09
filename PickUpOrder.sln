@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PickUpOrder", "PickUpOrder\PickUpOrder.csproj", "{5E011789-8427-4B0A-B5E2-A13B3DBA076E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D3B5819E-7875-4824-BA56-ED8B21B3B1C8} = {D3B5819E-7875-4824-BA56-ED8B21B3B1C8}
+	EndProjectSection
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PickUpOrderDB", "PickUpOrderDB\PickUpOrderDB.sqlproj", "{D3B5819E-7875-4824-BA56-ED8B21B3B1C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,12 @@ Global
 		{5E011789-8427-4B0A-B5E2-A13B3DBA076E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E011789-8427-4B0A-B5E2-A13B3DBA076E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E011789-8427-4B0A-B5E2-A13B3DBA076E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3B5819E-7875-4824-BA56-ED8B21B3B1C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3B5819E-7875-4824-BA56-ED8B21B3B1C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3B5819E-7875-4824-BA56-ED8B21B3B1C8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D3B5819E-7875-4824-BA56-ED8B21B3B1C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3B5819E-7875-4824-BA56-ED8B21B3B1C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3B5819E-7875-4824-BA56-ED8B21B3B1C8}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

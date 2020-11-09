@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PickUpOrderDBModelStoreContainer" CdmEntityContainer="PickUpOrderDBEntities2">
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="PickUpOrderDBModel.Order">
+        <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="NumContents" ColumnName="NumContents" />
+          <ScalarProperty Name="OrderContents" ColumnName="OrderContents" />
+          <ScalarProperty Name="RawCost" ColumnName="RawCost" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
