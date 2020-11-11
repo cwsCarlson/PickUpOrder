@@ -45,7 +45,8 @@ namespace MyMvcApplication.Controllers
 
 			// Establish a connection with the SQL server and save the number of rows.
 			Console.WriteLine("Establishing connection.");
-			SqlConnection conn = new SqlConnection("Data Source=(localdb)\\ProjectsV13;Initial Catalog=PickUpOrderDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+			Console.WriteLine("Connstr is " + ConfigurationManager.AppSettings["ConnectionString"]);
+			SqlConnection conn = new SqlConnection(ConfigurationManager.AppSettings["ConnectionString"]);
 			Console.WriteLine("Opening connection.");
 			conn.Open();
 			Console.WriteLine("Building command.");
