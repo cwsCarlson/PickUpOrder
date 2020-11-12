@@ -2,10 +2,13 @@
 
 @{
     ViewBag.Title = "Index";
+    var db = new PickUpOrderDBEntities2();
+    var mostRecentOrder = db.Orders.Find(1);
 }
 
 <h2>Welcome to the menu.</h2>
 
+@* Display every item in the menu. *@
 <table>
     <thread>
         <tr>
@@ -18,7 +21,7 @@
         <tr>
             <td>@item.Name</td>
             <td>@item.Price</td>
-            <td>@Html.ActionLink("Add to Order", "AddToOrder", "Index", new { id = item.ID }, null)</td>
+            <td>@Html.ActionLink("Add to Order", "AddToOrder", "Index", item, null)</td>
         </tr>
         <tr>
             <td>@item.Description</td>
@@ -26,12 +29,20 @@
     }
 </table>
 
-<h2>Order details</h2>
-<h2>Number of orders: @ViewBag.NumOrders</h2>
-@foreach (PickUpOrder.Models.MenuItem item in ViewBag.OrderItems)
+@* If there is an order associated with the user, display it. *@
+@* Note: right now, it only ever checks row 1.*@
+@if (mostRecentOrder != null)
 {
-    <tr>
-        <td>@item.Name</td>
-        <td>@item.Price</td>
-    </tr>
+    <h2>Order details</h2>
+    <h2>Contents: @mostRecentOrder.OrderContents</h2>
+    <table>
+        @foreach (PickUpOrder.Models.MenuItem item in mostRecentOrder.ContentsToItemList())
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+            </tr>
+        }
+    </table>
+    <h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
 }

@@ -20,15 +20,4 @@ namespace PickUpOrder.Models
         // ID - A number used for identification.
         public int ID { get; set; }
     }
-
-    public partial class Order
-    {
-        public double CalcFinalCost()
-        {
-            if (NumContents == 0 || RawCost == null)
-                return 0;
-            else
-                return (double) RawCost * 1.07;
-        }
-    }
 }
