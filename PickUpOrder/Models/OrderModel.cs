@@ -53,7 +53,40 @@ namespace PickUpOrder.Models
         // RemoveSingleItem - Remove one quantity of toRemove from this order.
         public void RemoveSingleItem(MenuItem toRemove)
         {
+            // If there are no items, then do nothing.
+            if (OrderContents == null)
+                return;
 
+            // Create a list of all current item IDs.
+            string[] itemIDs = OrderContents.Split(',');
+
+            // Convert this item's ID into a string
+            // and see whether it is in the ID list.
+            string removeID = toRemove.ID.ToString();
+            if(itemIDs.Contains(removeID))
+            {
+                // If this is the only item, set the list to null.
+                if (itemIDs.Length == 1)
+                    OrderContents = null;
+                else
+                {
+                    // If this is the first ID, remove it and the trailing comma.
+                    if (itemIDs[0] == removeID)
+                        OrderContents = OrderContents.Substring(removeID.Length + 1);
+                    else
+                    {
+                        // Otherwise, remove it and the leading comma.
+                        int startIdx = OrderContents.IndexOf(removeID);
+                        System.Diagnostics.Debug.WriteLine(OrderContents + ":" + OrderContents.Substring(0, startIdx - 1)
+                            + ":" + OrderContents.Substring(startIdx + removeID.Length));
+                        OrderContents = OrderContents.Substring(0, startIdx - 1)
+                            + OrderContents.Substring(startIdx + removeID.Length);
+                    }
+                }
+
+                // Update the price.
+                RawCost -= toRemove.Price;
+            }
         }
 
         // RemoveMultipleItems - Remove the given quantity of toRemove
@@ -67,6 +100,9 @@ namespace PickUpOrder.Models
         //                      the orderContents string.
         public List<MenuItem> ContentsToItemList()
         {
+            if (OrderContents == null)
+                return null;
+
             // Create a test menu. This will be removed later.
             MenuItem testItem1 = new MenuItem
             {

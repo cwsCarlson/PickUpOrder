@@ -59,5 +59,15 @@ namespace MyMvcApplication.Controllers
 			db.SaveChanges();
 			return View();
         }
+
+		// RemoveFromOrder - Remove toRemove from the order.
+		[HttpGet]
+		public ActionResult RemoveFromOrder(MenuItem toRemove)
+		{
+			var db = new PickUpOrderDBEntities2();
+			db.Orders.Find(1).RemoveSingleItem(toRemove);
+			db.SaveChanges();
+			return View();
+		}
 	}
 }
