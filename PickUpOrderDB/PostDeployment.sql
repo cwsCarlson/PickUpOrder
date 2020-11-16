@@ -11,8 +11,8 @@ Post-Deployment Script Template
 */
 
 MERGE INTO Orders AS Target 
-USING (VALUES (1, 0, null, 0))
-AS Source (OrderID, NumContents, OrderContents, RawCost) 
+USING (VALUES (1, null, 0, 0))
+AS Source (OrderID, OrderContents, RawCost, OrderStatus) 
 ON Target.OrderID = Source.OrderID 
 WHEN NOT MATCHED BY TARGET THEN 
-INSERT (NumContents, OrderContents, RawCost) VALUES (NumContents, OrderContents, RawCost);
+INSERT (OrderContents, RawCost, OrderStatus) VALUES (OrderContents, RawCost, OrderStatus);

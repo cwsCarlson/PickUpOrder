@@ -1,0 +1,63 @@
+﻿@using PickUpOrder.Models
+
+@{
+    ViewBag.Title = "OrderList";
+    var db = new PickUpOrderDBEntities2();
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Recieved",
+        Value = "Recieved",
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Preparing",
+        Value = "Preparing"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Done",
+        Value = "Done"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Picked Up",
+        Value = "PickedUp"
+    });
+}
+
+<h2>Order List</h2>
+
+@* Display every order in the database. *@
+<table border=1 frame=void rules=rows>
+    <thread>
+        <tr>
+            <td>Order #</td>
+            <td>Contents</td>
+            <td>Status</td>
+        </tr>
+    </thread>
+    @foreach (PickUpOrder.Models.Order order in db.Orders)
+    {
+        if (order.OrderStatus != 0)
+        {
+            var contents = order.ContentsToItemList();
+            <tr>
+                <td>@order.OrderID</td>
+                <td>
+                    @* Print all contents of the order.*@
+                    @contents[0].Name
+                    @for(int i = 1; i < contents.Count; i++)
+                    { 
+                        <br>@(contents[i].Name)
+                    }
+                </td>
+                <td>@Html.DropDownList("emptyname", listItems, listItems[order.OrderStatus - 1])</td>
+            </tr>
+        }
+    }
+</table>
+
+<style type="text/css">
+    td { width: 200px; }
+</style>

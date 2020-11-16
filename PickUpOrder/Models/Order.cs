@@ -15,8 +15,8 @@ namespace PickUpOrder.Models
     public partial class Order
     {
         public int OrderID { get; set; }
-        public Nullable<int> NumContents { get; set; }
         public string OrderContents { get; set; }
-        public Nullable<int> RawCost { get; set; }
+        public int RawCost { get; set; }
+        public int OrderStatus { get; set; }
     }
 }
