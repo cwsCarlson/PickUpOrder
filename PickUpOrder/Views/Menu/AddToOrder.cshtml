@@ -1,8 +1,6 @@
 ﻿@* AddToOrder - Add an item to the user's order with the selected quantity.*@
 
 @* Define objects utilized in the rest of the page. *@
-@*using PickUpOrder.Models
-@model int?*@
 @{
     ViewBag.Title = "Add Item To Order";
 }
@@ -21,7 +19,7 @@ $@((ViewBag.toAdd.Price / 100.0).ToString("0.00"))
 <h3>Status</h3>
 @using (Html.BeginForm("Menu", "Menu", new { adding = true, IDtoModify = ViewBag.toAdd.ID }, FormMethod.Post))
 {
-    @*The quantity selector will go here.*@
+    @* This is the quantity selector. *@
     @Html.TextBox("qty", 1, new { @type = "number", @min = "1" })
-    <input type="submit" value="Update Status" />
+    <input type="submit" value="Add"/>
 }

@@ -1,6 +1,7 @@
 ﻿using PickUpOrder.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace PickUpOrder.Controllers
@@ -63,24 +64,16 @@ namespace PickUpOrder.Controllers
 			int qty = Int32.Parse(Request.Form["qty"]);
 			System.Diagnostics.Debug.WriteLine(toModify.Name + " x " + qty);
 
-			// If this is coming from the addition page, add the item.
-			if (adding)
-            {
-				var db = new PickUpOrderDBEntities2();
-				
-				// Pick the correct method based on the quantity.
-				if(qty == 1)
-					db.Orders.Find(1).AddSingleItem(toModify);
-				else
-					db.Orders.Find(1).AddMultipleItems(toModify, qty);
-				db.SaveChanges();
-				return View();
-            }
+			// Open the DB connection.
+			var db = new PickUpOrderDBEntities2();
+
+			if (adding)		
+				db.Orders.Find(1).AddMultipleItems(toModify, qty);
 			else
-            {
-				return View();
-            }
-        }
+				db.Orders.Find(1).RemoveMultipleItems(toModify, qty);
+			db.SaveChanges();
+			return View();
+		}
 
 		// AddToOrder (GET) - Render the AddToOrder page
 		//                    with menu item toAdd loaded.
@@ -88,18 +81,29 @@ namespace PickUpOrder.Controllers
 		public ActionResult AddToOrder(MenuItem toAdd)
 		{
 			ViewBag.toAdd = toAdd;
-			return View(0);
+			return View();
         }
 
 		// RemoveFromOrder (GET) - Render the RemoveFromOrder page
-		//                         with menu item toRemove .
+		//                         with menu item toRemove loaded.
 		[HttpGet]
 		public ActionResult RemoveFromOrder(MenuItem toRemove)
 		{
-			//var db = new PickUpOrderDBEntities2();
-			//db.Orders.Find(1).RemoveSingleItem(toRemove);
-			//db.SaveChanges();
-			return View(toRemove);
+			// Get the number of times toRemove appears in the order.
+			// This is the maximum value for the page's textbox.
+			var db = new PickUpOrderDBEntities2();
+			var itemStr = db.Orders.Find(1).OrderContents.Split(',');
+			ViewBag.instances = itemStr.Count(f =>
+			                                  f == toRemove.ID.ToString());
+			System.Diagnostics.Debug.WriteLine((int) ViewBag.instances);
+
+			// This should never be called; it's just for safety.
+			// If the item isn't in the order, redirect to the main page.
+			if (ViewBag.instances == 0)
+				return Menu();
+
+			ViewBag.toRemove = toRemove;
+			return View();
 		}
 	}
 }

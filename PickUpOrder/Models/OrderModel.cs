@@ -1,10 +1,6 @@
-﻿using Microsoft.Ajax.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 // OrderModel - The partial class of Order, which contains all methods.
 //              The object itself is defined in DatabaseModel.
@@ -42,25 +38,21 @@ namespace PickUpOrder.Models
         // AddSingleItem - Add one quantity of toAdd to this order.
         public void AddSingleItem(MenuItem toAdd)
         {
-            System.Diagnostics.Debug.WriteLine("Adding an item");
-            System.Diagnostics.Debug.WriteLine("It's called " + toAdd.Name);
             // If this is the first item, make a new string.
             // Otherwise, add this item's ID to the end in a CSV format.
             if (OrderContents == null)
                 OrderContents = toAdd.ID.ToString();
             else
                 OrderContents += "," + toAdd.ID.ToString();
-            System.Diagnostics.Debug.WriteLine(OrderContents);
 
             // Update the raw cost.
             RawCost += toAdd.Price;
         }
 
         // AddMultipleItems - Add toAdd to this order with the given quantity.
+        //                    This is just an encapsulation of AddSingleItem.
         public void AddMultipleItems(MenuItem toAdd, int qty)
         {
-            // Since the current state of the list does not affect addition,
-            // just run AddSingleItem multiple times.
             for (int i = 0; i < qty; i++)
                 AddSingleItem(toAdd);
         }
@@ -92,8 +84,6 @@ namespace PickUpOrder.Models
                     {
                         // Otherwise, remove it and the leading comma.
                         int startIdx = OrderContents.IndexOf(removeID);
-                        System.Diagnostics.Debug.WriteLine(OrderContents + ":" + OrderContents.Substring(0, startIdx - 1)
-                            + ":" + OrderContents.Substring(startIdx + removeID.Length));
                         OrderContents = OrderContents.Substring(0, startIdx - 1)
                             + OrderContents.Substring(startIdx + removeID.Length);
                     }
@@ -106,9 +96,12 @@ namespace PickUpOrder.Models
 
         // RemoveMultipleItems - Remove the given quantity of toRemove
         //                       from this order.
+        //                       This is just an encapsulation of
+        //                       RemoveSingleItem.
         public void RemoveMultipleItems(MenuItem toRemove, int qty)
         {
-
+            for (int i = 0; i < qty; i++)
+                RemoveSingleItem(toRemove);
         }
 
         // ContentsToItemList - Return a list of the items referenced by
