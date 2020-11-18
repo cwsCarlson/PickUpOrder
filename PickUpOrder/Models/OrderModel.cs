@@ -4,12 +4,24 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 // OrderModel - The partial class of Order, which contains all methods.
 //              The object itself is defined in DatabaseModel.
 
 namespace PickUpOrder.Models
 {
+    // OrderStatus - An enum used to translate the OrderStatus integer
+    //               to a readable string.
+    public enum OrderStatus
+    {
+        NotSubmitted = 0,
+        Received = 1,
+        Preparing = 2,
+        Done = 3,
+        PickedUp = 4
+    }
+
     public partial class Order
     {
         const double TAX_PERCENTAGE = 0.07;

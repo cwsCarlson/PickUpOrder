@@ -1,0 +1,43 @@
+﻿@* ChangeOrderStatus - Change the status of the provided order.*@
+
+@* Define objects utilized in the rest of the page. *@
+@using PickUpOrder.Models
+@{
+    ViewBag.Title = "ChangeOrderStatus";
+    var contents = Model.ContentsToItemList();
+
+    // Define the dropdown items.
+    var dropdownList = new List<SelectListItem>();
+    dropdownList.Add(new SelectListItem { Text = "Recieved", Value = "1" });
+    dropdownList.Add(new SelectListItem { Text = "Preparing", Value = "2" });
+    dropdownList.Add(new SelectListItem { Text = "Done", Value = "3" });
+    dropdownList.Add(new SelectListItem { Text = "Picked Up", Value = "4" });
+}
+
+@* Print the heading. *@
+<h2>Editing Order No. @Model.OrderID</h2>
+
+@* This button returns to the list without making changes. *@
+@Html.ActionLink("Leave without changing", "OrderList", "OrderList", null)
+
+@* Print the conetents of the order for convenience. *@
+<h3>Order Contents</h3>
+@contents[0].Name
+@for (int i = 1; i < contents.Count; i++)
+{ <br>@contents[i].Name }
+
+@* The form below allows the modification of the order's status. *@
+<h3>Status</h3>
+@model Order
+@using (Html.BeginForm("OrderList", "OrderList", FormMethod.Post))
+{
+    @* This saves the OrderID so the current order can be found later. *@
+    @Html.HiddenFor(m => m.OrderID)
+
+    @*This dropdown list has the current value as the default
+        and saves the selected value.*@
+    @Html.DropDownListFor(m => m.OrderStatus, dropdownList,
+                          dropdownList[Model.OrderStatus - 1].Text,
+                          new { @class = "required" })
+    <input type="submit" value="Update Status" />
+}
