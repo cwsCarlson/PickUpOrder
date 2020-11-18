@@ -59,7 +59,10 @@ namespace PickUpOrder.Models
         // AddMultipleItems - Add toAdd to this order with the given quantity.
         public void AddMultipleItems(MenuItem toAdd, int qty)
         {
-
+            // Since the current state of the list does not affect addition,
+            // just run AddSingleItem multiple times.
+            for (int i = 0; i < qty; i++)
+                AddSingleItem(toAdd);
         }
 
         // RemoveSingleItem - Remove one quantity of toRemove from this order.
