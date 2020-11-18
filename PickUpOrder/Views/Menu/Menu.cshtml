@@ -1,16 +1,19 @@
 ﻿@* Menu - The customer menu and order viewer. *@
 @using PickUpOrder.Models
-
 @{
     ViewBag.Title = "Menu";
     var db = new PickUpOrderDBEntities2();
+
+    // This is temporary until the user DB is implemented.
     var mostRecentOrder = db.Orders.Find(1);
 }
 
+@* Print the header. *@
 <h2>Welcome to the menu.</h2>
 
 @* Display every item in the menu. *@
 <table>
+    @* Print the table header. *@
     <thread>
         <tr>
             <td>Name</td>
@@ -19,6 +22,7 @@
     </thread>
     @foreach (PickUpOrder.Models.MenuItem item in ViewBag.Menu)
     {
+        @* Print the item information. *@
         <tr>
             <td>@item.Name</td>
             <td>$@((item.Price / 100.0).ToString("0.00"))</td>
@@ -48,3 +52,5 @@
     </table>
     <h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
 }
+
+@* Once users are implemented, provide the status of submitted orders here. *@
