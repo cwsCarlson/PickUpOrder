@@ -1,7 +1,8 @@
-﻿@using PickUpOrder.Models
+﻿@* Menu - The customer menu and order viewer. *@
+@using PickUpOrder.Models
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Menu";
     var db = new PickUpOrderDBEntities2();
     var mostRecentOrder = db.Orders.Find(1);
 }
@@ -21,7 +22,7 @@
         <tr>
             <td>@item.Name</td>
             <td>$@((item.Price / 100.0).ToString("0.00"))</td>
-            <td>@Html.ActionLink("Add to Order", "AddToOrder", "Index", item, null)</td>
+            <td>@Html.ActionLink("Add to Order", "AddToOrder", "Menu", item, null)</td>
         </tr>
         <tr>
             <td>@item.Description</td>
@@ -38,11 +39,11 @@
     <table>
         @foreach (PickUpOrder.Models.MenuItem item in mostRecentOrder.ContentsToItemList())
         {
-        <tr>
-            <td>@item.Name</td>
-            <td>$@((item.Price / 100.0).ToString("0.00"))</td>
-            <td>@Html.ActionLink("Remove", "RemoveFromOrder", "Index", item, null)</td>
-        </tr>
+            <tr>
+                <td>@item.Name</td>
+                <td>$@((item.Price / 100.0).ToString("0.00"))</td>
+                <td>@Html.ActionLink("Remove", "RemoveFromOrder", "Menu", item, null)</td>
+            </tr>
         }
     </table>
     <h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>

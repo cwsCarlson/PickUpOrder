@@ -5,12 +5,12 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Web.Mvc;
 
-namespace MyMvcApplication.Controllers
+namespace PickUpOrder.Controllers
 {
-	public class IndexController : Controller
+	public class MenuController : Controller
 	{
 		public List<MenuItem> testMenu = new List<MenuItem>();
-		public ActionResult Index()
+		public ActionResult Menu()
 		{
 			// Create a test menu. This will be removed later.
 			MenuItem testItem1 = new MenuItem
