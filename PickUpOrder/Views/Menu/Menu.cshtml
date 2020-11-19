@@ -5,6 +5,9 @@
     var db = new PickUpOrderDBEntities2();
     var removals = new Dictionary<MenuItem, int>();
 
+    // Sort by category, then convert to a list to ease iteration.
+    var menuContent = db.MenuItems.OrderBy(e => e.Category).ToList();
+
     // This is temporary until the user DB is implemented.
     var mostRecentOrder = db.Orders.Find(1);
 }
@@ -13,34 +16,50 @@
 <h2>Welcome to the menu.</h2>
 @Html.ActionLink("Refresh", "Menu", "Menu")
 
-@* Display every item in the menu. *@
-<table>
-    @* Print the table header. *@
-    <thread>
-        <tr>
-            <td>Name</td>
-            <td>Price</td>
-        </tr>
-    </thread>
-    @foreach (MenuItem item in db.MenuItems)
-    {
-        @* Print the item information if it's valid. *@
-        if (item.Price != null)
-        {
+@* Display every item in the menu in their respective category. *@
+@for (int i = 0; i < menuContent.Count; i++)
+{
+    @* A category is only null if an item is deleted, so skip if it's null. *@
+    if(menuContent[i].Category == null)
+    { continue; }
+    @* Print the category name. *@
+    <h3>@db.Categories.Find(menuContent[i].Category).CategoryName</h3>
+    <table>
+        @* Print the table header. *@
+        <thread>
             <tr>
-                <td>@item.Name</td>
-                <td>$@(((int)item.Price / 100.0).ToString("0.00"))</td>
+                <td>Name</td>
+                <td>Price</td>
+            </tr>
+        </thread>
+        @for (; i < menuContent.Count; i++)
+        {
+            @* No need to check whether an item is valid.
+            Invalid items were pushed to the start of the list
+            since they had null categories. *@
+            <tr>
+                <td>@menuContent[i].Name</td>
+                <td>
+                    $@(((int)menuContent[i].Price / 100.0).ToString("0.00"))
+                </td>
                 <td>
                     @Html.ActionLink("Add to Order", "AddToOrder", "Menu",
-                                      new { IDtoAdd = item.ItemID }, null)
+                                     new { IDtoAdd = menuContent[i].ItemID },
+                                     null)
                 </td>
             </tr>
             <tr>
-                <td>@item.Description</td>
+                <td>@menuContent[i].Description</td>
             </tr>
+
+            @* If this is the end of a category, exit this loop
+            to print the next category header. *@
+            if (i != menuContent.Count - 1 &&
+                menuContent[i].Category != menuContent[i + 1].Category)
+            { break; }
         }
-    }
-</table>
+    </table>
+}
 
 @* If there is an order associated with the user, display it. *@
 @* FIXME: right now, it only ever checks row 1. *@
@@ -54,19 +73,9 @@
         {
             @* If the item should be removed, then add it to the chopping block. *@
             if (item.Price == null && removals.ContainsKey(item))
-            {
-                removals[item]++;
-                <tr>
-                    <td>Instance @removals[item] of @item.Name</td>
-                </tr>
-            }
+            { removals[item]++; }
             else if (item.Price == null)
-            {
-                removals.Add(item, 1);
-                <tr>
-                    <td>First instance of @item.Name</td>
-                </tr>
-            }
+            { removals.Add(item, 1); }
 
             @* Otherwise, print its information. *@
             else

@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PickUpOrderDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="MenuItems">
           <Key>
             <PropertyRef Name="ItemID" />
@@ -25,6 +32,7 @@
           <Property Name="OrderStatus" Type="int" Nullable="false" />
         </EntityType>
         <EntityContainer Name="PickUpOrderDBModelStoreContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuItems" EntityType="Self.MenuItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -44,6 +52,7 @@
         <EntityContainer Name="PickUpOrderDBEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Orders" EntityType="Self.Order" />
           <EntitySet Name="MenuItems" EntityType="PickUpOrderDBModel.MenuItem" />
+          <EntitySet Name="Categories" EntityType="PickUpOrderDBModel.Category" />
         </EntityContainer>
         <EntityType Name="MenuItem">
           <Key>
@@ -54,6 +63,13 @@
           <Property Name="Description" Type="String" MaxLength="240" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int32" />
           <Property Name="Category" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -79,6 +95,14 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="PickUpOrderDBModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
