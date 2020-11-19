@@ -63,10 +63,11 @@
 
 @* If there is an order associated with the user, display it. *@
 @* FIXME: right now, it only ever checks row 1. *@
-@* FIXME: Also, add code to remove deleted items and notify the user. *@
 @if (mostRecentOrder != null && mostRecentOrder.ContentsToItemList() != null)
 {
     <h2>Order details</h2>
+    @* Print the contents string. *@
+    @* FIXME: Remove once testing begins. *@
     <h2>Contents: @mostRecentOrder.OrderContents</h2>
     <table>
         @foreach (MenuItem item in mostRecentOrder.ContentsToItemList())

@@ -113,8 +113,14 @@ namespace PickUpOrder.Models
             if (toRemove.Price == null)
             {
                 int newCost = 0;
-                foreach (MenuItem item in ContentsToItemList())
-                    newCost += (int)item.Price;
+                if (OrderContents != null)
+                {
+                    foreach (MenuItem item in ContentsToItemList())
+                    {
+                        if (item.Price != null)
+                            newCost += (int)item.Price;
+                    }
+                }
                 RawCost = newCost;
             }
         }
