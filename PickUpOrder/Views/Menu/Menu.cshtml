@@ -20,13 +20,16 @@
             <td>Price</td>
         </tr>
     </thread>
-    @foreach (PickUpOrder.Models.MenuItem item in ViewBag.Menu)
+    @foreach (MenuItem item in db.MenuItems)
     {
         @* Print the item information. *@
         <tr>
             <td>@item.Name</td>
-            <td>$@((item.Price / 100.0).ToString("0.00"))</td>
-            <td>@Html.ActionLink("Add to Order", "AddToOrder", "Menu", item, null)</td>
+            <td>$@(((int) item.Price / 100.0).ToString("0.00"))</td>
+            <td>
+                @Html.ActionLink("Add to Order", "AddToOrder", "Menu",
+                                 new { IDtoAdd = item.ItemID }, null)
+            </td>
         </tr>
         <tr>
             <td>@item.Description</td>
@@ -35,18 +38,22 @@
 </table>
 
 @* If there is an order associated with the user, display it. *@
-@* Note: right now, it only ever checks row 1.*@
+@* FIXME: right now, it only ever checks row 1. *@
+@* FIXME: Also, add code to remove deleted items and notify the user. *@
 @if (mostRecentOrder != null && mostRecentOrder.ContentsToItemList() != null)
 {
     <h2>Order details</h2>
     <h2>Contents: @mostRecentOrder.OrderContents</h2>
     <table>
-        @foreach (PickUpOrder.Models.MenuItem item in mostRecentOrder.ContentsToItemList())
+        @foreach(MenuItem item in mostRecentOrder.ContentsToItemList())
         {
             <tr>
                 <td>@item.Name</td>
-                <td>$@((item.Price / 100.0).ToString("0.00"))</td>
-                <td>@Html.ActionLink("Remove", "RemoveFromOrder", "Menu", item, null)</td>
+                <td>$@(((int) item.Price / 100.0).ToString("0.00"))</td>
+                <td>
+                    @Html.ActionLink("Remove", "RemoveFromOrder", "Menu",
+                                     new { IDtoRemove = item.ItemID }, null)
+                </td>
             </tr>
         }
     </table>

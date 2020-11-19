@@ -59,8 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Orders.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="PostDeployment.sql" />
+    <Build Include="MenuItems.sql" />
   </ItemGroup>
 </Project>

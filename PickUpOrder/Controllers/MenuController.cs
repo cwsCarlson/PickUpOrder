@@ -8,42 +8,11 @@ namespace PickUpOrder.Controllers
 {
 	public class MenuController : Controller
 	{
-		public List<MenuItem> testMenu = new List<MenuItem>();
-
-		// Create a test menu. This will be removed later.
-		MenuItem testItem1 = new MenuItem
-		{
-			Name = "Main Course 1",
-			Description = "A nice course.",
-			Price = 500,
-			ID = 1
-		};
-		MenuItem testItem2 = new MenuItem
-		{
-			Name = "Main Course 2",
-			Description = "The deluxe package.",
-			Price = 1000,
-			ID = 2
-		};
-		MenuItem testItem3 = new MenuItem
-		{
-			Name = "Fountain Drink",
-			Description = "Just soda.",
-			Price = 100,
-			ID = 3
-		};
-
 		// Menu - Render the list without making any changes.
 		// FIXME: Pass user value into this?
 		public ActionResult Menu()
 		{
-			// Add the items to the list.
-			testMenu.Add(testItem1);
-			testMenu.Add(testItem2);
-			testMenu.Add(testItem3);
-
-			// Send the model to view.
-			ViewBag.Menu = testMenu;
+			// Display the view.
 			return View();
 		}
 
@@ -53,33 +22,38 @@ namespace PickUpOrder.Controllers
 		//               If adding is false, remove qty instances of toModify.
 		public ActionResult Menu(bool adding, int IDtoModify)
         {
-			// Add the items to the list and set the ViewBag.
-			testMenu.Add(testItem1);
-			testMenu.Add(testItem2);
-			testMenu.Add(testItem3);
-			ViewBag.Menu = testMenu;
+			// Retrieve the item being added.
+			var db = new PickUpOrderDBEntities2();
+			MenuItem toModify = db.MenuItems.Find(IDtoModify);
 
-			// FIXME: When the DB is implemented, change this to use it.
-			MenuItem toModify = testMenu[IDtoModify - 1];
-			int qty = Int32.Parse(Request.Form["qty"]);
+			// Retrieve the quantity.
+			int qty = int.Parse(Request.Form["qty"]);
 			System.Diagnostics.Debug.WriteLine(toModify.Name + " x " + qty);
 
-			// Open the DB connection.
-			var db = new PickUpOrderDBEntities2();
-
+			// Process the appropriate changes.
 			if (adding)		
 				db.Orders.Find(1).AddMultipleItems(toModify, qty);
 			else
 				db.Orders.Find(1).RemoveMultipleItems(toModify, qty);
 			db.SaveChanges();
+
 			return View();
 		}
 
 		// AddToOrder (GET) - Render the AddToOrder page
 		//                    with menu item toAdd loaded.
 		[HttpGet]
-		public ActionResult AddToOrder(MenuItem toAdd)
+		public ActionResult AddToOrder(int IDtoAdd)
 		{
+			// Get the item being added.
+			var db = new PickUpOrderDBEntities2();
+			var toAdd = db.MenuItems.Find(IDtoAdd);
+
+			// This should never be called; it's just for safety.
+			// If the item has been deleted, redirect to the menu page.
+			if (toAdd.Price == null)
+				return Menu();
+
 			ViewBag.toAdd = toAdd;
 			return View();
         }
@@ -87,15 +61,23 @@ namespace PickUpOrder.Controllers
 		// RemoveFromOrder (GET) - Render the RemoveFromOrder page
 		//                         with menu item toRemove loaded.
 		[HttpGet]
-		public ActionResult RemoveFromOrder(MenuItem toRemove)
+		public ActionResult RemoveFromOrder(int IDtoRemove)
 		{
+			// Get the item being removed.
+			var db = new PickUpOrderDBEntities2();
+			var toRemove = db.MenuItems.Find(IDtoRemove);
+
+			// This should never be called; it's just for safety.
+			// If the item has been deleted, redirect to the menu page.
+			if (toRemove.Price == null)
+				return Menu();
+
 			// Get the number of times toRemove appears in the order.
 			// This is the maximum value for the page's textbox.
-			var db = new PickUpOrderDBEntities2();
 			var itemStr = db.Orders.Find(1).OrderContents.Split(',');
 			ViewBag.instances = itemStr.Count(f =>
-			                                  f == toRemove.ID.ToString());
-			System.Diagnostics.Debug.WriteLine((int) ViewBag.instances);
+			                                  f == toRemove.ItemID.ToString());
+			//System.Diagnostics.Debug.WriteLine((int) ViewBag.instances);
 
 			// This should never be called; it's just for safety.
 			// If the item isn't in the order, redirect to the main page.

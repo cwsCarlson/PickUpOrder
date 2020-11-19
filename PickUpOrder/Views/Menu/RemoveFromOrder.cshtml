@@ -17,7 +17,8 @@ $@((ViewBag.toRemove.Price / 100.0).ToString("0.00"))
 
 @* The form below allows the user to set the item quantity. *@
 <h3>Status</h3>
-@using (Html.BeginForm("Menu", "Menu", new { adding = false, IDtoModify = ViewBag.toRemove.ID }, FormMethod.Post))
+@using (Html.BeginForm("Menu", "Menu", new { adding = false,
+                       IDtoModify = ViewBag.toRemove.ItemID }, FormMethod.Post))
 {
     @* This is the quantity selector. *@
     @Html.TextBox("qty", 1, new { @type = "number", @min = "1", @max = ViewBag.instances })

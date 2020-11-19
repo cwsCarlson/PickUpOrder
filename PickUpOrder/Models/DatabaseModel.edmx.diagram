@@ -6,6 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="33ec8ee5f3df434daddcc3bf594c7045" Name="Diagram1">
         <EntityTypeShape EntityType="PickUpOrderDBModel.Order" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PickUpOrderDBModel.MenuItem" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

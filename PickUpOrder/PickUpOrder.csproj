@@ -150,7 +150,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\MenuItem.cs">
+      <DependentUpon>DatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MenuItemModel.cs" />
     <Compile Include="Models\Order.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>

@@ -1,9 +1,8 @@
-﻿using System;
+﻿// OrderModel - The partial class of Order, which contains all methods.
+//              The object itself is defined in DatabaseModel.
+
 using System.Collections.Generic;
 using System.Linq;
-
-// OrderModel - The partial class of Order, which contains all methods.
-//              The object itself is defined in DatabaseModel.
 
 namespace PickUpOrder.Models
 {
@@ -24,7 +23,7 @@ namespace PickUpOrder.Models
         // Constructor - Make a blank Order.
         public Order()
         {
-
+            
         }
 
         // CalcFinalCost - Calculates the final cost of an order
@@ -32,21 +31,25 @@ namespace PickUpOrder.Models
         public double CalcFinalCost()
         {
             // Divide by 100 since the raw cost is in cents.
-            return ((double) RawCost) * (1 + TAX_PERCENTAGE) / 100;
+            return RawCost * (1 + TAX_PERCENTAGE) / 100;
         }
 
         // AddSingleItem - Add one quantity of toAdd to this order.
         public void AddSingleItem(MenuItem toAdd)
         {
+            // If the price is null, then this item is invalid, so ignore it.
+            if (toAdd.Price == null)
+                return;
+
             // If this is the first item, make a new string.
             // Otherwise, add this item's ID to the end in a CSV format.
             if (OrderContents == null)
-                OrderContents = toAdd.ID.ToString();
+                OrderContents = toAdd.ItemID.ToString();
             else
-                OrderContents += "," + toAdd.ID.ToString();
+                OrderContents += "," + toAdd.ItemID.ToString();
 
             // Update the raw cost.
-            RawCost += toAdd.Price;
+            RawCost += (int) toAdd.Price;
         }
 
         // AddMultipleItems - Add toAdd to this order with the given quantity.
@@ -69,7 +72,7 @@ namespace PickUpOrder.Models
 
             // Convert this item's ID into a string
             // and see whether it is in the ID list.
-            string removeID = toRemove.ID.ToString();
+            string removeID = toRemove.ItemID.ToString();
             if(itemIDs.Contains(removeID))
             {
                 // If this is the only item, set the list to null.
@@ -90,7 +93,7 @@ namespace PickUpOrder.Models
                 }
 
                 // Update the price.
-                RawCost -= toRemove.Price;
+                RawCost -= (int) toRemove.Price;
             }
         }
 
@@ -102,6 +105,13 @@ namespace PickUpOrder.Models
         {
             for (int i = 0; i < qty; i++)
                 RemoveSingleItem(toRemove);
+
+            // If toRemove was deleted, recalculate the raw cost.
+            // FIXME: Finish later.
+            if (toRemove.Price == null)
+            {
+
+            }
         }
 
         // ContentsToItemList - Return a list of the items referenced by
@@ -111,36 +121,8 @@ namespace PickUpOrder.Models
             if (OrderContents == null)
                 return null;
 
-            // Create a test menu. This will be removed later.
-            MenuItem testItem1 = new MenuItem
-            {
-                Name = "Main Course 1",
-                Description = "A nice course.",
-                Price = 500,
-                ID = 1
-            };
-
-            MenuItem testItem2 = new MenuItem
-            {
-                Name = "Main Course 2",
-                Description = "The deluxe package.",
-                Price = 1000,
-                ID = 2
-            };
-
-            MenuItem testItem3 = new MenuItem
-            {
-                Name = "Fountain Drink",
-                Description = "Just soda.",
-                Price = 100,
-                ID = 3
-            };
-
-            // Add the items to the list.
-            var testMenu = new List<MenuItem>();
-            testMenu.Add(testItem1);
-            testMenu.Add(testItem2);
-            testMenu.Add(testItem3);
+            // Establish a database connection.
+            var db = new PickUpOrderDBEntities2();
 
             // Create the list to be returned.
             var itemObjects = new List<MenuItem>();
@@ -148,10 +130,10 @@ namespace PickUpOrder.Models
             // Split the ID string. For each ID value,
             // get the corresponding item and add it to itemObjects.
             var itemIDs = OrderContents.Split(',');
-            foreach(String item in itemIDs)
+            foreach(string item in itemIDs)
             {
-                int id = Int32.Parse(item);
-                itemObjects.Add(testMenu[id - 1]);
+                int id = int.Parse(item);
+                itemObjects.Add(db.MenuItems.Find(id));
             }
             return itemObjects;
         }
