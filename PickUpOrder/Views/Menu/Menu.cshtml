@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Menu";
     var db = new PickUpOrderDBEntities2();
+    var removals = new Dictionary<MenuItem, int>();
 
     // This is temporary until the user DB is implemented.
     var mostRecentOrder = db.Orders.Find(1);
@@ -10,6 +11,7 @@
 
 @* Print the header. *@
 <h2>Welcome to the menu.</h2>
+@Html.ActionLink("Refresh", "Menu", "Menu")
 
 @* Display every item in the menu. *@
 <table>
@@ -22,18 +24,21 @@
     </thread>
     @foreach (MenuItem item in db.MenuItems)
     {
-        @* Print the item information. *@
-        <tr>
-            <td>@item.Name</td>
-            <td>$@(((int) item.Price / 100.0).ToString("0.00"))</td>
-            <td>
-                @Html.ActionLink("Add to Order", "AddToOrder", "Menu",
-                                 new { IDtoAdd = item.ItemID }, null)
-            </td>
-        </tr>
-        <tr>
-            <td>@item.Description</td>
-        </tr>
+        @* Print the item information if it's valid. *@
+        if (item.Price != null)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>$@(((int)item.Price / 100.0).ToString("0.00"))</td>
+                <td>
+                    @Html.ActionLink("Add to Order", "AddToOrder", "Menu",
+                                      new { IDtoAdd = item.ItemID }, null)
+                </td>
+            </tr>
+            <tr>
+                <td>@item.Description</td>
+            </tr>
+        }
     }
 </table>
 
@@ -45,18 +50,52 @@
     <h2>Order details</h2>
     <h2>Contents: @mostRecentOrder.OrderContents</h2>
     <table>
-        @foreach(MenuItem item in mostRecentOrder.ContentsToItemList())
+        @foreach (MenuItem item in mostRecentOrder.ContentsToItemList())
         {
-            <tr>
-                <td>@item.Name</td>
-                <td>$@(((int) item.Price / 100.0).ToString("0.00"))</td>
-                <td>
-                    @Html.ActionLink("Remove", "RemoveFromOrder", "Menu",
-                                     new { IDtoRemove = item.ItemID }, null)
-                </td>
-            </tr>
+            @* If the item should be removed, then add it to the chopping block. *@
+            if (item.Price == null && removals.ContainsKey(item))
+            {
+                removals[item]++;
+                <tr>
+                    <td>Instance @removals[item] of @item.Name</td>
+                </tr>
+            }
+            else if (item.Price == null)
+            {
+                removals.Add(item, 1);
+                <tr>
+                    <td>First instance of @item.Name</td>
+                </tr>
+            }
+
+            @* Otherwise, print its information. *@
+            else
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>$@(((int)item.Price / 100.0).ToString("0.00"))</td>
+                    <td>
+                        @Html.ActionLink("Remove", "RemoveFromOrder", "Menu",
+                                          new { IDtoRemove = item.ItemID }, null)
+                    </td>
+                </tr>
+            }
         }
     </table>
+
+    @* If something is removable, remove it and let the user know. *@
+    if (removals.Count >= 1)
+    {
+        foreach (MenuItem toRemove in removals.Keys)
+        { mostRecentOrder.RemoveMultipleItems(toRemove, removals[toRemove]); }
+        db.SaveChanges();
+
+        @* Print the appropriate message depending on the number of removals. *@
+        if (removals.Count == 1)
+        { <p>An item was removed from your order because it was deleted from the menu.</p> }
+        else
+        { <p>@removals.Count items were removed from your order because they were deleted from the menu.</p> }
+    }
     <h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
 }
 

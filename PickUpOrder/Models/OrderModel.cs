@@ -92,8 +92,9 @@ namespace PickUpOrder.Models
                     }
                 }
 
-                // Update the price.
-                RawCost -= (int) toRemove.Price;
+                // Update the price if possible.
+                if(toRemove.Price != null)
+                    RawCost -= (int) toRemove.Price;
             }
         }
 
@@ -103,14 +104,18 @@ namespace PickUpOrder.Models
         //                       RemoveSingleItem.
         public void RemoveMultipleItems(MenuItem toRemove, int qty)
         {
+            System.Diagnostics.Debug.WriteLine("Removing" + toRemove.Name + " x " + qty);
+
             for (int i = 0; i < qty; i++)
                 RemoveSingleItem(toRemove);
 
             // If toRemove was deleted, recalculate the raw cost.
-            // FIXME: Finish later.
             if (toRemove.Price == null)
             {
-
+                int newCost = 0;
+                foreach (MenuItem item in ContentsToItemList())
+                    newCost += (int)item.Price;
+                RawCost = newCost;
             }
         }
 
