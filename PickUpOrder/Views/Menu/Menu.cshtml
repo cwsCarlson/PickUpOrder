@@ -1,12 +1,14 @@
 ﻿@* Menu - The customer menu and order viewer. *@
+
 @using PickUpOrder.Models
+@model IQueryable<MenuItem>
 @{
     ViewBag.Title = "Menu";
     var db = new PickUpOrderDBEntities2();
     var removals = new Dictionary<MenuItem, int>();
 
     // Sort by category, then convert to a list to ease iteration.
-    var menuContent = db.MenuItems.OrderBy(e => e.Category).ToList();
+    var menuContent = Model.OrderBy(e => e.Category).ToList();
 
     // This is temporary until the user DB is implemented.
     var mostRecentOrder = db.Orders.Find(1);
@@ -14,13 +16,21 @@
 
 @* Print the header. *@
 <h2>Welcome to the menu.</h2>
-@Html.ActionLink("Refresh", "Menu", "Menu")
+@Html.ActionLink("Refresh/Exit Search", "Menu", "Menu")
+
+@* Search function. *@
+@using (Html.BeginForm("Search", "Menu", FormMethod.Post))
+{
+    @* This is the query box. *@
+    @Html.TextBox("query")
+    <input type="submit" value="Search" />
+}
 
 @* Display every item in the menu in their respective category. *@
 @for (int i = 0; i < menuContent.Count; i++)
 {
     @* A category is only null if an item is deleted, so skip if it's null. *@
-    if(menuContent[i].Category == null)
+    if (menuContent[i].Category == null)
     { continue; }
     @* Print the category name. *@
     <h3>@db.Categories.Find(menuContent[i].Category).CategoryName</h3>
@@ -35,8 +45,8 @@
         @for (; i < menuContent.Count; i++)
         {
             @* No need to check whether an item is valid.
-            Invalid items were pushed to the start of the list
-            since they had null categories. *@
+                Invalid items were pushed to the start of the list
+                since they had null categories. *@
             <tr>
                 <td>@menuContent[i].Name</td>
                 <td>
@@ -53,7 +63,7 @@
             </tr>
 
             @* If this is the end of a category, exit this loop
-            to print the next category header. *@
+                to print the next category header. *@
             if (i != menuContent.Count - 1 &&
                 menuContent[i].Category != menuContent[i + 1].Category)
             { break; }
@@ -105,8 +115,8 @@
         { <p>An item was removed from your order because it was deleted from the menu.</p> }
         else
         { <p>@removals.Count items were removed from your order because they were deleted from the menu.</p> }
-    }
-    <h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
+}
+<h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
 }
 
 @* Once users are implemented, provide the status of submitted orders here. *@

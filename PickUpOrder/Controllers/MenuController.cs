@@ -10,8 +10,33 @@ namespace PickUpOrder.Controllers
 		// FIXME: Pass user value into this?
 		public ActionResult Menu()
 		{
+			// Open a database connection.
+			var db = new PickUpOrderDBEntities2();
+
 			// Display the view.
-			return View();
+			return View(db.MenuItems);
+		}
+
+		[HttpPost]
+		// Menu (POST) - If a search query was made, generate a page
+		//               with only the applicable items.
+		// FIXME: Header will change after the category DropDownFor
+		//        is added to the View form.
+		public ActionResult Search()
+        {
+			// Open a database connection.
+			var db = new PickUpOrderDBEntities2();
+
+			// Get the query information.
+			var query = Request.Form["query"];
+			System.Diagnostics.Debug.WriteLine(query);
+
+			// Filter in accordance with the requirements.
+			var filtered = db.MenuItems.Where(p => p.Name.Contains(query) ||
+			                                  p.Description.Contains(query));
+
+			// Display the Menu view with the filter applied.
+			return View("Menu", filtered);
 		}
 
 		[HttpPost]
@@ -35,7 +60,8 @@ namespace PickUpOrder.Controllers
 				db.Orders.Find(1).RemoveMultipleItems(toModify, qty);
 			db.SaveChanges();
 
-			return View();
+			// Pass the untruncated menu.
+			return View(db.MenuItems);
 		}
 
 		// AddToOrder (GET) - Render the AddToOrder page
