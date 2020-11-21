@@ -131,6 +131,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\MenuEditorController.cs" />
     <Compile Include="Controllers\OrderListController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -221,6 +222,13 @@
     <Content Include="Views\Menu\RemoveFromOrder.cshtml" />
     <Content Include="Views\OrderList\OrderList.cshtml" />
     <Content Include="Views\OrderList\ChangeOrderStatus.cshtml" />
+    <Content Include="Views\MenuEditor\MenuEditor.cshtml" />
+    <Content Include="Views\MenuEditor\EditItem.cshtml" />
+    <Content Include="Views\MenuEditor\AddItem.cshtml" />
+    <Content Include="Views\MenuEditor\DeleteItem.cshtml" />
+    <Content Include="Views\MenuEditor\AddCategory.cshtml" />
+    <Content Include="Views\MenuEditor\EditCategory.cshtml" />
+    <Content Include="Views\MenuEditor\DeleteCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

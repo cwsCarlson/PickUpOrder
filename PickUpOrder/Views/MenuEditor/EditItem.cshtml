@@ -1,0 +1,14 @@
+﻿@* EditItem - A form page that allows for the modification of an item. *@
+
+@using PickUpOrder.Models;
+@model MenuItem
+@{
+    ViewBag.Title = "Edit Item";
+}
+
+@* A link to return without saving changes. *@
+@Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
+
+<h2>Editing @Model.Name...</h2>
+
+@* Put a form for all properties here... *@

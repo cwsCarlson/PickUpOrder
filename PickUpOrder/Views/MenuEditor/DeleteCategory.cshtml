@@ -1,0 +1,18 @@
+﻿@* DeleteItem - A confirmation page for category deletion. *@
+
+@using PickUpOrder.Models;
+@model Category
+@{
+    ViewBag.Title = "Add Item";
+}
+
+@* A link to return without saving changes. *@
+@Html.ActionLink("Leave without deleting", "MenuEditor", "MenuEditor")
+
+<h2>WARNING!</h2>
+You are removing the menu category <b>@Model.CategoryName</b>.
+<b><i>This action is irreversible.</i></b>
+
+All current members will be moved to the category you select below.
+
+@* Form that asks what category current members should be moved to. *@

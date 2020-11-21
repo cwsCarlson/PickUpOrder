@@ -1,0 +1,14 @@
+﻿@* EditItem - A form page that allows for the renaming of a category. *@
+
+@using PickUpOrder.Models;
+@model Category
+@{
+    ViewBag.Title = "Edit Category";
+}
+
+@* A link to return without saving changes. *@
+@Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
+
+<h2>Editing @Model.CategoryName...</h2>
+
+@* Put a form for the category name here... *@

@@ -1,0 +1,25 @@
+﻿@* DeleteItem - A confirmation page for item deletion. *@
+
+@using PickUpOrder.Models;
+@model MenuItem
+@{
+    ViewBag.Title = "Add Item";
+}
+
+@* A link to return without saving changes. *@
+@Html.ActionLink("Leave without deleting", "MenuEditor", "MenuEditor")
+
+<h2>WARNING!</h2>
+You are deleting <b>@Model.Name</b> from the menu.
+<b><i>This action is irreversible, and the item cannot be recovered.</i></b>
+
+Please note that this will also remove the item from any customer orders
+that have been startes but not submitted.
+<br />
+However, the item will remain in all orders that have been submitted.
+
+<b>
+    <u>
+        @Html.ActionLink("Delete", "Delete", "MenuEditor", Model.ItemID, null)
+    </u>
+</b>
