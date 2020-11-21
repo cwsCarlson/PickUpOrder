@@ -1,7 +1,12 @@
 ﻿@* Menu - The customer menu and order viewer. *@
 
+@* Import the model definitions. *@
 @using PickUpOrder.Models
+
+@* The menu is always in this format to start. *@
 @model IQueryable<MenuItem>
+
+@* Define variables used by the rest of the page. *@
 @{
     ViewBag.Title = "Menu";
     var db = new PickUpOrderDBEntities2();
@@ -23,6 +28,10 @@
 {
     @* This is the query box. *@
     @Html.TextBox("query")
+
+    @* This is the dropdown list containing all categories. *@
+    @Html.DropDownList("category", Category.GetCategoryDropdown(),
+                       "Filter by category...")
     <input type="submit" value="Search" />
 }
 
@@ -110,13 +119,23 @@
         { mostRecentOrder.RemoveMultipleItems(toRemove, removals[toRemove]); }
         db.SaveChanges();
 
-        @* Print the appropriate message depending on the number of removals. *@
+        @* Print the correct message depending on the number of removals. *@
         if (removals.Count == 1)
-        { <p>An item was removed from your order because it was deleted from the menu.</p> }
+        { 
+            <p>
+                An item was removed from your order
+                because it was deleted from the menu.
+            </p>
+        }
         else
-        { <p>@removals.Count items were removed from your order because they were deleted from the menu.</p> }
-}
-<h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
+        {
+            <p>
+                @removals.Count items were removed from your order
+                because they were deleted from the menu.
+            </p>
+        }
+    }
+    <h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
 }
 
 @* Once users are implemented, provide the status of submitted orders here. *@

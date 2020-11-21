@@ -1,4 +1,5 @@
 ﻿using PickUpOrder.Models;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -29,14 +30,31 @@ namespace PickUpOrder.Controllers
 
 			// Get the query information.
 			var query = Request.Form["query"];
-			System.Diagnostics.Debug.WriteLine(query);
+			var category = Request.Form["category"];
+			System.Diagnostics.Debug.WriteLine("Q: " + query);
+			System.Diagnostics.Debug.WriteLine("C:" + Request.Form["category"]);
 
-			// Filter in accordance with the requirements.
-			var filtered = db.MenuItems.Where(p => p.Name.Contains(query) ||
-			                                  p.Description.Contains(query));
+			// An empty category string means there is no category filter.
+			if(category == "")
+            {
+				var filtered =
+					db.MenuItems.Where(p => p.Name.Contains(query) ||
+											p.Description.Contains(query));
 
-			// Display the Menu view with the filter applied.
-			return View("Menu", filtered);
+				// Display the Menu view with the filter applied.
+				return View("Menu", filtered);
+			}
+			else
+            {
+				var catVal = int.Parse(category);
+				var filtered =
+					db.MenuItems.Where(p => p.Category == catVal &&
+										   (p.Name.Contains(query) ||
+											p.Description.Contains(query)));
+
+				// Display the Menu view with the filter applied.
+				return View("Menu", filtered);
+			}
 		}
 
 		[HttpPost]
