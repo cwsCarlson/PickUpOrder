@@ -1,5 +1,6 @@
-﻿using PickUpOrder.Models;
-using System;
+﻿// MenuController - A controller that prepares all Menu pages.
+
+using PickUpOrder.Models;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -16,45 +17,6 @@ namespace PickUpOrder.Controllers
 
 			// Display the view.
 			return View(db.MenuItems);
-		}
-
-		[HttpPost]
-		// Menu (POST) - If a search query was made, generate a page
-		//               with only the applicable items.
-		// FIXME: Header will change after the category DropDownFor
-		//        is added to the View form.
-		public ActionResult Search()
-        {
-			// Open a database connection.
-			var db = new PickUpOrderDBEntities2();
-
-			// Get the query information.
-			var query = Request.Form["query"];
-			var category = Request.Form["category"];
-			System.Diagnostics.Debug.WriteLine("Q: " + query);
-			System.Diagnostics.Debug.WriteLine("C:" + Request.Form["category"]);
-
-			// An empty category string means there is no category filter.
-			if(category == "")
-            {
-				var filtered =
-					db.MenuItems.Where(p => p.Name.Contains(query) ||
-											p.Description.Contains(query));
-
-				// Display the Menu view with the filter applied.
-				return View("Menu", filtered);
-			}
-			else
-            {
-				var catVal = int.Parse(category);
-				var filtered =
-					db.MenuItems.Where(p => p.Category == catVal &&
-										   (p.Name.Contains(query) ||
-											p.Description.Contains(query)));
-
-				// Display the Menu view with the filter applied.
-				return View("Menu", filtered);
-			}
 		}
 
 		[HttpPost]
@@ -80,6 +42,43 @@ namespace PickUpOrder.Controllers
 
 			// Pass the untruncated menu.
 			return View(db.MenuItems);
+		}
+
+		[HttpPost]
+		// Search - If a search query was made, generate a page
+		//          with only the applicable items.
+		public ActionResult Search()
+		{
+			// Open a database connection.
+			var db = new PickUpOrderDBEntities2();
+
+			// Get the query information.
+			var query = Request.Form["query"];
+			var category = Request.Form["category"];
+			System.Diagnostics.Debug.WriteLine("Q: " + query);
+			System.Diagnostics.Debug.WriteLine("C:" + Request.Form["category"]);
+
+			// An empty category string means there is no category filter.
+			if (category == "")
+			{
+				var filtered =
+					db.MenuItems.Where(p => p.Name.Contains(query) ||
+											p.Description.Contains(query));
+
+				// Display the Menu view with the filter applied.
+				return View("Menu", filtered);
+			}
+			else
+			{
+				var catVal = int.Parse(category);
+				var filtered =
+					db.MenuItems.Where(p => p.Category == catVal &&
+										   (p.Name.Contains(query) ||
+											p.Description.Contains(query)));
+
+				// Display the Menu view with the filter applied.
+				return View("Menu", filtered);
+			}
 		}
 
 		// AddToOrder (GET) - Render the AddToOrder page

@@ -1,4 +1,6 @@
-﻿using PickUpOrder.Models;
+﻿// OrderListController - A controller that prepares all OrderList pages.
+
+using PickUpOrder.Models;
 using System.Web.Mvc;
 
 namespace PickUpOrder.Controllers

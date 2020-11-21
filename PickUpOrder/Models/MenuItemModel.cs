@@ -3,7 +3,7 @@
 
 namespace PickUpOrder.Models
 {
-    public class MenuItemModel
+    public partial class MenuItem
     {
     }
 }
