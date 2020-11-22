@@ -51,10 +51,12 @@
     <h3>@db.Categories.Find(menuContent[i].Category).CategoryName</h3>
     <h5>
         @Html.ActionLink("Rename", "EditCategory", "MenuEditor",
-                         new { IDtoModify = (int)menuContent[i].Category },
+                         new { IDtoModify = (int) menuContent[i].Category },
                          null)
         &#9; | &#9;
-        @Html.ActionLink("Delete", "DeleteCategory", "MenuEditor")
+        @Html.ActionLink("Delete", "DeleteCategory", "MenuEditor",
+                         new { IDtoDelete = (int)menuContent[i].Category },
+                         null)
     </h5>
 
     <table>

@@ -1,6 +1,7 @@
 ﻿// MenuEditorController - A controller that prepares all Menu pages.
 
 using PickUpOrder.Models;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -106,14 +107,42 @@ namespace PickUpOrder.Controllers
 			return View("MenuEditor", db.MenuItems);
         }
 
-		// DeleteCategory - Render the DeleteCategory page.
-		public ActionResult DeleteCategory()
+		[HttpGet]
+		// DeleteCategory (GET) - Render the DeleteCategory page.
+		public ActionResult DeleteCategory(int IDtoDelete)
 		{
+			var db = new PickUpOrderDBEntities2();
+			ViewBag.ToDelete = db.Categories.Find(IDtoDelete);
 			return View();
 		}
 
+		[HttpPost]
+		// DeleteCategory (POST) - Remove oldCat from the menu
+		//                         and move its members to newCat.
+		public ActionResult DeleteCategory(Category oldCat)
+		{
+			// Open a database connection.
+			var db = new PickUpOrderDBEntities2();
+
+			// Get the value of newCat.
+			var newCat = db.Categories.Find(int.Parse(Request.Form["newCat"]));
+
+			// Change all members of oldCat to newCat.
+			var toModify =
+				db.MenuItems.Where(e => (int) e.Category == oldCat.CategoryID).ToList();
+			foreach (MenuItem i in toModify)
+				i.Category = newCat.CategoryID;
+
+			// Remove oldCat and save all changes.
+			//db.Categories.Remove(db.Categories.Find(oldCat.CategoryID));
+			//db.SaveChanges();
+
+			// Redirect to the editor page.
+			return View("MenuEditor", db.MenuItems);
+		}
+
 		[HttpGet]
-		// DeleteItem - Render the DeleteItem page.
+		// DeleteItem (GET) - Render the DeleteItem page.
 		public ActionResult DeleteItem(int IDtoDelete)
 		{
 			var db = new PickUpOrderDBEntities2();
