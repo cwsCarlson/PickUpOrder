@@ -19,10 +19,15 @@
     <h3>Description</h3>
     @Html.TextBoxFor(m => m.Description, new { required = "required" })
 
+    @* First box is dollar portion, second is cents. *@
+    @* The raw cost value (which is purely cents) is calculated upon posting. *@
     <h3>Price</h3>
     <p>
-        $@Html.TextBox("dollars", "", new { required = "required", @type = "number", @min = "0" })
-        .@Html.TextBox("cents", "", new { required = "required", @type = "number", @min = "0", @max = "99" })
+        $@Html.TextBox("dollars", "", new { required = "required",
+                                            @type = "number", @min = "0" })
+        .@Html.TextBox("cents", "", new { required = "required",
+                                          @type = "number", @min = "0",
+                                          @max = "99" })
     </p>
 
     <h3>Category</h3>
