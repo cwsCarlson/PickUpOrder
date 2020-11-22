@@ -124,10 +124,36 @@ namespace PickUpOrder.Controllers
 			return View();
 		}
 
+		[HttpGet]
 		// EditItem - Render the EditItem page.
-		public ActionResult EditItem()
+		public ActionResult EditItem(int IDtoModify)
+        {
+			var db = new PickUpOrderDBEntities2();
+			return View(db.MenuItems.Find(IDtoModify));
+        }
+
+		[HttpPost]
+		// EditItem - Apply the value of modified's fields
+		//            to the item with the same ID number.
+		public ActionResult EditItem(MenuItem modified)
 		{
-			return View();
+			// Open a database connection.
+			var db = new PickUpOrderDBEntities2();
+
+			// Convert the price fields to the raw price.
+			modified.Price = int.Parse(Request.Form["dollars"]) * 100 +
+						     int.Parse(Request.Form["cents"]);
+
+			// Apply and save changes.
+			db.MenuItems.Find(modified.ItemID).Name = modified.Name;
+			db.MenuItems.Find(modified.ItemID).Description =
+				modified.Description;
+			db.MenuItems.Find(modified.ItemID).Price = modified.Price;
+			db.MenuItems.Find(modified.ItemID).Category = modified.Category;
+			db.SaveChanges();
+
+			// Redirect to the editor page.
+			return View("MenuEditor", db.MenuItems);
 		}
 	}
 }

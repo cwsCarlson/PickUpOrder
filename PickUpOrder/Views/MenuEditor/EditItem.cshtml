@@ -11,4 +11,33 @@
 
 <h2>Editing @Model.Name...</h2>
 
-@* Put a form for all properties here... *@
+@using (Html.BeginForm("EditItem", "MenuEditor", FormMethod.Post))
+{
+    @* This saves the ItemID so the current item can be found later. *@
+    @Html.HiddenFor(m => m.ItemID)
+
+    <h3>Name</h3>
+    @Html.TextBoxFor(m => m.Name, new { required = "required" })
+
+    <h3>Description</h3>
+    @Html.TextBoxFor(m => m.Description, new { required = "required" })
+
+    @* First box is dollar portion, second is cents. *@
+    @* The raw cost value (which is purely cents) is calculated upon posting. *@
+    @* No HiddenFor since the price will be recalculated before updating. *@
+    <h3>Price</h3>
+    <p>
+        $@Html.TextBox("dollars", Model.Price / 100,
+                       new { required = "required", @type = "number",
+                             @min = "0" })
+        .@Html.TextBox("cents", Model.Price % 100,
+                       new { required = "required", @type = "number",
+                             @min = "0", @max = "99" })
+    </p>
+
+    <h3>Category</h3>
+    @Html.DropDownListFor(m => m.Category, Category.GetCategoryDropdown(),
+                          "Pick a category", new { required = "required" })
+    <br/><br/>
+    <input type="submit" value="Apply edits" />
+}

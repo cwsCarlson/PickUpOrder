@@ -72,7 +72,9 @@
                     $@(((int)menuContent[i].Price / 100.0).ToString("0.00"))
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditItem", "MenuEditor")
+                    @Html.ActionLink("Edit", "EditItem", "MenuEditor",
+                                     new { IDtoModify = menuContent[i].ItemID },
+                                     null)
                 </td>
                 <td>
                     @Html.ActionLink("Delete", "DeleteItem", "MenuEditor")
