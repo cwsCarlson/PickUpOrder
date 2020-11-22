@@ -1,7 +1,6 @@
 ﻿// MenuEditorController - A controller that prepares all Menu pages.
 
 using PickUpOrder.Models;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -129,13 +128,15 @@ namespace PickUpOrder.Controllers
 
 			// Change all members of oldCat to newCat.
 			var toModify =
-				db.MenuItems.Where(e => (int) e.Category == oldCat.CategoryID).ToList();
+				db.MenuItems.Where(e => (int) e.Category ==
+				                        oldCat.CategoryID).ToList();
 			foreach (MenuItem i in toModify)
 				i.Category = newCat.CategoryID;
 
 			// Remove oldCat and save all changes.
-			//db.Categories.Remove(db.Categories.Find(oldCat.CategoryID));
-			//db.SaveChanges();
+			db.Categories.Remove(db.Categories.Single(e => e.CategoryID ==
+			                                               oldCat.CategoryID));
+			db.SaveChanges();
 
 			// Redirect to the editor page.
 			return View("MenuEditor", db.MenuItems);
