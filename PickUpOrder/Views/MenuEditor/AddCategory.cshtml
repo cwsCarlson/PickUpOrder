@@ -1,6 +1,7 @@
 ﻿@* AddCategory - A form page that creates a new Category. *@
 
 @using PickUpOrder.Models;
+@model Category
 @{
     ViewBag.Title = "Add Category";
 }
@@ -9,3 +10,11 @@
 @Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
 
 <h2>Creating a new category...</h2>
+
+@using (Html.BeginForm("AddCategory", "MenuEditor", FormMethod.Post))
+{
+    <h3>Name</h3>
+    @Html.TextBoxFor(m => m.CategoryName, new { required = "required" })
+    <br/>
+    <input type="submit" value="Add to menu" />
+}

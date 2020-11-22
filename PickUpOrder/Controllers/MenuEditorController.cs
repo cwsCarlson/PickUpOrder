@@ -54,12 +54,31 @@ namespace PickUpOrder.Controllers
 			}
 		}
 
+		[HttpGet]
 		// AddCategory - Render the AddCategory page.
 		public ActionResult AddCategory()
         {
-			return View();
+			var newCategory = new Category();
+			return View(newCategory);
         }
 
+		[HttpPost]
+		// AddCategory (POST) - Add the posted category to the menu.
+		public ActionResult AddCategory(Category toAdd)
+		{
+			// Open a database connection.
+			var db = new PickUpOrderDBEntities2();
+
+			// Add and save changes.
+			// (The new category's ID is automatically generated here.)
+			db.Categories.Add(toAdd);
+			db.SaveChanges();
+
+			// Redirect to the editor page.
+			return View("MenuEditor", db.MenuItems);
+		}
+
+		[HttpGet]
 		// AddItem - Render the AddItem page.
 		public ActionResult AddItem()
 		{
