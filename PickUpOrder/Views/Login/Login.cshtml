@@ -1,0 +1,20 @@
+﻿@* Login - A form that takes credentials and attempts to retrieve a matching user. *@
+
+@model string
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@if(Model != null)
+{
+    <b>Hash: @Model</b>
+}
+
+@using (Html.BeginForm("Hash", "Login", FormMethod.Post))
+{
+    @Html.TextBox("newpasswd", "", new { required = "required" })
+    <br/>
+    <input type="submit" value="Submit" />
+}

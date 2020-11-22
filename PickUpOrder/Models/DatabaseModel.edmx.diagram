@@ -8,6 +8,7 @@
         <EntityTypeShape EntityType="PickUpOrderDBModel.Order" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PickUpOrderDBModel.MenuItem" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="PickUpOrderDBModel.Category" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="PickUpOrderDBModel.Account" Width="1.5" PointX="3.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

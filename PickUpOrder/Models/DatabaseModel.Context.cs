@@ -28,5 +28,6 @@ namespace PickUpOrder.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<MenuItem> MenuItems { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
     }
 }
