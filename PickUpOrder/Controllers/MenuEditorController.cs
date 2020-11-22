@@ -112,10 +112,27 @@ namespace PickUpOrder.Controllers
 			return View();
 		}
 
+		[HttpGet]
 		// DeleteItem - Render the DeleteItem page.
-		public ActionResult DeleteItem()
+		public ActionResult DeleteItem(int IDtoDelete)
 		{
-			return View();
+			var db = new PickUpOrderDBEntities2();
+			return View(db.MenuItems.Find(IDtoDelete));
+		}
+
+		[HttpGet]
+		// NullifyItem (GET) - Nullify toDelete.
+		public ActionResult NullifyItem(MenuItem toNullify)
+		{
+			// Open a database connection.
+			var db = new PickUpOrderDBEntities2();
+
+			// Apply and save changes.
+			db.MenuItems.Find(toNullify.ItemID).NullifyItem();
+			db.SaveChanges();
+
+			// Redirect to the editor page.
+			return View("MenuEditor", db.MenuItems);
 		}
 
 		[HttpGet]

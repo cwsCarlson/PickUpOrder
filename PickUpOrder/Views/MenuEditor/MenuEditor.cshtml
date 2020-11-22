@@ -81,7 +81,9 @@
                                      null)
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "DeleteItem", "MenuEditor")
+                    @Html.ActionLink("Delete", "DeleteItem", "MenuEditor",
+                                     new { IDtoDelete = menuContent[i].ItemID },
+                                     null)
                 </td>
             </tr>
             <tr>
