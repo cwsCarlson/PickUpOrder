@@ -1,20 +1,21 @@
 ﻿@* Login - A form that takes credentials and attempts to retrieve a matching user. *@
 
-@model string
+@using PickUpOrder.Models
+@model Account
 @{
     ViewBag.Title = "Login";
 }
 
 <h2>Login</h2>
 
-@if(Model != null)
+@* A form that gets user's login information.*@
+@using (Html.BeginForm("Login", "Login", FormMethod.Post))
 {
-    <b>Hash: @Model</b>
-}
+    <h3>Email Address</h3>
+    @Html.TextBoxFor(m => m.Email, new { required = "required" })
 
-@using (Html.BeginForm("Hash", "Login", FormMethod.Post))
-{
-    @Html.TextBox("newpasswd", "", new { required = "required" })
+    <h3>Password</h3>
+    @Html.TextBoxFor(m => m.PasswordHash, new { required = "required" })
     <br/>
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Log In" />
 }

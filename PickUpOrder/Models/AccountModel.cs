@@ -27,7 +27,9 @@ namespace PickUpOrder.Models
             var hashed = shaInstance.ComputeHash(encoded);
             var hashedStr = Convert.ToBase64String(hashed);
 
-            System.Diagnostics.Debug.WriteLine(hashedStr);
+            System.Diagnostics.Debug.WriteLine("Checking hash " + hashedStr);
+            System.Diagnostics.Debug.WriteLine("      against " + PasswordHash);
+            System.Diagnostics.Debug.WriteLine("Exact difference is" + PasswordHash.CompareTo(hashedStr));
 
             // Return whether this hash is the same.
             return PasswordHash.Equals(hashedStr);
