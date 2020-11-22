@@ -8,6 +8,21 @@
 
 <h2>Login</h2>
 
+@* If the model's ID indicates an error in a previous submission,
+   print the appropriate error. *@
+@if(Model.UserID == -1)
+{
+    <b>An invalid email address was provided.</b>
+}
+@if(Model.UserID == -2)
+{
+    <b>The email address provided was not in our records.</b>
+}
+@if(Model.UserID == -3)
+{
+    <b>The password provided did not match our records.</b>
+}
+
 @* A form that gets user's login information.*@
 @using (Html.BeginForm("Login", "Login", FormMethod.Post))
 {

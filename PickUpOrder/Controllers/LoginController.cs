@@ -29,7 +29,7 @@ namespace PickUpOrder.Controllers
             try
             { var address = new MailAddress(provided.Email); }
             catch (FormatException)
-            { return View(new Account()); }
+            { return View(new Account { UserID = -1 }); }
 
             // Attempt to find the email address in the database
             // and return an error if this is not possible.
@@ -38,13 +38,13 @@ namespace PickUpOrder.Controllers
             var matches =
                 db.Accounts.Where(e => e.Email.Equals(provided.Email));            
             match = matches.FirstOrDefault();
-            if(match == null)
-                return View(new Account());
+            if (match == null)
+                return View(new Account { UserID = -2 });
 
             // Check whether the password is correct
             // and return an error if it is not.
             if (!match.CheckPassword(provided.PasswordHash))
-                return View(new Account());
+                return View(new Account { UserID = -3 });
 
             // If this is all correct, redirect to the appropriate page.
             // FIXME: Add redirection based on account type later.
