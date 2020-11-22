@@ -63,8 +63,29 @@ namespace PickUpOrder.Controllers
 		// AddItem - Render the AddItem page.
 		public ActionResult AddItem()
 		{
-			return View();
+			var newItem = new MenuItem();
+			return View(newItem);
 		}
+
+		[HttpPost]
+		// AddItem (POST) - Add the posted item to the menu.
+		public ActionResult AddItem(MenuItem toAdd)
+        {
+			// Open a database connection.
+			var db = new PickUpOrderDBEntities2();
+
+			// Convert the price fields to the raw price.
+			toAdd.Price = int.Parse(Request.Form["dollars"]) * 100 +
+				          int.Parse(Request.Form["cents"]);
+
+			// Add and save changes.
+			// (The new item's ID is automatically generated here.)
+			db.MenuItems.Add(toAdd);
+			db.SaveChanges();
+
+			// Redirect to the editor page.
+			return View("MenuEditor", db.MenuItems);
+        }
 
 		// DeleteCategory - Render the DeleteCategory page.
 		public ActionResult DeleteCategory()

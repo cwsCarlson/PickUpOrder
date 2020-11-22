@@ -1,6 +1,7 @@
 ﻿@* AddItem - A form page that creates a new MenuItem. *@
 
 @using PickUpOrder.Models;
+@model MenuItem
 @{
     ViewBag.Title = "Add Item";
 }
@@ -9,3 +10,24 @@
 @Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
 
 <h2>Creating a new item...</h2>
+
+@using (Html.BeginForm("AddItem", "MenuEditor", FormMethod.Post))
+{
+    <h3>Name</h3>
+    @Html.TextBoxFor(m => m.Name, new { required = "required" })
+
+    <h3>Description</h3>
+    @Html.TextBoxFor(m => m.Description, new { required = "required" })
+
+    <h3>Price</h3>
+    <p>
+        $@Html.TextBox("dollars", "", new { required = "required", @type = "number", @min = "0" })
+        .@Html.TextBox("cents", "", new { required = "required", @type = "number", @min = "0", @max = "99" })
+    </p>
+
+    <h3>Category</h3>
+    @Html.DropDownListFor(m => m.Category, Category.GetCategoryDropdown(),
+                          "Pick a category", new { required = "required" })
+    <br/><br/>
+    <input type="submit" value="Add to menu" />
+}
