@@ -37,6 +37,7 @@
 
 @* Links to add categories and items. *@
 @Html.ActionLink("Add New Item", "AddItem", "MenuEditor")
+&#9; | &#9;
 @Html.ActionLink("Add New Category", "AddCategory", "MenuEditor")
 
 @* Display every item in the menu in their respective category. *@
@@ -49,10 +50,13 @@
     @* Print the category name and links to modify it. *@
     <h3>@db.Categories.Find(menuContent[i].Category).CategoryName</h3>
     <h5>
-        @Html.ActionLink("Rename", "EditCategory", "MenuEditor") &#9;
+        @Html.ActionLink("Rename", "EditCategory", "MenuEditor",
+                         new { IDtoModify = (int)menuContent[i].Category },
+                         null)
+        &#9; | &#9;
         @Html.ActionLink("Delete", "DeleteCategory", "MenuEditor")
     </h5>
-    
+
     <table>
         @* Print the table header. *@
         <thread>
@@ -64,8 +68,8 @@
         @for (; i < menuContent.Count; i++)
         {
             @* No need to check whether an item is valid.
-               Invalid items were pushed to the start of the list
-               since they had null categories. *@
+                Invalid items were pushed to the start of the list
+                since they had null categories. *@
             <tr>
                 <td>@menuContent[i].Name</td>
                 <td>
@@ -85,7 +89,7 @@
             </tr>
 
             @* If this is the end of a category, exit this loop
-               to print the next category header. *@
+                to print the next category header. *@
             if (i != menuContent.Count - 1 &&
                 menuContent[i].Category != menuContent[i + 1].Category)
             { break; }

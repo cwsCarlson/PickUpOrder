@@ -9,6 +9,15 @@
 @* A link to return without saving changes. *@
 @Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
 
-<h2>Editing @Model.CategoryName...</h2>
+<h2>Renaming @Model.CategoryName...</h2>
 
-@* Put a form for the category name here... *@
+@using (Html.BeginForm("EditCategory", "MenuEditor", FormMethod.Post))
+{
+    @* This saves the CategoryID so the current category can be found later. *@
+    @Html.HiddenFor(m => m.CategoryID)
+
+    <h3>Name</h3>
+    @Html.TextBoxFor(m => m.CategoryName, new { required = "required" })
+    <br />
+    <input type="submit" value="Rename" />
+}

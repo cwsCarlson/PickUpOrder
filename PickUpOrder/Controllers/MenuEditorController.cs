@@ -118,10 +118,28 @@ namespace PickUpOrder.Controllers
 			return View();
 		}
 
+		[HttpGet]
 		// EditCategory - Render the EditCategory page.
-		public ActionResult EditCategory()
+		public ActionResult EditCategory(int IDtoModify)
 		{
-			return View();
+			var db = new PickUpOrderDBEntities2();
+			return View(db.Categories.Find(IDtoModify));
+		}
+
+		[HttpPost]
+		// AddCategory (POST) - Add the posted category to the menu.
+		public ActionResult EditCategory(Category modified)
+		{
+			// Open a database connection.
+			var db = new PickUpOrderDBEntities2();
+
+			// Apply and save changes.
+			db.Categories.Find(modified.CategoryID).CategoryName
+				= modified.CategoryName;
+			db.SaveChanges();
+
+			// Redirect to the editor page.
+			return View("MenuEditor", db.MenuItems);
 		}
 
 		[HttpGet]
