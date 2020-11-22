@@ -11,7 +11,7 @@
 
 	/* Type - A value (in the AccountType enum) flagging the user type.
               Customer = 1, Employee = 2, Manager = 3 */
-    [OrderStatus]       INT                 NOT NULL,
+    [Type]				INT                 NOT NULL,
 
 	/* Orders - The orders this user placed as a comma-separated string
                 of order IDs. */

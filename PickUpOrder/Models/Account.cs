@@ -17,7 +17,7 @@ namespace PickUpOrder.Models
         public int UserID { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
-        public int OrderStatus { get; set; }
         public string Orders { get; set; }
+        public int Type { get; set; }
     }
 }

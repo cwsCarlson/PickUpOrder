@@ -11,8 +11,8 @@
           </Key>
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="PasswordHash" Type="varchar" MaxLength="240" Nullable="false" />
-          <Property Name="OrderStatus" Type="int" Nullable="false" />
+          <Property Name="PasswordHash" Type="varchar" MaxLength="44" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="Orders" Type="varchar" MaxLength="8000" />
         </EntityType>
         <EntityType Name="Categories">
@@ -89,9 +89,9 @@
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PasswordHash" Type="String" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Name="OrderStatus" Type="Int32" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" Nullable="false" MaxLength="44" FixedLength="false" Unicode="false" />
           <Property Name="Orders" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -131,8 +131,8 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="PickUpOrderDBModel.Account">
               <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Orders" ColumnName="Orders" />
-                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
