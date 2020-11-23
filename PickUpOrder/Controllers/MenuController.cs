@@ -22,26 +22,27 @@ namespace PickUpOrder.Controllers
 			return View(db.MenuItems);
 		}
 
-		[HttpPost]
 		// Menu (POST) - Modify the user's current order.
 		//               If adding is true, add qty instances of toModify.
 		//               If adding is false, remove qty instances of toModify.
+		[HttpPost]
 		public ActionResult Menu(bool adding, int IDtoModify)
         {
+			// If the user is not logged in, redirect to the login page.
+			if (!Request.Cookies.AllKeys.Contains("UserID"))
+				return RedirectToAction("Login", "Login");
+
 			// Retrieve the item being added.
 			var db = new PickUpOrderDBEntities2();
 			MenuItem toModify = db.MenuItems.Find(IDtoModify);
 
 			// Retrieve the quantity.
 			int qty = int.Parse(Request.Form["qty"]);
-			System.Diagnostics.Debug.WriteLine(toModify.Name + " x " + qty);
 
 			// Retrieve the order this is being added to.
 			var user =
-				db.Accounts.Find(int.Parse(Request.Cookies["UserID"].Value));
+				db.Accounts.Find(Account.GetCookieID(Request.Cookies["UserID"].Value));
 			var targetOrder = db.Orders.Find(user.MostRecentOrder());
-			System.Diagnostics.Debug.WriteLine("User #" + user.UserID);
-			System.Diagnostics.Debug.WriteLine("Order #" + targetOrder.OrderID);
 
 			// Process the appropriate changes.
 			if (adding)		
@@ -55,19 +56,21 @@ namespace PickUpOrder.Controllers
 			return View(db.MenuItems);
 		}
 
-		[HttpPost]
 		// Search - If a search query was made, generate a page
 		//          with only the applicable items.
+		[HttpPost]
 		public ActionResult Search()
 		{
+			// If the user is not logged in, redirect to the login page.
+			if (!Request.Cookies.AllKeys.Contains("UserID"))
+				return RedirectToAction("Login", "Login");
+
 			// Open a database connection.
 			var db = new PickUpOrderDBEntities2();
 
 			// Get the query information.
 			var query = Request.Form["query"];
 			var category = Request.Form["category"];
-			System.Diagnostics.Debug.WriteLine("Q: " + query);
-			System.Diagnostics.Debug.WriteLine("C:" + Request.Form["category"]);
 
 			// An empty category string means there is no category filter.
 			if (category == "")
@@ -97,6 +100,10 @@ namespace PickUpOrder.Controllers
 		[HttpGet]
 		public ActionResult AddToOrder(int IDtoAdd)
 		{
+			// If the user is not logged in, redirect to the login page.
+			if (!Request.Cookies.AllKeys.Contains("UserID"))
+				return RedirectToAction("Login", "Login");
+
 			// Get the item being added.
 			var db = new PickUpOrderDBEntities2();
 			var toAdd = db.MenuItems.Find(IDtoAdd);
@@ -115,6 +122,10 @@ namespace PickUpOrder.Controllers
 		[HttpGet]
 		public ActionResult RemoveFromOrder(int IDtoRemove)
 		{
+			// If the user is not logged in, redirect to the login page.
+			if (!Request.Cookies.AllKeys.Contains("UserID"))
+				return RedirectToAction("Login", "Login");
+
 			// Get the item being removed.
 			var db = new PickUpOrderDBEntities2();
 			var toRemove = db.MenuItems.Find(IDtoRemove);
@@ -152,7 +163,8 @@ namespace PickUpOrder.Controllers
 
 			// Get the user.
 			var curUser =
-				db.Accounts.Find(int.Parse(Request.Cookies["UserID"].Value));
+				db.Accounts.Find(Account.GetCookieID(
+					             Request.Cookies["UserID"].Value));
 
 			// Set their most recent order to "Received".
 			var toSubmit = curUser.MostRecentOrder();

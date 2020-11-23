@@ -16,7 +16,8 @@
     var menuContent = Model.OrderBy(e => e.Category).ToList();
 
     // Get the current user cookie and use that to get their order list.
-    var curUser = db.Accounts.Find(int.Parse(Request.Cookies["UserID"].Value));
+    var curUser =
+        db.Accounts.Find(Account.GetCookieID(Request.Cookies["UserID"].Value));
 
     // Get the account's most recent order if it exists.
     // If there isn't one or it is submitted, add a new one.
@@ -51,9 +52,9 @@
     <div class="column">
         @* Display every item in the menu in their respective category. *@
         @for (int i = 0; i < menuContent.Count; i++)
-        { 
+        {
             @* A category is only null if an item is deleted,
-               so skip this item if that' true. *@
+                so skip this item if that' true. *@
             if (menuContent[i].Category == null) { continue; }
 
             @* Print the category name. *@
@@ -67,11 +68,11 @@
                 @for (; i < menuContent.Count; i++)
                 {
                     @* No need to check whether an item is valid.
-                    Invalid items were pushed to the start of the list
-                    since they had null categories. *@
+                        Invalid items were pushed to the start of the list
+                        since they had null categories. *@
                     <tr>
                         <td>
-                            <b>@menuContent[i].Name</b><br/>
+                            <b>@menuContent[i].Name</b><br />
                             @menuContent[i].Description
                         </td>
                         <td>
@@ -83,17 +84,20 @@
                         <td>
                             @Html.ActionLink("Add to Order", "AddToOrder",
                                              "Menu",
-                                             new { IDtoAdd =
-                                                    menuContent[i].ItemID },
+                                             new
+                                                  {
+                                                      IDtoAdd =
+                                                    menuContent[i].ItemID
+                                                  },
                                              null)
                         </td>
                     </tr>
 
                     @* If this is the end of a category, exit this loop
-                    to print the next category header. *@
+                        to print the next category header. *@
                     if (i != menuContent.Count - 1 &&
                         menuContent[i].Category != menuContent[i + 1].Category)
-                        { break; }
+                    { break; }
                 }
             </table>
         }
@@ -112,7 +116,7 @@
                 @foreach (MenuItem item in mostRecentOrder.ContentsToItemList())
                 {
                     @* If the item should be removed,
-                       then add it to the chopping block. *@
+                        then add it to the chopping block. *@
                     if (item.Price == null && removals.ContainsKey(item))
                     { removals[item]++; }
                     else if (item.Price == null)
@@ -129,8 +133,11 @@
                             <td>
                                 @Html.ActionLink("Remove", "RemoveFromOrder",
                                                  "Menu",
-                                                 new { IDtoRemove =
-                                                       item.ItemID }, null)
+                                                 new
+                                                      {
+                                                          IDtoRemove =
+                                                       item.ItemID
+                                                      }, null)
                             </td>
                         </tr>
                     }
@@ -167,8 +174,8 @@
         }
 
         @* Provide the status of submitted orders here.
-           Since the last one will always be the current order,
-           look at all others. *@
+            Since the last one will always be the current order,
+            look at all others. *@
         @if (allOrders.Count - 1 > 0)
         {
             <h2>Submitted orders:</h2>
@@ -179,7 +186,7 @@
                     <td>Status</td>
                 </tr>
                 @* Print in reverse order. Most recently submitted first. *@
-                @for (int i = allOrders.Count - 2; i >= 0 ; i--)
+                @for (int i = allOrders.Count - 2; i >= 0; i--)
                 {
                     var contents = allOrders[i].ContentsToItemList();
                     <tr>

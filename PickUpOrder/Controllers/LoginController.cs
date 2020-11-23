@@ -36,8 +36,6 @@ namespace PickUpOrder.Controllers
             var email = Request.Form["email"];
             var passwd = Request.Form["passwd"];
 
-            System.Diagnostics.Debug.WriteLine("Email:" + email);
-            System.Diagnostics.Debug.WriteLine("Passwd:" + passwd);
             // Attempt to convert the provided name to an email address
             // and return an error if this is not possible.
             try
@@ -60,9 +58,13 @@ namespace PickUpOrder.Controllers
                 return View("Login", -3);
 
             // Define a cookie for this user that expires in an hour.
-            // The XOR'd number was randomly selected
-            // and exists to hide the exact value.
-            Response.Cookies["UserID"].Value = match.UserID.ToString();
+            // Cookie format: All but last two bits are user ID.
+            // The last two bits of the cookie indicate the user type
+            // and will be checked against the database whenever appropriate.
+            // xorVal was randomly selected and exists to hide the exact value.
+            int cookieVal = ((match.UserID * 4) + match.Type) ^
+                Properties.Settings.Default.xorVal;
+            Response.Cookies["UserID"].Value = cookieVal.ToString();
             Response.Cookies["UserID"].Expires = DateTime.Now.AddHours(1);
             Response.Cookies["UserID"].Secure = true;
 

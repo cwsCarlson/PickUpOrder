@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using PickUpOrder.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -22,7 +23,26 @@
                 <ul class="nav navbar-nav">
                     @if (Request.Cookies.AllKeys.Contains("UserID"))
                     {
-                        <li>@Html.ActionLink("Log Out", "Logout", "Login")</li>
+                        var cookieVal = Request.Cookies["UserID"].Value;
+                        var priv = Account.GetCookieType(cookieVal);
+                        if (priv >= AccountType.Employee)
+                        {
+                            <li>@Html.ActionLink("Menu", "Menu", "Menu")</li>
+                            <li>
+                                @Html.ActionLink("Order List", "OrderList",
+                                                 "OrderList")
+                            </li>
+                            if(priv == AccountType.Manager)
+                            {
+                                <li>
+                                @Html.ActionLink("Menu Editor", "MenuEditor",
+                                                 "MenuEditor")
+                                </li>
+                            }
+                        }
+                        <li>
+                            @Html.ActionLink("Log Out", "Logout", "Login")
+                        </li>
                     }
                 </ul>
             </div>

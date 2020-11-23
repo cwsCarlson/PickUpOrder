@@ -66,6 +66,21 @@ namespace PickUpOrder.Models
             return PasswordHash.Equals(CalculateHash(toCheck));
         }
 
+        // GetCookieID - Given a cookie value, retrieve the ID from it.
+        public static int GetCookieID(string cookie)
+        {
+            int cookieVal = int.Parse(cookie);
+            return (cookieVal ^ Properties.Settings.Default.xorVal) / 4;
+        }
+
+        // GetCookieID - Given a cookie value, retrieve the type from it.
+        public static AccountType GetCookieType(string cookie)
+        {
+            int cookieVal = int.Parse(cookie);
+            return (AccountType)
+                   ((cookieVal ^ Properties.Settings.Default.xorVal) % 4);
+        }
+
         // MostRecentOrder - Get the last order ID.
         public int? MostRecentOrder()
         {
