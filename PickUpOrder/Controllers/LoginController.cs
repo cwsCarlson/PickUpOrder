@@ -4,7 +4,6 @@ using PickUpOrder.Models;
 using System;
 using System.Linq;
 using System.Net.Mail;
-using System.Web;
 using System.Web.Mvc;
 
 namespace PickUpOrder.Controllers
@@ -16,6 +15,17 @@ namespace PickUpOrder.Controllers
         public ActionResult Login()
         {
             return View(0);
+        }
+
+        [HttpGet]
+        // Logout (GET) - Remove the user cookie.
+        public ActionResult Logout()
+        {
+            // Set the expiration date to the previous day
+            // so it is automatically deleted upon retrieval.
+            if (Request.Cookies.AllKeys.Contains("UserID"))
+                Response.Cookies["UserID"].Expires = DateTime.Now.AddDays(-1);
+            return View("Login", 0);
         }
 
         [HttpPost]
