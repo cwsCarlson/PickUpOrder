@@ -1,0 +1,24 @@
+﻿@* Help - Help for the OrderList page. *@
+
+@{
+    ViewBag.Title = "Order List help";
+}
+
+<h2>Help</h2>
+@Html.ActionLink("Back to previous page", null, null, null,
+                 new { href = Request.UrlReferrer })
+<br/>
+The order list displays all orders that have been submitted but not picked up.
+<br/>
+Orders are listed in the order in which they were recieved.
+<h3>Changing order status</h3>
+<ul>
+    <li>Select "Update" in the order row.</li>
+    <li>
+        On the page that appears, select a new staus from the dropdown list.
+    </li>
+    <li>Select the "Update Status" button.</li>
+</ul>
+<h3>WARNING!</h3>
+Once an order has been set as "Picked Up", it will be removed from the list.<br/>
+<b>DO NOT</b> select this status if the order is not yet complete.

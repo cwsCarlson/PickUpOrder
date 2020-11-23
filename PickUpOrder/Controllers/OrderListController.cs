@@ -58,5 +58,19 @@ namespace PickUpOrder.Controllers
             var db = new PickUpOrderDBEntities2();
             return View(db.Orders.Find(toChange));
         }
+
+        // Help - Render the help page.
+        public ActionResult Help()
+        {
+            // If the user is not logged in or has inappropriate permissions,
+            // redirect to the appropriate page.
+            if (!Request.Cookies.AllKeys.Contains("UserID"))
+                return RedirectToAction("Login", "Login");
+            if (Account.GetCookieType(Request.Cookies["UserID"].Value)
+                < AccountType.Employee)
+                return RedirectToAction("Menu", "Menu");
+
+            return View();
+        }
     }
 }

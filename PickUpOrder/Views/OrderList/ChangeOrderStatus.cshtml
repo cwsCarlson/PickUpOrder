@@ -16,6 +16,7 @@
 
 @* Print the heading. *@
 <h2>Editing Order No. @Model.OrderID</h2>
+<h5>@Html.ActionLink("Help", "Help", "OrderList")</h5>
 
 @* This button returns to the list without making changes. *@
 @Html.ActionLink("Leave without changing", "OrderList", "OrderList", null)
@@ -24,7 +25,9 @@
 <h3>Order Contents</h3>
 @contents[0].Name
 @for (int i = 1; i < contents.Count; i++)
-{ <br>@contents[i].Name }
+{
+    <br>
+    @contents[i].Name}
 
 @* The form below allows the modification of the order's status. *@
 <h3>Status</h3>

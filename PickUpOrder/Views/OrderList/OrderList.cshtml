@@ -9,6 +9,7 @@
 
 @* Print the heading. *@
 <h2>Order List</h2>
+<h5>@Html.ActionLink("Help", "Help", "OrderList")</h5>
 
 @* Display every order in the database. *@
 <table border=1 frame=void rules=rows>
@@ -24,8 +25,10 @@
     @* Get every model and print out those that should appear. *@
     @foreach (PickUpOrder.Models.Order order in db.Orders)
     {
-        @* Orders that have not been submitted should not appear. *@
-        if (order.OrderStatus != (int) OrderStatus.NotSubmitted)
+        @* Orders that have not been submitted or picked up
+           should not appear in the list. *@
+        if (order.OrderStatus != (int) OrderStatus.NotSubmitted &&
+            order.OrderStatus != (int) OrderStatus.PickedUp)
         {
             var contents = order.ContentsToItemList();
             <tr>
