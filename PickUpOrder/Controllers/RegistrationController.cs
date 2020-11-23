@@ -17,8 +17,8 @@ namespace PickUpOrder.Controllers
         }
 
         [HttpPost]
-        // RegistrationProcess (POST) - Get and process registration
-        //                              information.
+        // Registration (POST) - Get and process registration
+        //                       information.
         public ActionResult Registration(AccountType type)
         {
             // Get the form information.

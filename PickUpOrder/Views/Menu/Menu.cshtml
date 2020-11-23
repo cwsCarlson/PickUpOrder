@@ -47,142 +47,174 @@
     <input type="submit" value="Search" />
 }
 
-@* Display every item in the menu in their respective category. *@
-@for (int i = 0; i < menuContent.Count; i++)
-{
-    @* A category is only null if an item is deleted, so skip if it's null. *@
-    if (menuContent[i].Category == null)
-    { continue; }
-    @* Print the category name. *@
-    <h3>@db.Categories.Find(menuContent[i].Category).CategoryName</h3>
-    <table>
-        @* Print the table header. *@
-        <thread>
-            <tr>
-                <td>Name</td>
-                <td>Price</td>
-            </tr>
-        </thread>
-        @for (; i < menuContent.Count; i++)
-        {
-            @* No need to check whether an item is valid.
-                Invalid items were pushed to the start of the list
-                since they had null categories. *@
-            <tr>
-                <td>@menuContent[i].Name</td>
-                <td>
-                    $@(((int)menuContent[i].Price / 100.0).ToString("0.00"))
-                </td>
-                <td>
-                    @Html.ActionLink("Add to Order", "AddToOrder", "Menu",
-                                     new { IDtoAdd = menuContent[i].ItemID },
-                                     null)
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">@menuContent[i].Description</td>
-            </tr>
+<div class="row">
+    <div class="column">
+        @* Display every item in the menu in their respective category. *@
+        @for (int i = 0; i < menuContent.Count; i++)
+        { 
+            @* A category is only null if an item is deleted,
+               so skip this item if that' true. *@
+            if (menuContent[i].Category == null) { continue; }
 
-            @* If this is the end of a category, exit this loop
-                to print the next category header. *@
-            if (i != menuContent.Count - 1 &&
-                menuContent[i].Category != menuContent[i + 1].Category)
-            { break; }
-        }
-    </table>
-}
-
-@* If there is an order associated with the user, display it. *@
-@if (mostRecentOrder != null && mostRecentOrder.ContentsToItemList() != null)
-{
-    <h2>Order details</h2>
-    <table>
-        @foreach (MenuItem item in mostRecentOrder.ContentsToItemList())
-        {
-            @* If the item should be removed, then add it to the chopping block. *@
-            if (item.Price == null && removals.ContainsKey(item))
-            { removals[item]++; }
-            else if (item.Price == null)
-            { removals.Add(item, 1); }
-
-            @* Otherwise, print its information. *@
-            else
-            {
+            @* Print the category name. *@
+            <h3>@db.Categories.Find(menuContent[i].Category).CategoryName</h3>
+            <table border=1 frame=void rules=rows>
+                @* Print the table header. *@
                 <tr>
-                    <td>@item.Name</td>
-                    <td>$@(((int)item.Price / 100.0).ToString("0.00"))</td>
-                    <td>
-                        @Html.ActionLink("Remove", "RemoveFromOrder", "Menu",
-                                          new { IDtoRemove = item.ItemID }, null)
-                    </td>
+                    <td>Name</td>
+                    <td>Price</td>
                 </tr>
-            }
+                @for (; i < menuContent.Count; i++)
+                {
+                    @* No need to check whether an item is valid.
+                    Invalid items were pushed to the start of the list
+                    since they had null categories. *@
+                    <tr>
+                        <td>
+                            <b>@menuContent[i].Name</b><br/>
+                            @menuContent[i].Description
+                        </td>
+                        <td>
+                            $@(
+                                ((int) menuContent[i].Price
+                                 / 100.0).ToString("0.00")
+                             )
+                        </td>
+                        <td>
+                            @Html.ActionLink("Add to Order", "AddToOrder",
+                                             "Menu",
+                                             new { IDtoAdd =
+                                                    menuContent[i].ItemID },
+                                             null)
+                        </td>
+                    </tr>
+
+                    @* If this is the end of a category, exit this loop
+                    to print the next category header. *@
+                    if (i != menuContent.Count - 1 &&
+                        menuContent[i].Category != menuContent[i + 1].Category)
+                        { break; }
+                }
+            </table>
         }
-    </table>
-
-    @* If something is removable, remove it and let the user know. *@
-    if (removals.Count >= 1)
-    {
-        foreach (MenuItem toRemove in removals.Keys)
-        { mostRecentOrder.RemoveMultipleItems(toRemove, removals[toRemove]); }
-        db.SaveChanges();
-
-        @* Print the correct message depending on the number of removals. *@
-        if (removals.Count == 1)
+    </div>
+    <div class="column">
+        @* If there is an order associated with the user, display it. *@
+        @if (mostRecentOrder != null &&
+             mostRecentOrder.ContentsToItemList() != null)
         {
-            <p>
-                An item was removed from your order
-                because it was deleted from the menu.
-            </p>
-        }
-        else
-        {
-            <p>
-                @removals.Count items were removed from your order
-                because they were deleted from the menu.
-            </p>
-        }
-    }
-    <h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
+            <h2>Order details</h2>
+            <table border=1 frame=void rules=rows>
+                <tr>
+                    <td>Item name</td>
+                    <td>Price</td>
+                </tr>
+                @foreach (MenuItem item in mostRecentOrder.ContentsToItemList())
+                {
+                    @* If the item should be removed,
+                       then add it to the chopping block. *@
+                    if (item.Price == null && removals.ContainsKey(item))
+                    { removals[item]++; }
+                    else if (item.Price == null)
+                    { removals.Add(item, 1); }
 
-    @* The button to submit. *@
-    @Html.ActionLink("Pay & Submit", "Submit", "Menu")
-}
-
-<div />
-
-@* Once users are implemented, provide the status of submitted orders here. *@
-@* Since the last one will always be the current order, look at all others. *@
-@if (allOrders.Count - 1 > 0)
-{
-    <h2>Submitted orders:</h2>
-    <table>
-        <tr>
-            <td>Order #</td>
-            <td>Contents</td>
-            <td>Status</td>
-        </tr>
-        @for (int i = 0; i < allOrders.Count - 1; i++)
-        {
-            var contents = allOrders[i].ContentsToItemList();
-            <tr>
-                <td>@allOrders[i].OrderID</td>
-                <td>
-                    @contents[0].Name
-                    @for (int j = 1; j < contents.Count; j++)
+                    @* Otherwise, print its information. *@
+                    else
                     {
-                        <br>@contents[j].Name
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                $@(((int) item.Price / 100.0).ToString("0.00"))
+                            </td>
+                            <td>
+                                @Html.ActionLink("Remove", "RemoveFromOrder",
+                                                 "Menu",
+                                                 new { IDtoRemove =
+                                                       item.ItemID }, null)
+                            </td>
+                        </tr>
                     }
-                </td>
-                <td>@((OrderStatus) allOrders[i].OrderStatus)</td>
-            </tr>
-        }
-    </table>
-}
+                }
+            </table>
 
-@* Define the cell size. *@
+            @* If something is removable, remove it and let the user know. *@
+            if (removals.Count >= 1)
+            {
+                foreach (MenuItem toRemove in removals.Keys)
+                { mostRecentOrder.RemoveMultipleItems(toRemove, removals[toRemove]); }
+                db.SaveChanges();
+
+                @* Print the correct message depending on the number of removals. *@
+                if (removals.Count == 1)
+                {
+                    <p>
+                        An item was removed from your order
+                        because it was deleted from the menu.
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        @removals.Count items were removed from your order
+                        because they were deleted from the menu.
+                    </p>
+                }
+            }
+            <h3>Total cost: $@mostRecentOrder.CalcFinalCost()</h3>
+
+            @* The button to submit. *@
+            @Html.ActionLink("Pay & Submit", "Submit", "Menu")
+        }
+
+        @* Provide the status of submitted orders here.
+           Since the last one will always be the current order,
+           look at all others. *@
+        @if (allOrders.Count - 1 > 0)
+        {
+            <h2>Submitted orders:</h2>
+            <table border=1 frame=void rules=rows>
+                <tr>
+                    <td>Order #</td>
+                    <td>Contents</td>
+                    <td>Status</td>
+                </tr>
+                @* Print in reverse order. Most recently submitted first. *@
+                @for (int i = allOrders.Count - 2; i >= 0 ; i--)
+                {
+                    var contents = allOrders[i].ContentsToItemList();
+                    <tr>
+                        <td>@allOrders[i].OrderID</td>
+                        <td>
+                            @contents[0].Name
+                            @for (int j = 1; j < contents.Count; j++)
+                            {
+                                <br>@contents[j].Name
+                            }
+                        </td>
+                        <td>@((OrderStatus) allOrders[i].OrderStatus)</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</div>
+
+@* Define the cell size and main columns. *@
 <style type="text/css">
     td {
         width: 200px;
+        word-wrap: break-word;
+    }
+
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
     }
 </style>
