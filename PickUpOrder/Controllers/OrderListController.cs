@@ -1,6 +1,7 @@
 ﻿// OrderListController - A controller that prepares all OrderList pages.
 
 using PickUpOrder.Models;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace PickUpOrder.Controllers
@@ -10,6 +11,14 @@ namespace PickUpOrder.Controllers
         // OrderList - Render the list without making any changes.
         public ActionResult OrderList()
         {
+            // If the user is not logged in or has inappropriate permissions,
+            // redirect to the appropriate page.
+            if (!Request.Cookies.AllKeys.Contains("UserID"))
+                return RedirectToAction("Login", "Login");
+            if(Account.GetCookieType(Request.Cookies["UserID"].Value)
+               < AccountType.Employee)
+                return RedirectToAction("Menu", "Menu");
+
             return View();
         }
 
@@ -18,6 +27,14 @@ namespace PickUpOrder.Controllers
         [HttpPost]
         public ActionResult OrderList(Order updatedOrder)
         {
+            // If the user is not logged in or has inappropriate permissions,
+            // redirect to the appropriate page.
+            if (!Request.Cookies.AllKeys.Contains("UserID"))
+                return RedirectToAction("Login", "Login");
+            if (Account.GetCookieType(Request.Cookies["UserID"].Value)
+               < AccountType.Employee)
+                return RedirectToAction("Menu", "Menu");
+
             var db = new PickUpOrderDBEntities2();
             db.Orders.Find(updatedOrder.OrderID).OrderStatus
                 = updatedOrder.OrderStatus;
@@ -30,6 +47,14 @@ namespace PickUpOrder.Controllers
         [HttpGet]
         public ActionResult ChangeOrderStatus(int toChange)
         {
+            // If the user is not logged in or has inappropriate permissions,
+            // redirect to the appropriate page.
+            if (!Request.Cookies.AllKeys.Contains("UserID"))
+                return RedirectToAction("Login", "Login");
+            if (Account.GetCookieType(Request.Cookies["UserID"].Value)
+               < AccountType.Employee)
+                return RedirectToAction("Menu", "Menu");
+
             var db = new PickUpOrderDBEntities2();
             return View(db.Orders.Find(toChange));
         }

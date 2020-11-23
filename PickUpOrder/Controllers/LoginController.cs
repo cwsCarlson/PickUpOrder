@@ -14,6 +14,22 @@ namespace PickUpOrder.Controllers
         // Login (GET) - Display the standard login.
         public ActionResult Login()
         {
+            // If the user is logged in, redirect to the appropriate page.
+            if (Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                var type =
+                    Account.GetCookieType(Request.Cookies["UserID"].Value);
+                switch (type)
+                {
+                    case AccountType.Employee:
+                        return Redirect("/OrderList/OrderList");
+                    case AccountType.Manager:
+                        return Redirect("/MenuEditor/MenuEditor");
+                    default:
+                        return Redirect("/Menu/Menu");
+                }
+            }
+
             return View(0);
         }
 
@@ -32,6 +48,22 @@ namespace PickUpOrder.Controllers
         // ProcessLogin (POST) - Get and process login credentials.
         public ActionResult ProcessLogin()
         {
+            // If the user is logged in, redirect to the appropriate page.
+            if (Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                var type =
+                    Account.GetCookieType(Request.Cookies["UserID"].Value);
+                switch (type)
+                {
+                    case AccountType.Employee:
+                        return Redirect("/OrderList/OrderList");
+                    case AccountType.Manager:
+                        return Redirect("/MenuEditor/MenuEditor");
+                    default:
+                        return Redirect("/Menu/Menu");
+                }
+            }
+
             // Get the email and password.
             var email = Request.Form["email"];
             var passwd = Request.Form["passwd"];

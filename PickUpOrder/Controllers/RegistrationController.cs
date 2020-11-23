@@ -13,18 +13,66 @@ namespace PickUpOrder.Controllers
         // Registration (GET) - Display the standard registration page.
         public ActionResult Registration()
         {
+            // If the user is logged in, redirect to the appropriate page.
+            if (Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                var type =
+                    Account.GetCookieType(Request.Cookies["UserID"].Value);
+                switch (type)
+                {
+                    case AccountType.Employee:
+                        return Redirect("/OrderList/OrderList");
+                    case AccountType.Manager:
+                        return Redirect("/MenuEditor/MenuEditor");
+                    default:
+                        return Redirect("/Menu/Menu");
+                }
+            }
+
             return View(0);
         }
 
         // SecretRegistration (GET) - Display the employee registration page.
         public ActionResult SecretRegistration()
         {
+            // If the user is logged in, redirect to the appropriate page.
+            if (Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                var type =
+                    Account.GetCookieType(Request.Cookies["UserID"].Value);
+                switch (type)
+                {
+                    case AccountType.Employee:
+                        return Redirect("/OrderList/OrderList");
+                    case AccountType.Manager:
+                        return Redirect("/MenuEditor/MenuEditor");
+                    default:
+                        return Redirect("/Menu/Menu");
+                }
+            }
+
             return View(0);
         }
 
         // SecretRegistration (GET) - Display the employee registration page.
         public ActionResult SuperSecretRegistration()
         {
+            // If the user is logged in, redirect to the appropriate page.
+            if (Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                var type =
+                    Account.GetCookieType(Request.Cookies["UserID"].Value);
+                switch (type)
+                {
+                    case AccountType.Employee:
+                        return Redirect("/OrderList/OrderList");
+                    case AccountType.Manager:
+                        return Redirect("/MenuEditor/MenuEditor");
+                    default:
+                        return Redirect("/Menu/Menu");
+                }
+            }
+
             return View(0);
         }
 
@@ -33,6 +81,22 @@ namespace PickUpOrder.Controllers
         //                       information.
         public ActionResult Registration(AccountType type)
         {
+            // If the user is logged in, redirect to the appropriate page.
+            if (Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                type =
+                    Account.GetCookieType(Request.Cookies["UserID"].Value);
+                switch (type)
+                {
+                    case AccountType.Employee:
+                        return Redirect("/OrderList/OrderList");
+                    case AccountType.Manager:
+                        return Redirect("/MenuEditor/MenuEditor");
+                    default:
+                        return Redirect("/Menu/Menu");
+                }
+            }
+
             // Get the form information.
             var email = Request.Form["email"];
             var passwd = Request.Form["passwd"];
