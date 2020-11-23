@@ -80,15 +80,19 @@ namespace PickUpOrder.Models
                     OrderContents = null;
                 else
                 {
-                    // If this is the first ID, remove it and the trailing comma.
+                    // If this is the first ID, remove it
+                    // and its trailing comma.
                     if (itemIDs[0] == removeID)
-                        OrderContents = OrderContents.Substring(removeID.Length + 1);
+                        OrderContents =
+                            OrderContents.Substring(removeID.Length + 1);
                     else
                     {
                         // Otherwise, remove it and the leading comma.
                         int startIdx = OrderContents.IndexOf(removeID);
-                        OrderContents = OrderContents.Substring(0, startIdx - 1)
-                            + OrderContents.Substring(startIdx + removeID.Length);
+                        OrderContents = OrderContents.Substring(0,
+                                                                startIdx - 1)
+                            + OrderContents.Substring(startIdx +
+                                                      removeID.Length);
                     }
                 }
 

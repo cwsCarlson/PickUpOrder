@@ -28,6 +28,7 @@
         db.SaveChanges();
         mostRecentOrder = db.Orders.Find(curUser.MostRecentOrder());
     }
+    var allOrders = curUser.OrdersToList();
 }
 
 <p>Orders: @curUser.Orders</p>
@@ -150,7 +151,36 @@
     <h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
 }
 
+<div/>
+
 @* Once users are implemented, provide the status of submitted orders here. *@
+@* Since the last one will always be the current order, look at all others. *@
+@if (allOrders.Count - 1 > 0)
+{
+    <h2>Submitted orders:</h2>
+    <table>
+        <tr>
+            <td>Order #</td>
+            <td>Contents</td>
+            <td>Status</td>
+        </tr>
+        @for (int i = 0; i < allOrders.Count - 1; i++)
+        {
+            var contents = allOrders[i].ContentsToItemList();
+            <tr>
+                <td>@allOrders[i].OrderID</td>
+                <td> 
+                    @contents[0].Name
+                    @for (int j = 1; j < contents.Count; j++)
+                    {
+                        <br>@contents[j].Name
+                    }
+                </td>
+                <td>@((OrderStatus) allOrders[i].OrderStatus)</td>
+            </tr>
+        }
+    </table>
+}
 
 @* Define the cell size. *@
 <style type="text/css">

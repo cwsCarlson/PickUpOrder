@@ -2,6 +2,7 @@
 //                The object itself is defined in DatabaseModel.
 
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -81,6 +82,30 @@ namespace PickUpOrder.Models
                 return int.Parse(Orders);
             else
                 return int.Parse(Orders.Substring(lastComma + 1));
+        }
+
+        // OrdersToList - Return a list of the orders referenced by
+        //                the order string.
+        public List<Order> OrdersToList()
+        {
+            if (Orders == null)
+                return null;
+
+            // Establish a database connection.
+            var db = new PickUpOrderDBEntities2();
+
+            // Create the list to be returned.
+            var orderObjects = new List<Order>();
+
+            // Split the ID string. For each ID value,
+            // get the corresponding order and add it to orderObjects.
+            var orderIDs = Orders.Split(',');
+            foreach (string order in orderIDs)
+            {
+                int id = int.Parse(order);
+                orderObjects.Add(db.Orders.Find(id));
+            }
+            return orderObjects;
         }
     }
 }
