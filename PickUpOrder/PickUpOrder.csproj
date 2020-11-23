@@ -133,6 +133,7 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\MenuEditorController.cs" />
     <Compile Include="Controllers\OrderListController.cs" />
+    <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -232,6 +233,7 @@
     <Content Include="Views\MenuEditor\DeleteCategory.cshtml" />
     <Content Include="Views\MenuEditor\NullifyItem.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Registration\Registration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

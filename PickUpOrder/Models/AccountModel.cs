@@ -1,4 +1,4 @@
-﻿// AccountModel - the partial class of Order, which contains all methods.
+﻿// AccountModel - The partial class of Order, which contains all methods.
 //                The object itself is defined in DatabaseModel.
 
 using System;
@@ -17,22 +17,36 @@ namespace PickUpOrder.Models
 
     public partial class Account
     {
+        // Default Constructor - This is here because Linq methods
+        //                       will protest if it isn't.
+        public Account()
+        {
+
+        }
+
+        // Constructor - Add a user account with the given information.
+        //               UserID will be handled when the user
+        //               is added to the database.
+        public Account(string email, string passwd, AccountType type)
+        {
+            Email = email;
+            PasswordHash = CalculateHash(passwd);
+            Type = (int) type;
+        }
+
+        // CalculateHash - Applies the hash calculation to input str.
+        private string CalculateHash(string str)
+        {
+            var encoded = Encoding.UTF8.GetBytes(str);
+            var hashed = SHA256.Create().ComputeHash(encoded);
+            return Convert.ToBase64String(hashed);
+        }
+
         // CheckPassword - Return true if the hash of toCheck is equivalent
         //                 to the value of PasswordHash.
         public bool CheckPassword(string toCheck)
         {
-            // Calculate the hash of toCheck.
-            var shaInstance = SHA256.Create();
-            var encoded = Encoding.UTF8.GetBytes(toCheck);
-            var hashed = shaInstance.ComputeHash(encoded);
-            var hashedStr = Convert.ToBase64String(hashed);
-
-            System.Diagnostics.Debug.WriteLine("Checking hash " + hashedStr);
-            System.Diagnostics.Debug.WriteLine("      against " + PasswordHash);
-            System.Diagnostics.Debug.WriteLine("Exact difference is" + PasswordHash.CompareTo(hashedStr));
-
-            // Return whether this hash is the same.
-            return PasswordHash.Equals(hashedStr);
+            return PasswordHash.Equals(CalculateHash(toCheck));
         }
     }
 }

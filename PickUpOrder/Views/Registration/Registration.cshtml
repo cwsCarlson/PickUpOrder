@@ -1,0 +1,59 @@
+﻿@* Registration - Allows customers to register.
+    Anyone using this page is automatically
+    given the customer type. *@
+
+@model int
+@using PickUpOrder.Models
+@{
+    ViewBag.Title = "Registration";
+}
+
+<h2>Registration</h2>
+
+<p>
+    Note: This page is for customer registration only.<br/>
+    If you are an employee, please contact your manager
+    for registration instructions.
+</p>
+
+@* If the model's ID indicates an error in a previous submission,
+    print the appropriate error. *@
+@switch (Model)
+{
+    case -1:
+        {
+        <b>An invalid email address was provided.</b>
+            break;
+        }
+    case -2:
+        {
+        <b>
+            The email address provided is already associated
+            with another user.
+        </b>
+            break;
+        }
+    case -3:
+        {
+        <b>The provided passwords do not match.</b>
+            break;
+        }
+}
+
+@* A form that gets the user's desired login information.*@
+@using (Html.BeginForm("Registration", "Registration",
+                       new { type = AccountType.Customer}, FormMethod.Post))
+{
+    <h3>Email Address</h3>
+    @Html.TextBox("email", "", new { required = "required" })
+
+    <h3>Password</h3>
+    @Html.Password("passwd", "", new { id = "password",
+                                       Textmode = "Password" })
+
+    <h3>Confirm Password</h3>
+    @Html.Password("passwd2", "", new { id = "password",
+                                        Textmode = "Password" })
+    <br />
+    <input type="submit" value="Log In" />
+}
