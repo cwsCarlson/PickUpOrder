@@ -129,7 +129,6 @@ namespace PickUpOrder.Controllers
 			var itemStr = db.Orders.Find(1).OrderContents.Split(',');
 			ViewBag.instances = itemStr.Count(f =>
 			                                  f == toRemove.ItemID.ToString());
-			//System.Diagnostics.Debug.WriteLine((int) ViewBag.instances);
 
 			// This should never be called; it's just for safety.
 			// If the item isn't in the order, redirect to the main page.
@@ -139,5 +138,29 @@ namespace PickUpOrder.Controllers
 			ViewBag.toRemove = toRemove;
 			return View();
 		}
+
+		// Submit (GET) - Submit the user's current order.
+		[HttpGet]
+		public ActionResult Submit()
+        {
+			// If the user is not logged in, redirect to the login page.
+			if (!Request.Cookies.AllKeys.Contains("UserID"))
+				return RedirectToAction("Login", "Login");
+
+			// Open the database connection.
+			var db = new PickUpOrderDBEntities2();
+
+			// Get the user.
+			var curUser =
+				db.Accounts.Find(int.Parse(Request.Cookies["UserID"].Value));
+
+			// Set their most recent order to "Received".
+			var toSubmit = curUser.MostRecentOrder();
+			db.Orders.Find(toSubmit).OrderStatus = (int) OrderStatus.Received;
+			db.SaveChanges();
+
+			// Return the view.
+			return View("Menu", db.MenuItems);
+        }
 	}
 }

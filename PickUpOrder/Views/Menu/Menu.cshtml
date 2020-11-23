@@ -22,7 +22,7 @@
     // If there isn't one or it is submitted, add a new one.
     var mostRecentOrder = db.Orders.Find(curUser.MostRecentOrder());
     if (mostRecentOrder == null ||
-        mostRecentOrder.OrderStatus != (int) OrderStatus.NotSubmitted)
+        mostRecentOrder.OrderStatus != (int)OrderStatus.NotSubmitted)
     {
         curUser.AddNewOrder();
         db.SaveChanges();
@@ -30,8 +30,6 @@
     }
     var allOrders = curUser.OrdersToList();
 }
-
-<p>Orders: @curUser.Orders</p>
 
 @* Print the header. *@
 <h2>Welcome to the menu.</h2>
@@ -98,9 +96,6 @@
 @if (mostRecentOrder != null && mostRecentOrder.ContentsToItemList() != null)
 {
     <h2>Order details</h2>
-    @* Print the contents string. *@
-    @* FIXME: Remove once testing begins. *@
-    <h2>Contents: @mostRecentOrder.OrderContents</h2>
     <table>
         @foreach (MenuItem item in mostRecentOrder.ContentsToItemList())
         {
@@ -134,7 +129,7 @@
 
         @* Print the correct message depending on the number of removals. *@
         if (removals.Count == 1)
-        { 
+        {
             <p>
                 An item was removed from your order
                 because it was deleted from the menu.
@@ -149,9 +144,12 @@
         }
     }
     <h2>Total cost: $@mostRecentOrder.CalcFinalCost()</h2>
+
+    @* The button to submit. *@
+    @Html.ActionLink("Pay & Submit", "Submit", "Menu")
 }
 
-<div/>
+<div />
 
 @* Once users are implemented, provide the status of submitted orders here. *@
 @* Since the last one will always be the current order, look at all others. *@
@@ -169,7 +167,7 @@
             var contents = allOrders[i].ContentsToItemList();
             <tr>
                 <td>@allOrders[i].OrderID</td>
-                <td> 
+                <td>
                     @contents[0].Name
                     @for (int j = 1; j < contents.Count; j++)
                     {
