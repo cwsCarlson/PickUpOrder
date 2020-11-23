@@ -22,6 +22,12 @@ namespace PickUpOrder.Controllers
             return View(0);
         }
 
+        // SecretRegistration (GET) - Display the employee registration page.
+        public ActionResult SuperSecretRegistration()
+        {
+            return View(0);
+        }
+
         [HttpPost]
         // Registration (POST) - Get and process registration
         //                       information.
@@ -42,6 +48,8 @@ namespace PickUpOrder.Controllers
                 {
                     case AccountType.Employee:
                         return View("SecretRegistration", -1);
+                    case AccountType.Manager:
+                        return View("SuperSecretRegistration", -1);
                     default:
                         return View(-1);
                 }
@@ -57,6 +65,8 @@ namespace PickUpOrder.Controllers
                 {
                     case AccountType.Employee:
                         return View("SecretRegistration", -2);
+                    case AccountType.Manager:
+                        return View("SuperSecretRegistration", -2);
                     default:
                         return View(-2);
                 }
@@ -70,6 +80,8 @@ namespace PickUpOrder.Controllers
                 {
                     case AccountType.Employee:
                         return View("SecretRegistration", -3);
+                    case AccountType.Manager:
+                        return View("SuperSecretRegistration", -3);
                     default:
                         return View(-3);
                 }
