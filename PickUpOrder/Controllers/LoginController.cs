@@ -18,33 +18,35 @@ namespace PickUpOrder.Controllers
         }
 
         [HttpPost]
-        // Hash (POST) - Display the password hash.
-        //               FIXME: This will be removed later.
+        // Login (POST) - Get and process login credentials.
         public ActionResult Login(Account provided)
         {
-            System.Diagnostics.Debug.WriteLine("Email:" + provided.Email);
-            System.Diagnostics.Debug.WriteLine("Passwd:" + provided.PasswordHash);
+            // Get the email and password.
+            var emailProvided = provided.Email;
+            var passwdProvided = Request.Form["passwd"];
+
+            System.Diagnostics.Debug.WriteLine("Email:" + emailProvided);
+            System.Diagnostics.Debug.WriteLine("Passwd:" + passwdProvided);
             // Attempt to convert the provided name to an email address
             // and return an error if this is not possible.
             try
-            { var address = new MailAddress(provided.Email); }
+            { var address = new MailAddress(emailProvided); }
             catch (FormatException)
-            { return View(new Account { UserID = -1 }); }
+            { return View("InvalidEmail"); }
 
             // Attempt to find the email address in the database
             // and return an error if this is not possible.
             var db = new PickUpOrderDBEntities2();
-            Account match;
             var matches =
-                db.Accounts.Where(e => e.Email.Equals(provided.Email));            
-            match = matches.FirstOrDefault();
+                db.Accounts.Where(e => e.Email.Equals(emailProvided));            
+            var match = matches.FirstOrDefault();
             if (match == null)
-                return View(new Account { UserID = -2 });
+                return View("UnknownEmail");
 
             // Check whether the password is correct
             // and return an error if it is not.
-            if (!match.CheckPassword(provided.PasswordHash))
-                return View(new Account { UserID = -3 });
+            if (!match.CheckPassword(passwdProvided))
+                return View("IncorrectPassword");
 
             // If this is all correct, redirect to the appropriate page.
             // FIXME: Add redirection based on account type later.

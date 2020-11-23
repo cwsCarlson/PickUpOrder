@@ -9,16 +9,16 @@
 <h2>Login</h2>
 
 @* If the model's ID indicates an error in a previous submission,
-   print the appropriate error. *@
-@if(Model.UserID == -1)
+    print the appropriate error. *@
+@if (Model.UserID == -1)
 {
     <b>An invalid email address was provided.</b>
 }
-@if(Model.UserID == -2)
+@if (Model.UserID == -2)
 {
     <b>The email address provided was not in our records.</b>
 }
-@if(Model.UserID == -3)
+@if (Model.UserID == -3)
 {
     <b>The password provided did not match our records.</b>
 }
@@ -30,7 +30,7 @@
     @Html.TextBoxFor(m => m.Email, new { required = "required" })
 
     <h3>Password</h3>
-    @Html.TextBoxFor(m => m.PasswordHash, new { required = "required" })
+    @Html.Password("passwd", "", new { id = "password", Textmode = "Password" })
     <br/>
     <input type="submit" value="Log In" />
 }
