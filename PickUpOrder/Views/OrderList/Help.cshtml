@@ -7,9 +7,9 @@
 <h2>Help</h2>
 @Html.ActionLink("Back to previous page", null, null, null,
                  new { href = Request.UrlReferrer })
-<br/>
+<br />
 The order list displays all orders that have been submitted but not picked up.
-<br/>
+<br />
 Orders are listed in the order in which they were recieved.
 <h3>Changing order status</h3>
 <ul>
@@ -19,6 +19,17 @@ Orders are listed in the order in which they were recieved.
     </li>
     <li>Select the "Update Status" button.</li>
 </ul>
+Statuses will update whenever the page is refreshed.
+<br />
+You can typically use your browser's refresh button to do this.
+<br />
+<b>
+    However, if you refresh and receive a message asking whether
+    to resubmit the form, <i>please do not select yes.</i>
+</b>
+<br />
+Instead, use the "Refresh" button above the order table.
 <h3>WARNING!</h3>
-Once an order has been set as "Picked Up", it will be removed from the list.<br/>
+Once an order has been set as "Picked Up", it will be removed from the list.
+<br />
 <b>DO NOT</b> select this status if the order is not yet complete.

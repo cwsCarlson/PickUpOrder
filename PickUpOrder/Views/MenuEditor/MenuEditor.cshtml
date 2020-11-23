@@ -8,7 +8,7 @@
 
 @* Define variables used by the rest of the page. *@
 @{
-    ViewBag.Title = "MenuEditor";
+    ViewBag.Title = "Menu Editor";
     var db = new PickUpOrderDBEntities2();
     var removals = new Dictionary<MenuItem, int>();
 
@@ -20,8 +20,8 @@
 }
 
 @* Print the header. *@
-<h2>Welcome to the menu editor.</h2>
-@Html.ActionLink("Refresh/Exit Search", "Menu", "Menu")
+<h2>Menu Editor</h2>
+<h5>@Html.ActionLink("Help", "Help", "MenuEditor")</h5>
 
 @* Search function. *@
 @using (Html.BeginForm("Search", "Menu", FormMethod.Post))
@@ -34,11 +34,14 @@
                        "Filter by category...")
     <input type="submit" value="Search" />
 }
+@Html.ActionLink("Exit Search", "Menu", "Menu")<br/>
 
 @* Links to add categories and items. *@
-@Html.ActionLink("Add New Item", "AddItem", "MenuEditor")
-&#9; | &#9;
-@Html.ActionLink("Add New Category", "AddCategory", "MenuEditor")
+<h4>
+    @Html.ActionLink("Add new item", "AddItem", "MenuEditor")
+    &#9; | &#9;
+    @Html.ActionLink("Add new category", "AddCategory", "MenuEditor")
+</h4>
 
 @* Display every item in the menu in their respective category. *@
 @for (int i = 0; i < menuContent.Count; i++)
@@ -49,17 +52,17 @@
 
     @* Print the category name and links to modify it. *@
     <h3>@db.Categories.Find(menuContent[i].Category).CategoryName</h3>
-    <h5>
+    <h4>
         @Html.ActionLink("Rename", "EditCategory", "MenuEditor",
-                         new { IDtoModify = (int) menuContent[i].Category },
+                         new { IDtoModify = (int)menuContent[i].Category },
                          null)
         &#9; | &#9;
         @Html.ActionLink("Delete", "DeleteCategory", "MenuEditor",
                          new { IDtoDelete = (int)menuContent[i].Category },
                          null)
-    </h5>
+    </h4>
 
-    <table>
+    <table border=1 frame=void rules=rows>
         @* Print the table header. *@
         <thread>
             <tr>
@@ -73,7 +76,10 @@
                 Invalid items were pushed to the start of the list
                 since they had null categories. *@
             <tr>
-                <td>@menuContent[i].Name</td>
+                <td>
+                    @menuContent[i].Name<br/>
+                    @menuContent[i].Description
+                </td>
                 <td>
                     $@(((int)menuContent[i].Price / 100.0).ToString("0.00"))
                 </td>
@@ -87,9 +93,6 @@
                                      new { IDtoDelete = menuContent[i].ItemID },
                                      null)
                 </td>
-            </tr>
-            <tr>
-                <td>@menuContent[i].Description</td>
             </tr>
 
             @* If this is the end of a category, exit this loop

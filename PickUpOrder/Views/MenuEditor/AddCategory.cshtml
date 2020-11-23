@@ -6,15 +6,16 @@
     ViewBag.Title = "Add Category";
 }
 
+<h2>Creating a new category...</h2>
+<h5>@Html.ActionLink("Help", "Help", "MenuEditor")</h5>
+
 @* A link to return without saving changes. *@
 @Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
-
-<h2>Creating a new category...</h2>
 
 @using (Html.BeginForm("AddCategory", "MenuEditor", FormMethod.Post))
 {
     <h3>Name</h3>
     @Html.TextBoxFor(m => m.CategoryName, new { required = "required" })
-    <br/>
+    <br />
     <input type="submit" value="Add to menu" />
 }

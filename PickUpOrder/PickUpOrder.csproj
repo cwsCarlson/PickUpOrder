@@ -249,6 +249,7 @@
     <Content Include="Views\Login\Help.cshtml" />
     <Content Include="Views\Registration\Help.cshtml" />
     <Content Include="Views\OrderList\Help.cshtml" />
+    <Content Include="Views\MenuEditor\Help.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

@@ -6,10 +6,11 @@
     ViewBag.Title = "Edit Item";
 }
 
+<h2>Editing @Model.Name...</h2>
+<h5>@Html.ActionLink("Help", "Help", "MenuEditor")</h5>
+
 @* A link to return without saving changes. *@
 @Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
-
-<h2>Editing @Model.Name...</h2>
 
 @using (Html.BeginForm("EditItem", "MenuEditor", FormMethod.Post))
 {
@@ -28,16 +29,26 @@
     <h3>Price</h3>
     <p>
         $@Html.TextBox("dollars", Model.Price / 100,
-                       new { required = "required", @type = "number",
-                             @min = "0" })
+                      new
+                           {
+                               required = "required",
+                               @type = "number",
+                            @min = "0"
+                           })
         .@Html.TextBox("cents", Model.Price % 100,
-                       new { required = "required", @type = "number",
-                             @min = "0", @max = "99" })
+                      new
+                           {
+                               required = "required",
+                               @type = "number",
+                            @min = "0",
+                               @max = "99"
+                           })
     </p>
 
     <h3>Category</h3>
     @Html.DropDownListFor(m => m.Category, Category.GetCategoryDropdown(),
                           "Pick a category", new { required = "required" })
-    <br/><br/>
+    <br />
+    <br />
     <input type="submit" value="Apply edits" />
 }

@@ -6,7 +6,7 @@
 
 <h2>Help</h2>
 @Html.ActionLink("Back to previous page", null, null, null,
-                 new { href = Request.UrlReferrer })
+                 new { href = Request.UrlReferrer })<br/>
 
 The menu page enables you to modify your current order
 and view the status of orders you have submitted.
@@ -64,12 +64,20 @@ The status of all orders will appear in the "Submitted Orders" table.
 <br />
 The statuses are listed below:
 <ul>
-    <li>Recieved - Your order has been received</li>
+    <li>Recieved - Your order has been sent to the restaurant.</li>
+    <li>
+        Preparing - The restaurant staff has begun to prepare your order.
+    </li>
+    <li>
+        Done - The order has been completed by restaurant staff
+        and can be picked up at the restaurant.
+    </li>
+    <li>PickedUp - You have picked up the order.</li>
 </ul>
 Statuses will update whenever the page is refreshed.
-<br />
+<br/>
 You can typically use your browser's refresh button to do this.
-
+<br/>
 <b>
     However, if you refresh and receive a message asking whether
     to resubmit the form, <i>please do not select yes.</i>

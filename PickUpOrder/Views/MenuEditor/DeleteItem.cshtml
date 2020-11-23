@@ -6,18 +6,24 @@
     ViewBag.Title = "Add Item";
 }
 
+<h2>Deleting @(Model.Name)...</h2>
+<h5>@Html.ActionLink("Help", "Help", "MenuEditor")</h5>
+
 @* A link to return without saving changes. *@
 @Html.ActionLink("Leave without deleting", "MenuEditor", "MenuEditor")
 
 <h2>WARNING!</h2>
-You are deleting <b>@Model.Name</b> from the menu.<br/>
+You are deleting <b>@Model.Name</b> from the menu.
+<br />
 <b><i>This action is irreversible, and the item cannot be recovered.</i></b>
-<br/><hr/>
+<br />
+<hr />
 Please note that this will also remove the item from any customer orders
 that have been started but not submitted.
-<br/>
+<br />
 However, the item will remain in all orders that have been submitted.
-<br/><hr/>
+<br />
+<hr />
 <b>
     <u>
         @Html.ActionLink("Delete", "NullifyItem", "MenuEditor", Model, null)
