@@ -69,8 +69,15 @@ namespace PickUpOrder.Controllers
             Response.Cookies["UserID"].Secure = true;
 
             // Redirect to the appropriate page.
-            // FIXME: Add redirection based on account type later.
-            return Redirect("/Menu/Menu");
+            switch ((AccountType) match.Type)
+            {
+                case AccountType.Employee:
+                    return Redirect("/OrderList/OrderList");
+                case AccountType.Manager:
+                    return Redirect("/MenuEditor/MenuEditor");
+                default:
+                    return Redirect("/Menu/Menu");
+            }
         }
     }
 }
