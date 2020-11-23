@@ -56,6 +56,17 @@ namespace PickUpOrder.Controllers
 			return View(db.MenuItems);
 		}
 
+		// Help - Render the help page.
+		public ActionResult Help()
+		{
+			// If the user is not logged in, redirect to the login page.
+			if (!Request.Cookies.AllKeys.Contains("UserID"))
+				return RedirectToAction("Login", "Login");
+
+			// Display the view.
+			return View();
+		}
+
 		// Search - If a search query was made, generate a page
 		//          with only the applicable items.
 		[HttpPost]
