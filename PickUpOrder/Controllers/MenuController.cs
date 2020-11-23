@@ -9,9 +9,12 @@ namespace PickUpOrder.Controllers
 	public class MenuController : Controller
 	{
 		// Menu - Render the list without making any changes.
-		// FIXME: Pass user value into this?
 		public ActionResult Menu()
 		{
+			// If the user is not logged in, redirect to the login page.
+			if (!Request.Cookies.AllKeys.Contains("UserID"))
+				return RedirectToAction("Login", "Login");
+
 			// Open a database connection.
 			var db = new PickUpOrderDBEntities2();
 
