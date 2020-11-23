@@ -15,9 +15,22 @@
     // Sort by category, then convert to a list to ease iteration.
     var menuContent = Model.OrderBy(e => e.Category).ToList();
 
-    // This is temporary until the user DB is implemented.
-    var mostRecentOrder = db.Orders.Find(1);
+    // Get the current user cookie and use that to get their order list.
+    var curUser = db.Accounts.Find(int.Parse(Request.Cookies["UserID"].Value));
+
+    // Get the account's most recent order if it exists.
+    // If there isn't one or it is submitted, add a new one.
+    var mostRecentOrder = db.Orders.Find(curUser.MostRecentOrder());
+    if (mostRecentOrder == null ||
+        mostRecentOrder.OrderStatus != (int) OrderStatus.NotSubmitted)
+    {
+        curUser.AddNewOrder();
+        db.SaveChanges();
+        mostRecentOrder = db.Orders.Find(curUser.MostRecentOrder());
+    }
 }
+
+<p>Orders: @curUser.Orders</p>
 
 @* Print the header. *@
 <h2>Welcome to the menu.</h2>
@@ -68,7 +81,7 @@
                 </td>
             </tr>
             <tr>
-                <td>@menuContent[i].Description</td>
+                <td colspan="3">@menuContent[i].Description</td>
             </tr>
 
             @* If this is the end of a category, exit this loop
@@ -81,7 +94,6 @@
 }
 
 @* If there is an order associated with the user, display it. *@
-@* FIXME: right now, it only ever checks row 1. *@
 @if (mostRecentOrder != null && mostRecentOrder.ContentsToItemList() != null)
 {
     <h2>Order details</h2>

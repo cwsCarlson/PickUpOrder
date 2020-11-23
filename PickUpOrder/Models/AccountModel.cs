@@ -34,6 +34,22 @@ namespace PickUpOrder.Models
             Type = (int) type;
         }
 
+        // AddNewOrder - Create a new order and add it to Orders.
+        public void AddNewOrder()
+        {
+            // Create the order.
+            var db = new PickUpOrderDBEntities2();
+            var newOrder = new Order();
+            db.Orders.Add(newOrder);
+            db.SaveChanges();
+
+            // If the order string is null, use this ID to start.
+            if (Orders == null)
+                Orders = newOrder.OrderID.ToString();
+            else
+                Orders += "," + newOrder.OrderID;
+        }
+
         // CalculateHash - Applies the hash calculation to input str.
         private string CalculateHash(string str)
         {
@@ -47,6 +63,24 @@ namespace PickUpOrder.Models
         public bool CheckPassword(string toCheck)
         {
             return PasswordHash.Equals(CalculateHash(toCheck));
+        }
+
+        // MostRecentOrder - Get the last order ID.
+        public int? MostRecentOrder()
+        {
+            // If there are no orders, don't return one.
+            if (Orders == null)
+                return null;
+
+            // Otherwise, get the last number in the order string.
+            int lastComma = Orders.LastIndexOf(',');
+
+            // If there isn't a comma, there's just one number.
+            // Otherwise, the number starts in the position after the comma.
+            if (lastComma == -1)
+                return int.Parse(Orders);
+            else
+                return int.Parse(Orders.Substring(lastComma + 1));
         }
     }
 }

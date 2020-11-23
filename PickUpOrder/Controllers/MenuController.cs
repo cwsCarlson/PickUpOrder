@@ -33,11 +33,19 @@ namespace PickUpOrder.Controllers
 			int qty = int.Parse(Request.Form["qty"]);
 			System.Diagnostics.Debug.WriteLine(toModify.Name + " x " + qty);
 
+			// Retrieve the order this is being added to.
+			var user =
+				db.Accounts.Find(int.Parse(Request.Cookies["UserID"].Value));
+			var targetOrder = db.Orders.Find(user.MostRecentOrder());
+			System.Diagnostics.Debug.WriteLine("User #" + user.UserID);
+			System.Diagnostics.Debug.WriteLine("Order #" + targetOrder.OrderID);
+
 			// Process the appropriate changes.
 			if (adding)		
-				db.Orders.Find(1).AddMultipleItems(toModify, qty);
+				targetOrder.AddMultipleItems(toModify, qty);
 			else
-				db.Orders.Find(1).RemoveMultipleItems(toModify, qty);
+				targetOrder.RemoveMultipleItems(toModify, qty);
+			db.Orders.Find(targetOrder.OrderID).OrderContents = targetOrder.OrderContents;
 			db.SaveChanges();
 
 			// Pass the untruncated menu.

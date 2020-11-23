@@ -4,6 +4,7 @@ using PickUpOrder.Models;
 using System;
 using System.Linq;
 using System.Net.Mail;
+using System.Web;
 using System.Web.Mvc;
 
 namespace PickUpOrder.Controllers
@@ -48,10 +49,15 @@ namespace PickUpOrder.Controllers
             if (!match.CheckPassword(passwd))
                 return View("Login", -3);
 
-            // If this is all correct, redirect to the appropriate page.
+            // Define a cookie for this user that expires in an hour.
+            // The XOR'd number was randomly selected
+            // and exists to hide the exact value.
+            Response.Cookies["UserID"].Value = match.UserID.ToString();
+            Response.Cookies["UserID"].Expires = DateTime.Now.AddHours(1);
+            Response.Cookies["UserID"].Secure = true;
+
+            // Redirect to the appropriate page.
             // FIXME: Add redirection based on account type later.
-            System.Diagnostics.Debug.WriteLine("Redirecting...");
-            var targetController = new MenuController();
             return Redirect("/Menu/Menu");
         }
     }
