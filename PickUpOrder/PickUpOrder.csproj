@@ -246,6 +246,8 @@
     <Content Include="Views\Registration\SecretRegistration.cshtml" />
     <Content Include="Views\Registration\SuperSecretRegistration.cshtml" />
     <Content Include="Views\Menu\Help.cshtml" />
+    <Content Include="Views\Login\Help.cshtml" />
+    <Content Include="Views\Registration\Help.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

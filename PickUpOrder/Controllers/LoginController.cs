@@ -44,6 +44,29 @@ namespace PickUpOrder.Controllers
             return View("Login", 0);
         }
 
+        // Help - Render the help page.
+        public ActionResult Help()
+        {
+            // If the user is logged in, redirect to the appropriate page.
+            if (Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                var type =
+                    Account.GetCookieType(Request.Cookies["UserID"].Value);
+                switch (type)
+                {
+                    case AccountType.Employee:
+                        return Redirect("/OrderList/OrderList");
+                    case AccountType.Manager:
+                        return Redirect("/MenuEditor/MenuEditor");
+                    default:
+                        return Redirect("/Menu/Menu");
+                }
+            }
+
+            // Display the view.
+            return View();
+        }
+
         [HttpPost]
         // ProcessLogin (POST) - Get and process login credentials.
         public ActionResult ProcessLogin()
