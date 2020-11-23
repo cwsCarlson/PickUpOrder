@@ -1,7 +1,6 @@
 ﻿@* Login - A form that takes credentials and attempts to retrieve a matching user. *@
 
-@using PickUpOrder.Models
-@model Account
+@model int
 @{
     ViewBag.Title = "Login";
 }
@@ -10,27 +9,36 @@
 
 @* If the model's ID indicates an error in a previous submission,
     print the appropriate error. *@
-@if (Model.UserID == -1)
+@switch (Model)
 {
-    <b>An invalid email address was provided.</b>
-}
-@if (Model.UserID == -2)
-{
-    <b>The email address provided was not in our records.</b>
-}
-@if (Model.UserID == -3)
-{
-    <b>The password provided did not match our records.</b>
+    case -1:
+    {
+        <b>An invalid email address was provided.</b>
+        break;
+    }
+    case -2:
+    {
+        <b>The email address provided was not in our records.</b>
+        break;
+    }
+    case -3:
+    {
+        <b>The password provided did not match our records.</b>
+        break;
+    }
 }
 
 @* A form that gets user's login information.*@
-@using (Html.BeginForm("Login", "Login", FormMethod.Post))
+@using (Html.BeginForm("ProcessLogin", "Login", FormMethod.Post))
 {
     <h3>Email Address</h3>
-    @Html.TextBoxFor(m => m.Email, new { required = "required" })
+    @Html.TextBox("email", "", new { required = "required" })
 
     <h3>Password</h3>
     @Html.Password("passwd", "", new { id = "password", Textmode = "Password" })
-    <br/>
+    <br />
     <input type="submit" value="Log In" />
 }
+
+@* A link to the customer registration page. *@
+Don't have an account? @(Html.ActionLink("Register here", "Registration", "Registration")).

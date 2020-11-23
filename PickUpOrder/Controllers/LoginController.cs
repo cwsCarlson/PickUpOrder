@@ -14,39 +14,39 @@ namespace PickUpOrder.Controllers
         // Login (GET) - Display the standard login.
         public ActionResult Login()
         {
-            return View(new Account());
+            return View(0);
         }
 
         [HttpPost]
-        // Login (POST) - Get and process login credentials.
-        public ActionResult Login(Account provided)
+        // ProcessLogin (POST) - Get and process login credentials.
+        public ActionResult ProcessLogin()
         {
             // Get the email and password.
-            var emailProvided = provided.Email;
-            var passwdProvided = Request.Form["passwd"];
+            var email = Request.Form["email"];
+            var passwd = Request.Form["passwd"];
 
-            System.Diagnostics.Debug.WriteLine("Email:" + emailProvided);
-            System.Diagnostics.Debug.WriteLine("Passwd:" + passwdProvided);
+            System.Diagnostics.Debug.WriteLine("Email:" + email);
+            System.Diagnostics.Debug.WriteLine("Passwd:" + passwd);
             // Attempt to convert the provided name to an email address
             // and return an error if this is not possible.
             try
-            { var address = new MailAddress(emailProvided); }
+            { var address = new MailAddress(email); }
             catch (FormatException)
-            { return View("InvalidEmail"); }
+            { return View("Login", -1); }
 
             // Attempt to find the email address in the database
             // and return an error if this is not possible.
             var db = new PickUpOrderDBEntities2();
             var matches =
-                db.Accounts.Where(e => e.Email.Equals(emailProvided));            
+                db.Accounts.Where(e => e.Email.Equals(email));
             var match = matches.FirstOrDefault();
             if (match == null)
-                return View("UnknownEmail");
+                return View("Login", -2);      
 
             // Check whether the password is correct
             // and return an error if it is not.
-            if (!match.CheckPassword(passwdProvided))
-                return View("IncorrectPassword");
+            if (!match.CheckPassword(passwd))
+                return View("Login", -3);
 
             // If this is all correct, redirect to the appropriate page.
             // FIXME: Add redirection based on account type later.
