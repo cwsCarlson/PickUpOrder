@@ -137,7 +137,8 @@ namespace PickUpOrder.Controllers
 
 			// Get the number of times toRemove appears in the order.
 			// This is the maximum value for the page's textbox.
-			var itemStr = db.Orders.Find(1).OrderContents.Split(',');
+			var userID = Account.GetCookieID(Request.Cookies["UserID"].Value);
+			var itemStr = db.Orders.Find(userID).OrderContents.Split(',');
 			ViewBag.instances = itemStr.Count(f =>
 			                                  f == toRemove.ItemID.ToString());
 
