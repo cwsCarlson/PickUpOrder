@@ -31,5 +31,14 @@ namespace PickUpOrder.Properties {
                 return ((int)(this["xorVal"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.07")]
+        public double taxPercentage {
+            get {
+                return ((double)(this["taxPercentage"]));
+            }
+        }
     }
 }

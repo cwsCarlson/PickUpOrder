@@ -19,11 +19,12 @@ namespace PickUpOrder.Models
 
     public partial class Order
     {
-        const double TAX_PERCENTAGE = 0.07;
         // Constructor - Make a blank Order.
         public Order()
         {
-            
+            OrderContents = null;
+            RawCost = 0;
+            OrderStatus = (int) PickUpOrder.Models.OrderStatus.NotSubmitted;
         }
 
         // CalcFinalCost - Calculates the final cost of an order
@@ -31,7 +32,8 @@ namespace PickUpOrder.Models
         public double CalcFinalCost()
         {
             // Divide by 100 since the raw cost is in cents.
-            return RawCost * (1 + TAX_PERCENTAGE) / 100;
+            return RawCost *
+                   (1 + Properties.Settings.Default.taxPercentage) / 100;
         }
 
         // AddSingleItem - Add one quantity of toAdd to this order.
@@ -108,8 +110,6 @@ namespace PickUpOrder.Models
         //                       RemoveSingleItem.
         public void RemoveMultipleItems(MenuItem toRemove, int qty)
         {
-            System.Diagnostics.Debug.WriteLine("Removing" + toRemove.Name + " x " + qty);
-
             for (int i = 0; i < qty; i++)
                 RemoveSingleItem(toRemove);
 

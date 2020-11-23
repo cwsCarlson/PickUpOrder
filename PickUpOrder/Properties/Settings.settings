@@ -5,5 +5,8 @@
     <Setting Name="xorVal" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">957948328</Value>
     </Setting>
+    <Setting Name="taxPercentage" Type="System.Double" Scope="Application">
+      <Value Profile="(Default)">0.07</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
