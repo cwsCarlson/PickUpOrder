@@ -1,6 +1,6 @@
 ﻿@* Registration - Allows customers to register.
-    Anyone using this page is automatically
-    given the customer type. *@
+                  Anyone using this page is automatically
+                  given the customer type. *@
 
 @model int
 @using PickUpOrder.Models
@@ -22,23 +22,23 @@
 @switch (Model)
 {
     case -1:
-        {
+    {
         <b>An invalid email address was provided.</b>
-            break;
-        }
+        break;
+    }
     case -2:
-        {
+    {
         <b>
             The email address provided is already associated
             with another user.
         </b>
-            break;
-        }
+        break;
+    }
     case -3:
-        {
+    {
         <b>The provided passwords do not match.</b>
-            break;
-        }
+        break;
+    }
 }
 
 @* A form that gets the user's desired login information.*@

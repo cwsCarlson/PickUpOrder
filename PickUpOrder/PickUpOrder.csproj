@@ -250,6 +250,7 @@
     <Content Include="Views\Registration\Help.cshtml" />
     <Content Include="Views\OrderList\Help.cshtml" />
     <Content Include="Views\MenuEditor\Help.cshtml" />
+    <Content Include="Views\Login\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

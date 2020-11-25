@@ -12,6 +12,11 @@
     print the appropriate error. *@
 @switch (Model)
 {
+    case 1:
+    {
+        <b>Your password has been sucessfully changed.</b>
+        break;
+    }
     case -1:
     {
         <b>An invalid email address was provided.</b>
@@ -36,10 +41,16 @@
     @Html.TextBox("email", "", new { required = "required" })
 
     <h3>Password</h3>
-    @Html.Password("passwd", "", new { id = "password", Textmode = "Password" })
+    @Html.Password("passwd", "", new { id = "password",
+                                       Textmode = "Password" })
     <br />
     <input type="submit" value="Log In" />
 }
 
 @* A link to the customer registration page. *@
-Don't have an account? @(Html.ActionLink("Register here", "Registration", "Registration")).
+Don't have an account? @(Html.ActionLink("Register here", "Registration",
+                         "Registration")).
+<br/>
+@* A link to the password reset page. *@
+Forgot your password? @(@Html.ActionLink("Reset it here", "ResetPassword",
+                        "Login")).
