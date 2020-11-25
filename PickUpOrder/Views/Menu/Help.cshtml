@@ -6,7 +6,8 @@
 
 <h2>Help</h2>
 @Html.ActionLink("Back to previous page", null, null, null,
-                 new { href = Request.UrlReferrer })<br/>
+                 new { href = Request.UrlReferrer })
+<br />
 
 The menu page enables you to modify your current order
 and view the status of orders you have submitted.
@@ -75,12 +76,14 @@ The statuses are listed below:
     <li>PickedUp - You have picked up the order.</li>
 </ul>
 Statuses will update whenever the page is refreshed.
-<br/>
+<br />
 You can typically use your browser's refresh button to do this.
-<br/>
+<br />
 <b>
     However, if you refresh and receive a message asking whether
     to resubmit the form, <i>please do not select yes.</i>
 </b>
 <br />
 Instead, use the "Refresh/Exit Search" button below the search bar.
+<hr />
+<small>Help version 1.1</small>
