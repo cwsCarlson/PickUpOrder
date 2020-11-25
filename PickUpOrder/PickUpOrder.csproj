@@ -141,6 +141,7 @@
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\Category.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
