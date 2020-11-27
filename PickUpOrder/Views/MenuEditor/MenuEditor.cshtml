@@ -24,7 +24,7 @@
 <h5>@Html.ActionLink("Help", "Help", "MenuEditor")</h5>
 
 @* Search function. *@
-@using (Html.BeginForm("Search", "Menu", FormMethod.Post))
+@using (Html.BeginForm("Search", "MenuEditor", FormMethod.Post))
 {
     @* This is the query box. *@
     @Html.TextBox("query")
@@ -34,7 +34,8 @@
                        "Filter by category...")
     <input type="submit" value="Search" />
 }
-@Html.ActionLink("Exit Search", "Menu", "Menu")<br/>
+@Html.ActionLink("Exit Search", "MenuEditor", "MenuEditor")
+<br />
 
 @* Links to add categories and items. *@
 <h4>
@@ -43,6 +44,18 @@
     @Html.ActionLink("Add new category", "AddCategory", "MenuEditor")
 </h4>
 
+@* If nothing was passed (meaning an empty menu or bad search term)
+    or the last item is null (meaning only deleted items were passed),
+    then inform the user. *@
+@if (menuContent.Count == 0 ||
+    menuContent[menuContent.Count - 1].Price == null)
+{
+    <h3>
+        There are no menu items to display.<br />
+        If you just searched, try something else.<br />
+        If not, then go ahead and add something!
+    </h3>
+}
 @* Display every item in the menu in their respective category. *@
 @for (int i = 0; i < menuContent.Count; i++)
 {
@@ -77,7 +90,7 @@
                 since they had null categories. *@
             <tr>
                 <td>
-                    @menuContent[i].Name<br/>
+                    @menuContent[i].Name<br />
                     @menuContent[i].Description
                 </td>
                 <td>
