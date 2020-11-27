@@ -50,11 +50,13 @@
 
     <h3>Password</h3>
     @Html.Password("passwd", "", new { id = "password",
-                                       Textmode = "Password" })
+                                       Textmode = "Password",
+                                       required = "required" })
 
     <h3>Confirm Password</h3>
     @Html.Password("passwd2", "", new { id = "password",
-                                        Textmode = "Password" })
+                                       Textmode = "Password",
+                                       required = "required" })
     <br />
     <input type="submit" value="Register" />
 }

@@ -42,7 +42,8 @@
 
     <h3>Password</h3>
     @Html.Password("passwd", "", new { id = "password",
-                                       Textmode = "Password" })
+                                       Textmode = "Password",
+                                       required = "required" })
     <br />
     <input type="submit" value="Log In" />
 }
