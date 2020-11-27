@@ -327,6 +327,28 @@ namespace PickUpOrder.Controllers
 			modified.Price = int.Parse(Request.Form["dollars"]) * 100 +
 						     int.Parse(Request.Form["cents"]);
 
+			// If the price has changed, modify all orders that have the item
+			// to reflect the new price.
+			if(modified.Price != db.MenuItems.Find(modified.ItemID).Price)
+            {
+				var ordersToMod =
+					db.Orders.Where(m => m.OrderStatus == 
+					    (int) OrderStatus.NotSubmitted &&
+						(m.OrderContents.Contains(modified.ItemID + ",") ||
+						m.OrderContents.EndsWith(modified.ItemID.ToString())));
+				
+				// In each order, see how often the item occurs and modify.
+				foreach(Order o in ordersToMod)
+                {
+					var toChange =
+						o.OrderContents.Count(s => s.Equals(modified.ItemID + ","));
+					if (o.OrderContents.EndsWith(modified.ItemID.ToString()))
+						toChange++;
+					o.RawCost += (int) (toChange * (modified.Price -
+						          db.MenuItems.Find(modified.ItemID).Price));
+				}
+            }
+
 			// Apply and save changes.
 			db.MenuItems.Find(modified.ItemID).Name = modified.Name;
 			db.MenuItems.Find(modified.ItemID).Description =
