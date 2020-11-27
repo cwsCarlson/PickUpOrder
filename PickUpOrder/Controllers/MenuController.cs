@@ -144,19 +144,24 @@ namespace PickUpOrder.Controllers
 			// This should never be called; it's just for safety.
 			// If the item has been deleted, redirect to the menu page.
 			if (toRemove.Price == null)
-				return Menu();
+				return View("Menu");
+
+			// Get the current order.
+			var userID = Account.GetCookieID(Request.Cookies["UserID"].Value);
+			var orderID = db.Accounts.Find(userID).MostRecentOrder();
+			if(orderID == null)
+				return View("Menu");
 
 			// Get the number of times toRemove appears in the order.
 			// This is the maximum value for the page's textbox.
-			var userID = Account.GetCookieID(Request.Cookies["UserID"].Value);
-			var itemStr = db.Orders.Find(userID).OrderContents.Split(',');
+			var itemStr = db.Orders.Find((int) orderID).OrderContents.Split(',');
 			ViewBag.instances = itemStr.Count(f =>
 			                                  f == toRemove.ItemID.ToString());
 
 			// This should never be called; it's just for safety.
 			// If the item isn't in the order, redirect to the main page.
 			if (ViewBag.instances == 0)
-				return Menu();
+				return View("Menu");
 
 			ViewBag.toRemove = toRemove;
 			return View();
