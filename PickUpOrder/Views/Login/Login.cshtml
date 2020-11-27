@@ -1,57 +1,59 @@
 ﻿@* Login - A form that takes credentials and attempts to retrieve a matching user. *@
 
 @model int
-@{
-    ViewBag.Title = "Login";
-}
+@{ ViewBag.Title = "Login"; }
 
-<h2>Login</h2>
-<h5>@Html.ActionLink("Help", "Help", "Login")</h5>
+@* Define page language. *@
+<html lang="en"><body>
+    <h2>Login</h2>
+    @Html.ActionLink("Help", "Help", "Login")<br/>
 
-@* If the model's ID indicates an error in a previous submission,
-    print the appropriate error. *@
-@switch (Model)
-{
-    case 1:
+    @* If the model's ID indicates an error in a previous submission,
+        print the appropriate error. *@
+    @switch (Model)
     {
-        <b>Your password has been sucessfully changed.</b>
-        break;
+        case 1:
+        {
+            <b>Your password has been sucessfully changed.</b>
+            break;
+        }
+        case -1:
+        {
+            <b>An invalid email address was provided.</b>
+            break;
+        }
+        case -2:
+        {
+            <b>The email address provided was not in our records.</b>
+            break;
+        }
+        case -3:
+        {
+            <b>The password provided did not match our records.</b>
+            break;
+        }
     }
-    case -1:
-    {
-        <b>An invalid email address was provided.</b>
-        break;
-    }
-    case -2:
-    {
-        <b>The email address provided was not in our records.</b>
-        break;
-    }
-    case -3:
-    {
-        <b>The password provided did not match our records.</b>
-        break;
-    }
-}
 
-@* A form that gets user's login information.*@
-@using (Html.BeginForm("ProcessLogin", "Login", FormMethod.Post))
-{
-    <h3>Email Address</h3>
-    @Html.TextBox("email", "", new { required = "required" })
+    @* A form that gets user's login information.*@
+    @using (Html.BeginForm("ProcessLogin", "Login", FormMethod.Post))
+    {
+        <h3>Email Address</h3>
+        @Html.TextBox("email", "", new { required = "required",
+                                         title = "Email" })
 
-    <h3>Password</h3>
-    @Html.Password("passwd", "", new { id = "password",
-                                       Textmode = "Password",
-                                       required = "required" })
-    <br />
-    <input type="submit" value="Log In" />
-}
+        <h3>Password</h3>
+        @Html.Password("passwd", "", new { id = "password",
+                                           Textmode = "Password",
+                                           required = "required",
+                                           title = "Password"})
+        <br/><input type="submit" value="Log In" />
+    }
 
-@* A link to the customer registration page. *@
-Don't have an account? @(Html.ActionLink("Register here", "Registration",
-                         "Registration")).
-<br/>
-@* A link to the password reset page. *@
-Forgot your password? @(@Html.ActionLink("Reset it here", "ResetPassword",
-                        "Login")).
+    @* A link to the customer registration page. *@
+    Don't have an account? @(Html.ActionLink("Register here", "Registration",
+                                             "Registration")).
+    <br/>
+    @* A link to the password reset page. *@
+    Forgot your password? @(@Html.ActionLink("Reset it here", "ResetPassword",
+                                             "Login")).
+</body></html>

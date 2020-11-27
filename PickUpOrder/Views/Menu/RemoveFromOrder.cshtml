@@ -1,27 +1,31 @@
-﻿@* RemoveFromOrder - Remove the selected qty of an item from the user's order.*@
+﻿@* RemoveFromOrder - Remove the selected qty of an item from
+                     the user's order. *@
 
 @* Define objects utilized in the rest of the page. *@
-@{
-    ViewBag.Title = "Remove Item From Order";
-}
+@{ ViewBag.Title = "Remove Item From Order"; }
 
-@* Print the heading. *@
-<h2>Removing @ViewBag.toRemove.Name...</h2>
-<h5>@Html.ActionLink("Help", "Help", "Menu")</h5>
+@* Define page language. *@
+<html lang="en"><body>
+    @* Print the heading. *@
+    <h2>Removing @ViewBag.toRemove.Name...</h2>
+    @Html.ActionLink("Help", "Help", "Menu")<br/>
 
-@* This button returns to the list without making changes. *@
-@Html.ActionLink("Return to Menu", "Menu", "Menu", null)<br/>
+    @* This button returns to the list without making changes. *@
+    @Html.ActionLink("Return to Menu", "Menu", "Menu", null)<br/>
 
-@* Print the item properties for convenience. *@
-@ViewBag.toRemove.Description
-$@((ViewBag.toRemove.Price / 100.0).ToString("0.00"))
+    @* Print the item properties for convenience. *@
+    @ViewBag.toRemove.Description
+    $@((ViewBag.toRemove.Price / 100.0).ToString("0.00"))
 
-@* The form below allows the user to set the item quantity. *@
-<h3>Quantity</h3>
-@using (Html.BeginForm("Menu", "Menu", new { adding = false,
-                       IDtoModify = ViewBag.toRemove.ItemID }, FormMethod.Post))
-{
-    @* This is the quantity selector. *@
-    @Html.TextBox("qty", 1, new { @type = "number", @min = "1", @max = ViewBag.instances })
-    <input type="submit" value="Remove"/>
-}
+    @* The form below allows the user to set the item quantity. *@
+    <h3>Quantity</h3>
+    @using (Html.BeginForm("Menu", "Menu", new { adding = false,
+                           IDtoModify = ViewBag.toRemove.ItemID },
+                           FormMethod.Post))
+    {
+        @* This is the quantity selector. *@
+        @Html.TextBox("qty", 1, new { @type = "number", @min = "1",
+                      @max = ViewBag.instances, title = "quantity" })
+        <input type="submit" value="Remove"/>
+    }
+</body></html>

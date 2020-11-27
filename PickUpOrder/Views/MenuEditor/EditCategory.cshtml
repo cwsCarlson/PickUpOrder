@@ -1,24 +1,27 @@
-﻿@* EditItem - A form page that allows for the renaming of a category. *@
+﻿@* EditCategory - A form page that allows for the renaming of a category. *@
 
 @using PickUpOrder.Models;
 @model Category
-@{
-    ViewBag.Title = "Edit Category";
-}
+@{ ViewBag.Title = "Edit Category"; }
 
-<h2>Renaming @Model.CategoryName...</h2>
-<h5>@Html.ActionLink("Help", "Help", "MenuEditor")</h5>
+@* Define page language. *@
+<html lang="en"><body>
+    <h2>Renaming @Model.CategoryName...</h2>
+    @Html.ActionLink("Help", "Help", "MenuEditor")<br/>
 
-@* A link to return without saving changes. *@
-@Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
+    @* A link to return without saving changes. *@
+    @Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
 
-@using (Html.BeginForm("EditCategory", "MenuEditor", FormMethod.Post))
-{
-    @* This saves the CategoryID so the current category can be found later. *@
-    @Html.HiddenFor(m => m.CategoryID)
+    @using (Html.BeginForm("EditCategory", "MenuEditor", FormMethod.Post))
+    {
+        @* This saves the CategoryID
+           so the current category can be found after posting. *@
+        @Html.HiddenFor(m => m.CategoryID)
 
-    <h3>Name</h3>
-    @Html.TextBoxFor(m => m.CategoryName, new { required = "required" })
-    <br />
-    <input type="submit" value="Rename" />
-}
+        <h3>Name</h3>
+        @Html.TextBoxFor(m => m.CategoryName, new { required = "required",
+                                                    title = "Name" })
+        <br />
+        <input type="submit" value="Rename" />
+    }
+</body></html>

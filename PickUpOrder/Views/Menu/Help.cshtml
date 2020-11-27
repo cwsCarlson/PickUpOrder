@@ -1,89 +1,90 @@
 ﻿@* Help - Help for the Menu page. *@
 
-@{
-    ViewBag.Title = "Menu help";
-}
+@{ ViewBag.Title = "Menu help"; }
 
-<h2>Help</h2>
-@Html.ActionLink("Back to previous page", null, null, null,
-                 new { href = Request.UrlReferrer })
-<br />
+@* Define page language. *@
+<html lang="en"><body>
+    <h2>Help</h2>
+    @Html.ActionLink("Back to previous page", null, null, null,
+                     new { href = Request.UrlReferrer })
+    <br/>
 
-The menu page enables you to modify your current order
-and view the status of orders you have submitted.
-<br />
-<br />
-Note that "Order Details" will not appear
-unless the current order has at least one item.
-<br />
-Also note that "Submitted Orders" will not appear
-unless you have submitted at least one order.
+    The menu page enables you to modify your current order
+    and view the status of orders you have submitted.
+    <br/>
+    <br/>
+    Note that "Order Details" will not appear
+    unless the current order has at least one item.
+    <br/>
+    Also note that "Submitted Orders" will not appear
+    unless you have submitted at least one order.
 
-<h3>Adding items</h3>
-<ol>
-    <li>Select the "Add to Order" button at the end of the item's row.</li>
-    <li>On the next page, enter the desired quantity and select "Add".</li>
-    <li>The item will appear in the right pane under "Order Details".</li>
-</ol>
+    <h3>Adding items</h3>
+    <ol>
+        <li>Select the "Add to Order" button at the end of the item's row.</li>
+        <li>On the next page, enter the desired quantity and select "Add".</li>
+        <li>The item will appear in the right pane under "Order Details".</li>
+    </ol>
 
-<h3>Removing items</h3>
-<ol>
-    <li>Select the "Remove" button at the end of the item's row.</li>
-    <li>On the next page, enter the desired quantity and select "Add".</li>
-    <li>
-        The desired quantity will be removed from the "Order Details" table.
-    </li>
-</ol>
+    <h3>Removing items</h3>
+    <ol>
+        <li>Select the "Remove" button at the end of the item's row.</li>
+        <li>On the next page, enter the desired quantity and select "Add".</li>
+        <li>
+            The desired quantity will be removed from the "Order Details" table.
+        </li>
+    </ol>
 
-<h3>Searching</h3>
-<ol>
-    <li>
-        Type a text query in the search box, which is at the top of the page.
-    </li>
-    <li>
-        <b>Optional:</b> select a category from the dropdown box to
-        limit your query to items in that category.
-    </li>
-    <li>Select "Search", and the menu will be filtered to match the query.</li>
-</ol>
-Note that the search will only filter the menu, not the order details.
-<br />
-Also note that the search will be cancelled if an item is added or removed,
-the current order is submitted, or the website is left.
-<br />
-To exit the search, you can also select "Refresh/Exit Search"
-below the search bar.
+    <h3>Searching</h3>
+    <ol>
+        <li>
+            Type a text query in the search box, which is at the top of the page.
+        </li>
+        <li>
+            <b>Optional:</b> select a category from the dropdown box to
+            limit your query to items in that category.
+        </li>
+        <li>Select "Search", and the menu will be filtered to match the query.</li>
+    </ol>
+    Note that the search will only filter the menu, not the order details.
+    <br/>
+    Also note that the search will be cancelled if an item is added or removed,
+    the current order is submitted, or the website is left.
+    <br/>
+    To exit the search, you can also select "Refresh/Exit Search"
+    below the search bar.
 
-<h3>Submitting your order</h3>
-Press the "Pay &amp; Submit" button below the order details.
-<br />
-You will be redirected to a payment service. Once you return,
-the order will be added to the "Submitted Orders" table.
+    <h3>Submitting your order</h3>
+    Press the "Pay &amp; Submit" button below the order details.
+    <br/>
+    You will be redirected to a payment service. Once you return,
+    the order will be added to the "Submitted Orders" table.
 
-<h3>Viewing order statuses</h3>
-The status of all orders will appear in the "Submitted Orders" table.
-<br />
-The statuses are listed below:
-<ul>
-    <li>Recieved - Your order has been sent to the restaurant.</li>
-    <li>
-        Preparing - The restaurant staff has begun to prepare your order.
-    </li>
-    <li>
-        Done - The order has been completed by restaurant staff
-        and can be picked up at the restaurant.
-    </li>
-    <li>PickedUp - You have picked up the order.</li>
-</ul>
-Statuses will update whenever the page is refreshed.
-<br />
-You can typically use your browser's refresh button to do this.
-<br />
-<b>
-    However, if you refresh and receive a message asking whether
-    to resubmit the form, <i>please do not select yes.</i>
-</b>
-<br />
-Instead, use the "Refresh/Exit Search" button below the search bar.
-<hr />
-<small>Help version 1.1</small>
+    <h3>Viewing order statuses</h3>
+    The status of all orders will appear in the "Submitted Orders" table.
+    <br/>
+    The statuses are listed below:
+    <ul>
+        <li>Recieved - Your order has been sent to the restaurant.</li>
+        <li>
+            Preparing - The restaurant staff has begun to prepare your order.
+        </li>
+        <li>
+            Done - The order has been completed by restaurant staff
+            and can be picked up at the restaurant.
+        </li>
+        <li>PickedUp - You have picked up the order.</li>
+    </ul>
+    Statuses will update whenever the page is refreshed.
+    <br/>
+    You can typically use your browser's refresh button to do this.
+    <br/>
+    <b>
+        However, if you refresh and receive a message asking whether
+        to resubmit the form, <i>please do not select yes.</i>
+    </b>
+    <br/>
+    Instead, use the "Refresh/Exit Search" button below the search bar.
+    <hr/>
+    <small>Help version 1.1</small>
+</body></html>

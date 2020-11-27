@@ -1,4 +1,4 @@
-﻿@* DeleteItem - A confirmation page for category deletion. *@
+﻿@* DeleteCategory - A confirmation page for category deletion. *@
 
 @using PickUpOrder.Models;
 @model Category
@@ -9,9 +9,9 @@
 
     // Get the dropdown list, but remove the one that is about to be deleted.
     var dropdown = Category.GetCategoryDropdown();
-    for(int i = 0; i < dropdown.Count; i++)
+    for (int i = 0; i < dropdown.Count; i++)
     {
-        if(int.Parse(dropdown[i].Value) == toDelete.CategoryID)
+        if (int.Parse(dropdown[i].Value) == toDelete.CategoryID)
         {
             dropdown.Remove(dropdown[i]);
             break;
@@ -19,24 +19,29 @@
     }
 }
 
-<h2>Deleting @(toDelete.CategoryName)...</h2>
-<h5>@Html.ActionLink("Help", "Help", "MenuEditor")</h5>
+@* Define page language. *@
+<html lang="en"><body>
+    <h2>Deleting @(toDelete.CategoryName)...</h2>
+    @Html.ActionLink("Help", "Help", "MenuEditor")<br/>
 
-@* A link to return without saving changes. *@
-@Html.ActionLink("Leave without deleting", "MenuEditor", "MenuEditor")
+    @* A link to return without saving changes. *@
+    @Html.ActionLink("Leave without deleting", "MenuEditor", "MenuEditor")
 
-<h2>WARNING!</h2>
-You are removing the menu category <b>@toDelete.CategoryName</b>.<br/>
-<b><i>This action is irreversible.</i></b>
-<br/><hr/>
-All current members will be moved to the category you select below.
-<br/><hr/>
+    <h2>WARNING!</h2>
+    You are removing the menu category <b>@toDelete.CategoryName</b>.<br/>
+    <b><i>This action is irreversible.</i></b>
+    <br/><hr/>
+    All current members will be moved to the category you select below.
+    <br/><hr/>
 
-@using (Html.BeginForm("DeleteCategory", "MenuEditor", (Category) toDelete, FormMethod.Post))
-{
-    @* This picks the category all current members will be moved to. *@
-    @Html.DropDownList("newCat", dropdown, "Pick a category",
-                       new { required = "required" })
-    <br/><br/>
-    <input type="submit" value="Delete" />
-}
+    @using (Html.BeginForm("DeleteCategory", "MenuEditor", (Category)toDelete,
+                           FormMethod.Post))
+    {
+        @* This picks the category all current members will be moved to. *@
+        @Html.DropDownList("newCat", dropdown, "Pick a category",
+                           new { required = "required",
+                                 title = "Move members to" })
+        <br/><br/>
+        <input type="submit" value="Delete" />
+    }
+</body></html>

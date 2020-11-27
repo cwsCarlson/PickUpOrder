@@ -1,27 +1,28 @@
 ﻿@* AddToOrder - Add an item to the user's order with the selected quantity.*@
 
 @* Define objects utilized in the rest of the page. *@
-@{
-    ViewBag.Title = "Add Item To Order";
-}
+@{ ViewBag.Title = "Add Item To Order"; }
 
-@* Print the heading. *@
-<h2>Adding @ViewBag.toAdd.Name...</h2>
-<h5>@Html.ActionLink("Help", "Help", "Menu")</h5>
+<html lang="en"><body>
+    @* Print the heading. *@
+    <h2>Adding @ViewBag.toAdd.Name...</h2>
+    @Html.ActionLink("Help", "Help", "Menu")<br/>
 
-@* This button returns to the list without making changes. *@
-@Html.ActionLink("Return to Menu", "Menu", "Menu", null)<br/>
+    @* This button returns to the list without making changes. *@
+    @Html.ActionLink("Return to Menu", "Menu", "Menu", null)<br/>
 
-@* Print the item properties for convenience. *@
-@ViewBag.toAdd.Description
-$@((ViewBag.toAdd.Price / 100.0).ToString("0.00"))
+    @* Print the item properties for convenience. *@
+    @ViewBag.toAdd.Description
+    $@((ViewBag.toAdd.Price / 100.0).ToString("0.00"))
 
-@* The form below allows the user to set the item quantity. *@
-<h3>Quantity</h3>
-@using (Html.BeginForm("Menu", "Menu", new { adding = true,
-                       IDtoModify = ViewBag.toAdd.ItemID }, FormMethod.Post))
-{
-    @* This is the quantity selector. *@
-    @Html.TextBox("qty", 1, new { @type = "number", @min = "1" })
-    <input type="submit" value="Add"/>
-}
+    @* The form below allows the user to set the item quantity. *@
+    <h3>Quantity</h3>
+    @using (Html.BeginForm("Menu", "Menu", new { adding = true,
+                           IDtoModify = ViewBag.toAdd.ItemID }, FormMethod.Post))
+    {
+        @* This is the quantity selector. *@
+        @Html.TextBox("qty", 1, new { @type = "number", @min = "1",
+                                      title = "quantity"})
+        <input type="submit" value="Add"/>
+    }
+</body></html>

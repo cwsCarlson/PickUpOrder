@@ -1,103 +1,104 @@
 ﻿@* Help - Help for the MenuEditor page. *@
 
-@{
-    ViewBag.Title = "Menu editor help";
-}
+@{ ViewBag.Title = "Menu editor help"; }
 
-<h2>Help</h2>
-@Html.ActionLink("Back to previous page", null, null, null,
-                 new { href = Request.UrlReferrer })
-<br />
+@* Define page language. *@
+<html lang="en"><body>
+    <h2>Help</h2>
+    @Html.ActionLink("Back to previous page", null, null, null,
+                     new { href = Request.UrlReferrer })
+    <br />
 
-This page allows a variety of changes to be made to the menu.
-<br />
-<br />
-Note that categories will only appear if they have at least one member.
+    This page allows a variety of changes to be made to the menu.
+    <br /><br />
+    Note that categories will only appear if they have at least one member.
 
-<h3>Adding items</h3>
-<ol>
-    <li>Select the "Add new item" button under the search bar.</li>
-    <li>
-        On the next page, enter the name, description, and price of the item.
-        Place the dollar portion of the price in the first price box
-        and the cents portion in the second.
-    </li>
-    <li>Select a category from the dropdown and select "Add to menu".</li>
-    <li>The item will appear under the selected category.</li>
-</ol>
+    <h3>Adding items</h3>
+    <ol>
+        <li>Select the "Add new item" button under the search bar.</li>
+        <li>
+            On the next page, enter the name, description, and price of the item.
+            Place the dollar portion of the price in the first price box
+            and the cents portion in the second.
+        </li>
+        <li>Select a category from the dropdown and select "Add to menu".</li>
+        <li>The item will appear under the selected category.</li>
+    </ol>
 
-<h3>Adding categories</h3>
-<ol>
-    <li>Select the "Add new category" button under the search bar.</li>
-    <li>
-        On the next page, enter the name of the new category and select
-        "Add to menu".
-    </li>
-    <li>
-        The category will not appear in the list. However, when you add
-        or edit another item, it will appear in the category dropdown
-        and will appear if selected.
-    </li>
-</ol>
+    <h3>Adding categories</h3>
+    <ol>
+        <li>Select the "Add new category" button under the search bar.</li>
+        <li>
+            On the next page, enter the name of the new category and select
+            "Add to menu".
+        </li>
+        <li>
+            The category will not appear in the list. However, when you add
+            or edit another item, it will appear in the category dropdown
+            and will appear if selected.
+        </li>
+    </ol>
 
-<h3>Editing items</h3>
-<ol>
-    <li>Select the "Edit" button in the item's row.</li>
-    <li>
-        On the next page, review the name, description, price,
-        and category of the item and edit them if desired.
-    </li>
-    <li>
-        If editing the price, place the dollar portion of the price
-        in the first price box and the cents portion in the second.
-    </li>
-    <li>
-        Select "Apply edits" and the item's changes will appear in the list.
-    </li>
-</ol>
+    <h3>Editing items</h3>
+    <ol>
+        <li>Select the "Edit" button in the item's row.</li>
+        <li>
+            On the next page, review the name, description, price,
+            and category of the item and edit them if desired.
+        </li>
+        <li>
+            If editing the price, place the dollar portion of the price
+            in the first price box and the cents portion in the second.
+        </li>
+        <li>
+            Select "Apply edits" and the item's changes will appear in the list.
+        </li>
+    </ol>
 
-<h3>Renaming categories</h3>
-<ol>
-    <li>Select the "Rename" button under the category name.</li>
-    <li>On the next page, enter the new name and select "Rename".</li>
-</ol>
+    <h3>Renaming categories</h3>
+    <ol>
+        <li>Select the "Rename" button under the category name.</li>
+        <li>On the next page, enter the new name and select "Rename".</li>
+    </ol>
 
-<h3>Deleting items</h3>
-<ol>
-    <li>Select the "Delete" button in the item's row.</li>
-    <li>A confirmation page will be displayed. Read it carefully.</li>
-    <li>
-        If you would still like to delete the item, select "Delete".
-        It will be removed from the menu.
-    </li>
-</ol>
+    <h3>Deleting items</h3>
+    <ol>
+        <li>Select the "Delete" button in the item's row.</li>
+        <li>A confirmation page will be displayed. Read it carefully.</li>
+        <li>
+            If you would still like to delete the item, select "Delete".
+            It will be removed from the menu.
+        </li>
+    </ol>
 
-<h3>Deleting categories</h3>
-<ol>
-    <li>Select the "Delete" button under the category name.</li>
-    <li>
-        Select a category from the dropdown menu.
-        All current members of the deleted category will be moved to this one.
-    </li>
-    <li>Select the "Delete" button and the category will be removed.</li>
-</ol>
+    <h3>Deleting categories</h3>
+    <ol>
+        <li>Select the "Delete" button under the category name.</li>
+        <li>
+            Select a category from the dropdown menu.
+            All current members of the deleted category will be moved to this one.
+        </li>
+        <li>Select the "Delete" button and the category will be removed.</li>
+    </ol>
 
-<h3>Searching</h3>
-<ol>
-    <li>
-        Type a text query in the search box, which is at the top of the page.
-    </li>
-    <li>
-        <b>Optional:</b> select a category from the dropdown box to
-        limit your query to items in that category.
-    </li>
-    <li>Select "Search", and the menu will be filtered to match the query.</li>
-</ol>
-Note that the search will only filter the menu, not the order details.
-<br />
-Also note that the search will be cancelled if an item is added or removed,
-the current order is submitted, or the website is left.
-<br />
-To exit the search, you can also select "Exit Search" below the search bar.
-<hr />
-<small>Help version 1.1</small>
+    <h3>Searching</h3>
+    <ol>
+        <li>
+            Type a text query in the search box, which is at the top of the page.
+        </li>
+        <li>
+            <b>Optional:</b> select a category from the dropdown box to
+            limit your query to items in that category.
+        </li>
+        <li>Select "Search", and the menu will be filtered to match the query.</li>
+    </ol>
+    Note that the search will only filter the menu, not the order details.
+    <br />
+    Also note that the search will be cancelled if an item is added or removed,
+    the current order is submitted, or the website is left.
+    <br />
+    To exit the search, you can also select "Exit Search" below the search bar.
+    <hr />
+    <small>Help version 1.1</small>
+</body>
+</html>

@@ -7,52 +7,56 @@
     var db = new PickUpOrderDBEntities2();
 }
 
-@* Print the heading. *@
-<h2>Order List</h2>
-<h5>@Html.ActionLink("Help", "Help", "OrderList")</h5>
-@Html.ActionLink("Refresh", "OrderList", "OrderList")
+@* Define page language. *@
+<html lang="en"><body>
+    @* Print the heading. *@
+    <h2>Order List</h2>
+    @Html.ActionLink("Help", "Help", "OrderList")<br/>
+    @Html.ActionLink("Refresh", "OrderList", "OrderList")
 
-@* Display every order in the database. *@
-<table border=1 frame=void rules=rows>
-    @* Print the table header. *@
-    <thread>
-        <tr>
-            <td>Order #</td>
-            <td>Contents</td>
-            <td>Status</td>
-        </tr>
-    </thread>
-
-    @* Get every model and print out those that should appear. *@
-    @foreach (PickUpOrder.Models.Order order in db.Orders)
-    {
-        @* Orders that have not been submitted or picked up
-           should not appear in the list. *@
-        if (order.OrderStatus != (int) OrderStatus.NotSubmitted &&
-            order.OrderStatus != (int) OrderStatus.PickedUp)
-        {
-            var contents = order.ContentsToItemList();
+    @* Display every order in the database. *@
+    <table border=1 frame=void rules=rows>
+        @* Print the table header. *@
+        <thread>
             <tr>
-                <td>@order.OrderID</td>
-                <td>
-                    @* Print all contents of the order. *@
-                    @contents[0].Name
-                    @for (int i = 1; i < contents.Count; i++)
-                    {
-                        <br>@contents[i].Name
-                    }
-                </td>
-                @* Print the current order status and a button to update it. *@
-                <td>@((OrderStatus) order.OrderStatus)</td>
-                <td>
-                    @Html.ActionLink("Update", "ChangeOrderStatus",
-                                     "OrderList",
-                                     new { toChange = order.OrderID }, null)
-                </td>
+                <td>Order #</td>
+                <td>Contents</td>
+                <td>Status</td>
             </tr>
+        </thread>
+
+        @* Get every model and print out those that should appear. *@
+        @foreach (PickUpOrder.Models.Order order in db.Orders)
+        {
+            @* Orders that have not been submitted or picked up
+               should not appear in the list. *@
+            if (order.OrderStatus != (int) OrderStatus.NotSubmitted &&
+                order.OrderStatus != (int) OrderStatus.PickedUp)
+            {
+                var contents = order.ContentsToItemList();
+                <tr>
+                    <td>@order.OrderID</td>
+                    <td>
+                        @* Print all contents of the order. *@
+                        @contents[0].Name
+                        @for (int i = 1; i < contents.Count; i++)
+                        {
+                            <br>@contents[i].Name
+                        }
+                    </td>
+                    @* Print this order's status and a link to update it. *@
+                    <td>@((OrderStatus) order.OrderStatus)</td>
+                    <td>
+                        @Html.ActionLink("Update", "ChangeOrderStatus",
+                                         "OrderList",
+                                         new { toChange = order.OrderID },
+                                         null)
+                    </td>
+                </tr>
+            }
         }
-    }
-</table>
+    </table>
+</body></html>
 
 @* Define the cell size. *@
 <style type="text/css">

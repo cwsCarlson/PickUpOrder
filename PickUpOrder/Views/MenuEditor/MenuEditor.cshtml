@@ -19,103 +19,106 @@
     var mostRecentOrder = db.Orders.Find(1);
 }
 
-@* Print the header. *@
-<h2>Menu Editor</h2>
-<h5>@Html.ActionLink("Help", "Help", "MenuEditor")</h5>
+@* Define page language. *@
+<html lang="en"><body>
+    @* Print the header. *@
+    <h2>Menu Editor</h2>
+    @Html.ActionLink("Help", "Help", "MenuEditor")<br/>
 
-@* Search function. *@
-@using (Html.BeginForm("Search", "MenuEditor", FormMethod.Post))
-{
-    @* This is the query box. *@
-    @Html.TextBox("query")
+    @* Search function. *@
+    @using (Html.BeginForm("Search", "MenuEditor", FormMethod.Post))
+    {
+        @* This is the query box. *@
+        @Html.TextBox("query", new { title = "Search query" })
 
-    @* This is the dropdown list containing all categories. *@
-    @Html.DropDownList("category", Category.GetCategoryDropdown(),
-                       "Filter by category...")
-    <input type="submit" value="Search" />
-}
-@Html.ActionLink("Exit Search", "MenuEditor", "MenuEditor")
-<br />
+        @* This is the dropdown list containing all categories. *@
+        @Html.DropDownList("category", Category.GetCategoryDropdown(),
+                           "Filter by category...", new { title = "Category" })
+        <input type="submit" value="Search" />
+    }
+    @Html.ActionLink("Exit Search", "MenuEditor", "MenuEditor")
+    <br />
 
-@* Links to add categories and items. *@
-<h4>
-    @Html.ActionLink("Add new item", "AddItem", "MenuEditor")
-    &#9; | &#9;
-    @Html.ActionLink("Add new category", "AddCategory", "MenuEditor")
-</h4>
-
-@* If nothing was passed (meaning an empty menu or bad search term)
-    or the last item is null (meaning only deleted items were passed),
-    then inform the user. *@
-@if (menuContent.Count == 0 ||
-    menuContent[menuContent.Count - 1].Price == null)
-{
-    <h3>
-        There are no menu items to display.<br />
-        If you just searched, try something else.<br />
-        If not, then go ahead and add something!
-    </h3>
-}
-@* Display every item in the menu in their respective category. *@
-@for (int i = 0; i < menuContent.Count; i++)
-{
-    @* A category is only null if an item is deleted, so skip if it's null. *@
-    if (menuContent[i].Category == null)
-    { continue; }
-
-    @* Print the category name and links to modify it. *@
-    <h3>@db.Categories.Find(menuContent[i].Category).CategoryName</h3>
+    @* Links to add categories and items. *@
     <h4>
-        @Html.ActionLink("Rename", "EditCategory", "MenuEditor",
-                         new { IDtoModify = (int)menuContent[i].Category },
-                         null)
+        @Html.ActionLink("Add new item", "AddItem", "MenuEditor")
         &#9; | &#9;
-        @Html.ActionLink("Delete", "DeleteCategory", "MenuEditor",
-                         new { IDtoDelete = (int)menuContent[i].Category },
-                         null)
+        @Html.ActionLink("Add new category", "AddCategory", "MenuEditor")
     </h4>
 
-    <table border=1 frame=void rules=rows>
-        @* Print the table header. *@
-        <thread>
-            <tr>
-                <td>Name</td>
-                <td>Price</td>
-            </tr>
-        </thread>
-        @for (; i < menuContent.Count; i++)
-        {
-            @* No need to check whether an item is valid.
-                Invalid items were pushed to the start of the list
-                since they had null categories. *@
-            <tr>
-                <td>
-                    @menuContent[i].Name<br />
-                    @menuContent[i].Description
-                </td>
-                <td>
-                    $@(((int)menuContent[i].Price / 100.0).ToString("0.00"))
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "EditItem", "MenuEditor",
-                                     new { IDtoModify = menuContent[i].ItemID },
-                                     null)
-                </td>
-                <td>
-                    @Html.ActionLink("Delete", "DeleteItem", "MenuEditor",
-                                     new { IDtoDelete = menuContent[i].ItemID },
-                                     null)
-                </td>
-            </tr>
+    @* If nothing was passed (meaning an empty menu or bad search term)
+        or the last item is null (meaning only deleted items were passed),
+        then inform the user. *@
+    @if (menuContent.Count == 0 ||
+        menuContent[menuContent.Count - 1].Price == null)
+    {
+        <h3>
+            There are no menu items to display.<br />
+            If you just searched, try something else.<br />
+            If not, then go ahead and add something!
+        </h3>
+    }
+    @* Display every item in the menu in their respective category. *@
+    @for (int i = 0; i < menuContent.Count; i++)
+    {
+        @* A category is only null if an item is deleted, so skip if null. *@
+        if (menuContent[i].Category == null)
+        { continue; }
 
-            @* If this is the end of a category, exit this loop
-                to print the next category header. *@
-            if (i != menuContent.Count - 1 &&
-                menuContent[i].Category != menuContent[i + 1].Category)
-            { break; }
-        }
-    </table>
-}
+        @* Print the category name and links to modify it. *@
+        <h3>@db.Categories.Find(menuContent[i].Category).CategoryName</h3>
+        <h4>
+            @Html.ActionLink("Rename", "EditCategory", "MenuEditor",
+                             new { IDtoModify = (int)menuContent[i].Category },
+                             null)
+            &#9; | &#9;
+            @Html.ActionLink("Delete", "DeleteCategory", "MenuEditor",
+                             new { IDtoDelete = (int)menuContent[i].Category },
+                             null)
+        </h4>
+
+        <table border=1 frame=void rules=rows>
+            @* Print the table header. *@
+            <thread>
+                <tr>
+                    <td>Name</td>
+                    <td>Price</td>
+                </tr>
+            </thread>
+            @for (; i < menuContent.Count; i++)
+            {
+                @* No need to check whether an item is valid.
+                    Invalid items were pushed to the start of the list
+                    since they had null categories. *@
+                <tr>
+                    <td>
+                        @menuContent[i].Name<br />
+                        @menuContent[i].Description
+                    </td>
+                    <td>
+                        $@(((int)menuContent[i].Price / 100.0).ToString("0.00"))
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditItem", "MenuEditor",
+                                         new { IDtoModify =
+                                               menuContent[i].ItemID }, null)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "DeleteItem", "MenuEditor",
+                                         new { IDtoDelete =
+                                               menuContent[i].ItemID }, null)
+                    </td>
+                </tr>
+
+                @* If this is the end of a category, exit this loop
+                    to print the next category header. *@
+                if (i != menuContent.Count - 1 &&
+                    menuContent[i].Category != menuContent[i + 1].Category)
+                { break; }
+            }
+        </table>
+    }
+</body></html>
 
 @* Define the cell size. *@
 <style type="text/css">

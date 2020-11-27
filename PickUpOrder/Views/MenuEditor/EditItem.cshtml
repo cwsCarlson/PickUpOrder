@@ -2,53 +2,48 @@
 
 @using PickUpOrder.Models;
 @model MenuItem
-@{
-    ViewBag.Title = "Edit Item";
-}
+@{ ViewBag.Title = "Edit Item"; }
 
-<h2>Editing @Model.Name...</h2>
-<h5>@Html.ActionLink("Help", "Help", "MenuEditor")</h5>
+@* Define page language. *@
+<html lang="en"><body>
+    <h2>Editing @Model.Name...</h2>
+    @Html.ActionLink("Help", "Help", "MenuEditor")<br />
 
-@* A link to return without saving changes. *@
-@Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
+    @* A link to return without saving changes. *@
+    @Html.ActionLink("Leave without saving", "MenuEditor", "MenuEditor")
 
-@using (Html.BeginForm("EditItem", "MenuEditor", FormMethod.Post))
-{
-    @* This saves the ItemID so the current item can be found later. *@
-    @Html.HiddenFor(m => m.ItemID)
+    @using (Html.BeginForm("EditItem", "MenuEditor", FormMethod.Post))
+    {
+        @* This saves the ItemID so the current item can be found later. *@
+        @Html.HiddenFor(m => m.ItemID)
 
-    <h3>Name</h3>
-    @Html.TextBoxFor(m => m.Name, new { required = "required" })
+        <h3>Name</h3>
+        @Html.TextBoxFor(m => m.Name, new { required = "required",
+                                            title = "Name" })
 
-    <h3>Description</h3>
-    @Html.TextBoxFor(m => m.Description, new { required = "required" })
+        <h3>Description</h3>
+        @Html.TextBoxFor(m => m.Description, new { required = "required",
+                                                   title = "Description"})
 
-    @* First box is dollar portion, second is cents. *@
-    @* The raw cost value (which is purely cents) is calculated upon posting. *@
-    @* No HiddenFor since the price will be recalculated before updating. *@
-    <h3>Price</h3>
-    <p>
-        $@Html.TextBox("dollars", Model.Price / 100,
-                      new
-                           {
-                               required = "required",
-                               @type = "number",
-                            @min = "0"
-                           })
-        .@Html.TextBox("cents", Model.Price % 100,
-                      new
-                           {
-                               required = "required",
-                               @type = "number",
-                            @min = "0",
-                               @max = "99"
-                           })
-    </p>
+        @* First box is dollar portion, second is cents. *@
+        @* The raw cost value (purely cents) is calculated upon posting. *@
+        @* The above means no HiddenFor is necessary. *@
+        <h3>Price</h3>
+        <p>
+            $@Html.TextBox("dollars", Model.Price / 100,
+                           new { required = "required", @type = "number",
+                                 @min = "0", title = "Dollar part of cost"})
+            .@Html.TextBox("cents", Model.Price % 100,
+                           new { required = "required",
+                                 @type = "number", @min = "0",
+                                 @max = "99", title = "Cent part of cost" })
+        </p>
 
-    <h3>Category</h3>
-    @Html.DropDownListFor(m => m.Category, Category.GetCategoryDropdown(),
-                          "Pick a category", new { required = "required" })
-    <br />
-    <br />
-    <input type="submit" value="Apply edits" />
-}
+        <h3>Category</h3>
+        @Html.DropDownListFor(m => m.Category, Category.GetCategoryDropdown(),
+                              "Pick a category", new { required = "required",
+                                                       title = "Category"})
+        <br/><br/>
+        <input type="submit" value="Apply edits" />
+    }
+</body></html>
