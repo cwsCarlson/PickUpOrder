@@ -85,11 +85,9 @@
                         <td>
                             @Html.ActionLink("Add to Order", "AddToOrder",
                                              "Menu",
-                                             new
-                                             {
-                                                IDtoAdd =
-                                                menuContent[i].ItemID
-                                             }, null)
+                                             new { IDtoAdd =
+                                                   menuContent[i].ItemID },
+                                             null)
                         </td>
                     </tr>
 
@@ -171,7 +169,7 @@
                     </p>
                 }
             }
-            <h3>Total cost: $@mostRecentOrder.CalcFinalCost()</h3>
+            <h3>Total cost: $@mostRecentOrder.CalcFinalCost().ToString("0.00")</h3>
 
             @* The button to submit. *@
             @Html.ActionLink("Pay & Submit", "Submit", "Menu")
