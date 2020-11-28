@@ -29,7 +29,7 @@
     @using (Html.BeginForm("Search", "MenuEditor", FormMethod.Post))
     {
         @* This is the query box. *@
-        @Html.TextBox("query", new { title = "Search query" })
+        @Html.TextBox("query", "", new { title = "Search query" })
 
         @* This is the dropdown list containing all categories. *@
         @Html.DropDownList("category", Category.GetCategoryDropdown(),
