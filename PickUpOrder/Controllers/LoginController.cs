@@ -2,7 +2,6 @@
 
 using PickUpOrder.Models;
 using System;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
 using System.Web.Mvc;
@@ -11,14 +10,14 @@ namespace PickUpOrder.Controllers
 {
     public class LoginController : Controller
     {
-        [HttpGet]
         // Login (GET) - Display the standard login.
+        [HttpGet]
         public ActionResult Login()
         {
             // If the user is logged in, redirect to the appropriate page.
             if (Request.Cookies.AllKeys.Contains("UserID"))
             {
-                var type =
+                AccountType type =
                     Account.GetCookieType(Request.Cookies["UserID"].Value);
                 switch (type)
                 {
@@ -34,8 +33,8 @@ namespace PickUpOrder.Controllers
             return View(0);
         }
 
-        [HttpGet]
         // Logout (GET) - Remove the user cookie.
+        [HttpGet]
         public ActionResult Logout()
         {
             // Set the expiration date to the previous day
@@ -52,7 +51,7 @@ namespace PickUpOrder.Controllers
             // If the user is logged in, redirect to the appropriate page.
             if (Request.Cookies.AllKeys.Contains("UserID"))
             {
-                var type =
+                AccountType type =
                     Account.GetCookieType(Request.Cookies["UserID"].Value);
                 switch (type)
                 {
@@ -68,13 +67,14 @@ namespace PickUpOrder.Controllers
             return View(0);
         }
 
-        // Help - Render the help page.
+        // Help (GET) - Render the help page.
+        [HttpGet]
         public ActionResult Help()
         {
             // If the user is logged in, redirect to the appropriate page.
             if (Request.Cookies.AllKeys.Contains("UserID"))
             {
-                var type =
+                AccountType type =
                     Account.GetCookieType(Request.Cookies["UserID"].Value);
                 switch (type)
                 {
@@ -91,71 +91,14 @@ namespace PickUpOrder.Controllers
             return View();
         }
 
-        [HttpPost]
-        // Reset (POST) - Get and process a password reset request.
-        public ActionResult Reset()
-        {
-            // If the user is logged in, redirect to the appropriate page.
-            if (Request.Cookies.AllKeys.Contains("UserID"))
-            {
-                var type =
-                    Account.GetCookieType(Request.Cookies["UserID"].Value);
-                switch (type)
-                {
-                    case AccountType.Employee:
-                        return Redirect("/OrderList/OrderList");
-                    case AccountType.Manager:
-                        return Redirect("/MenuEditor/MenuEditor");
-                    default:
-                        return Redirect("/Menu/Menu");
-                }
-            }
-
-            // Get the form information.
-            var email = Request.Form["email"];
-            var passwd = Request.Form["passwd"];
-            var passwd2 = Request.Form["passwd2"];
-
-            // Attempt to convert the provided name to an email address
-            // and return an error if this is not possible.
-            try
-            { var address = new MailAddress(email); }
-            catch (FormatException)
-            { return View("ResetPassword", -1); }
-
-            // Attempt to find the email address in the database
-            // and return an error if this is not possible.
-            var db = new PickUpOrderDBEntities2();
-            var matches =
-                db.Accounts.Where(e => e.Email.Equals(email));
-            var match = matches.FirstOrDefault();
-            if (match == null)
-                return View("Login", -2);
-
-            // Check whether the passwords match
-            // and return an error if they do not.
-            if (!passwd.Equals(passwd2))
-                return View("Login", -3);
-
-            // Use an Account constructor to calculate the new password's hash.
-            // AccountType.Customer is simply there so the constructor works.
-            var newAccount = new Account(email, passwd, AccountType.Customer);
-            db.Accounts.Find(match.UserID).PasswordHash =
-                newAccount.PasswordHash;
-            db.SaveChanges();
-
-            // Redirect to the login page.
-            return View("Login", 1);
-        }
-
-        [HttpPost]
         // ProcessLogin (POST) - Get and process login credentials.
+        [HttpPost]
         public ActionResult ProcessLogin()
         {
             // If the user is logged in, redirect to the appropriate page.
             if (Request.Cookies.AllKeys.Contains("UserID"))
             {
-                var type =
+                AccountType type =
                     Account.GetCookieType(Request.Cookies["UserID"].Value);
                 switch (type)
                 {
@@ -169,22 +112,26 @@ namespace PickUpOrder.Controllers
             }
 
             // Get the email and password.
-            var email = Request.Form["email"];
-            var passwd = Request.Form["passwd"];
+            string email = Request.Form["email"];
+            string passwd = Request.Form["passwd"];
 
             // Attempt to convert the provided name to an email address
             // and return an error if this is not possible.
             try
-            { var address = new MailAddress(email); }
+            {
+                var address = new MailAddress(email);
+            }
             catch (FormatException)
-            { return View("Login", -1); }
+            {
+                return View("Login", -1);
+            }
 
             // Attempt to find the email address in the database
             // and return an error if this is not possible.
             var db = new PickUpOrderDBEntities2();
-            var matches =
+            IQueryable<Account> matches =
                 db.Accounts.Where(e => e.Email.Equals(email));
-            var match = matches.FirstOrDefault();
+            Account match = matches.FirstOrDefault();
             if (match == null)
                 return View("Login", -2);      
 
@@ -214,6 +161,67 @@ namespace PickUpOrder.Controllers
                 default:
                     return Redirect("/Menu/Menu");
             }
+        }
+
+        // Reset (POST) - Get and process a password reset request.
+        [HttpPost]
+        public ActionResult Reset()
+        {
+            // If the user is logged in, redirect to the appropriate page.
+            if (Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                AccountType type =
+                    Account.GetCookieType(Request.Cookies["UserID"].Value);
+                switch (type)
+                {
+                    case AccountType.Employee:
+                        return Redirect("/OrderList/OrderList");
+                    case AccountType.Manager:
+                        return Redirect("/MenuEditor/MenuEditor");
+                    default:
+                        return Redirect("/Menu/Menu");
+                }
+            }
+
+            // Get the form information.
+            string email = Request.Form["email"];
+            string passwd = Request.Form["passwd"];
+            string passwd2 = Request.Form["passwd2"];
+
+            // Attempt to convert the provided name to an email address
+            // and return an error if this is not possible.
+            try
+            {
+                var address = new MailAddress(email);
+            }
+            catch (FormatException)
+            {
+                return View("ResetPassword", -1);
+            }
+
+            // Attempt to find the email address in the database
+            // and return an error if this is not possible.
+            var db = new PickUpOrderDBEntities2();
+            IQueryable<Account> matches =
+                db.Accounts.Where(e => e.Email.Equals(email));
+            Account match = matches.FirstOrDefault();
+            if (match == null)
+                return View("Login", -2);
+
+            // Check whether the passwords match
+            // and return an error if they do not.
+            if (!passwd.Equals(passwd2))
+                return View("Login", -3);
+
+            // Use an Account constructor to calculate the new password's hash.
+            // AccountType.Customer is simply there so the constructor works.
+            var newAccount = new Account(email, passwd, AccountType.Customer);
+            db.Accounts.Find(match.UserID).PasswordHash =
+                newAccount.PasswordHash;
+            db.SaveChanges();
+
+            // Redirect to the login page.
+            return View("Login", 1);
         }
     }
 }

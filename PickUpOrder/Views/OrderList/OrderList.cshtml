@@ -26,20 +26,20 @@
         </thread>
 
         @* Get every model and print out those that should appear. *@
-        @foreach (PickUpOrder.Models.Order order in db.Orders)
+        @foreach (Order order in db.Orders)
         {
             @* Orders that have not been submitted or picked up
                should not appear in the list. *@
             if (order.OrderStatus != (int) OrderStatus.NotSubmitted &&
                 order.OrderStatus != (int) OrderStatus.PickedUp)
             {
-                var contents = order.ContentsToItemList();
+                List<MenuItem> contents = order.ContentsToItemList();
                 <tr>
                     <td>@order.OrderID</td>
                     <td>
                         @* Print all contents of the order. *@
                         @contents[0].Name
-                        @for (int i = 1; i < contents.Count; i++)
+                        @for (var i = 1; i < contents.Count; i++)
                         {
                             <br>@contents[i].Name
                         }

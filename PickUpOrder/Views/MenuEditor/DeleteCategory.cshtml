@@ -5,11 +5,11 @@
 @{
     ViewBag.Title = "Add Item";
 
-    var toDelete = ViewBag.toDelete;
+    Category toDelete = ViewBag.toDelete;
 
     // Get the dropdown list, but remove the one that is about to be deleted.
-    var dropdown = Category.GetCategoryDropdown();
-    for (int i = 0; i < dropdown.Count; i++)
+    List<SelectListItem> dropdown = Category.GetCategoryDropdown();
+    for (var i = 0; i < dropdown.Count; i++)
     {
         if (int.Parse(dropdown[i].Value) == toDelete.CategoryID)
         {
@@ -34,7 +34,7 @@
     All current members will be moved to the category you select below.
     <br/><hr/>
 
-    @using (Html.BeginForm("DeleteCategory", "MenuEditor", (Category)toDelete,
+    @using (Html.BeginForm("DeleteCategory", "MenuEditor", (Category) toDelete,
                            FormMethod.Post))
     {
         @* This picks the category all current members will be moved to. *@

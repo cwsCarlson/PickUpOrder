@@ -2,9 +2,10 @@
 
 @* Define objects utilized in the rest of the page. *@
 @using PickUpOrder.Models
+@model Order
 @{
     ViewBag.Title = "ChangeOrderStatus";
-    var contents = Model.ContentsToItemList();
+    List<MenuItem> contents = Model.ContentsToItemList();
 
     // Define the dropdown items.
     var dropdownList = new List<SelectListItem>();
@@ -15,10 +16,11 @@
 }
 
 @* Define page language. *@
-<html lang="en"><body>
+<html lang="en">
+<body>
     @* Print the heading. *@
     <h2>Editing Order No. @Model.OrderID</h2>
-    @Html.ActionLink("Help", "Help", "OrderList")<br/>
+    @Html.ActionLink("Help", "Help", "OrderList")<br />
 
     @* This button returns to the list without making changes. *@
     @Html.ActionLink("Leave without changing", "OrderList", "OrderList", null)
@@ -26,14 +28,13 @@
     @* Print the conetents of the order for convenience. *@
     <h3>Order Contents</h3>
     @contents[0].Name
-    @for (int i = 1; i < contents.Count; i++)
+    @for (var i = 1; i < contents.Count; i++)
     {
-        <br>
-        @contents[i].Name}
+        <br>@contents[i].Name
+    }
 
     @* The form below allows the modification of the order's status. *@
     <h3>Status</h3>
-    @model Order
     @using (Html.BeginForm("OrderList", "OrderList", FormMethod.Post))
     {
         @* This saves the OrderID so the current order can be found later. *@
@@ -43,7 +44,8 @@
             and saves the selected value.*@
         @Html.DropDownListFor(m => m.OrderStatus, dropdownList,
                               dropdownList[Model.OrderStatus - 1].Text,
-                              new { @class = "required", title = "Status"})
+                              new { @class = "required", title = "Status" })
         <input type="submit" value="Update Status" />
     }
-</body></html>
+</body>
+</html>

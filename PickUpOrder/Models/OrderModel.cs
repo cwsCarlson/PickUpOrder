@@ -48,7 +48,7 @@ namespace PickUpOrder.Models
             if (OrderContents == null)
                 OrderContents = toAdd.ItemID.ToString();
             else
-                OrderContents += "," + toAdd.ItemID.ToString();
+                OrderContents += $",{toAdd.ItemID}";
 
             // Update the raw cost.
             RawCost += (int) toAdd.Price;
@@ -58,7 +58,7 @@ namespace PickUpOrder.Models
         //                    This is just an encapsulation of AddSingleItem.
         public void AddMultipleItems(MenuItem toAdd, int qty)
         {
-            for (int i = 0; i < qty; i++)
+            for (var i = 0; i < qty; i++)
                 AddSingleItem(toAdd);
         }
 
@@ -91,8 +91,8 @@ namespace PickUpOrder.Models
                     {
                         // Otherwise, remove it and the leading comma.
                         int startIdx = OrderContents.IndexOf(removeID);
-                        OrderContents = OrderContents.Substring(0,
-                                                                startIdx - 1)
+                        OrderContents =
+                            OrderContents.Substring(0, startIdx - 1)
                             + OrderContents.Substring(startIdx +
                                                       removeID.Length);
                     }
@@ -110,13 +110,13 @@ namespace PickUpOrder.Models
         //                       RemoveSingleItem.
         public void RemoveMultipleItems(MenuItem toRemove, int qty)
         {
-            for (int i = 0; i < qty; i++)
+            for (var i = 0; i < qty; i++)
                 RemoveSingleItem(toRemove);
 
             // If toRemove was deleted, recalculate the raw cost.
             if (toRemove.Price == null)
             {
-                int newCost = 0;
+                var newCost = 0;
                 if (OrderContents != null)
                 {
                     foreach (MenuItem item in ContentsToItemList())
@@ -144,7 +144,7 @@ namespace PickUpOrder.Models
 
             // Split the ID string. For each ID value,
             // get the corresponding item and add it to itemObjects.
-            var itemIDs = OrderContents.Split(',');
+            string[] itemIDs = OrderContents.Split(',');
             foreach(string item in itemIDs)
             {
                 int id = int.Parse(item);

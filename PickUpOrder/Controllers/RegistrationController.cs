@@ -11,12 +11,13 @@ namespace PickUpOrder.Controllers
     public class RegistrationController : Controller
     {
         // Registration (GET) - Display the standard registration page.
+        [HttpGet]
         public ActionResult Registration()
         {
             // If the user is logged in, redirect to the appropriate page.
             if (Request.Cookies.AllKeys.Contains("UserID"))
             {
-                var type =
+                AccountType type =
                     Account.GetCookieType(Request.Cookies["UserID"].Value);
                 switch (type)
                 {
@@ -33,12 +34,13 @@ namespace PickUpOrder.Controllers
         }
 
         // SecretRegistration (GET) - Display the employee registration page.
+        [HttpGet]
         public ActionResult SecretRegistration()
         {
             // If the user is logged in, redirect to the appropriate page.
             if (Request.Cookies.AllKeys.Contains("UserID"))
             {
-                var type =
+                AccountType type =
                     Account.GetCookieType(Request.Cookies["UserID"].Value);
                 switch (type)
                 {
@@ -55,12 +57,13 @@ namespace PickUpOrder.Controllers
         }
 
         // SecretRegistration (GET) - Display the employee registration page.
+        [HttpGet]
         public ActionResult SuperSecretRegistration()
         {
             // If the user is logged in, redirect to the appropriate page.
             if (Request.Cookies.AllKeys.Contains("UserID"))
             {
-                var type =
+                AccountType type =
                     Account.GetCookieType(Request.Cookies["UserID"].Value);
                 switch (type)
                 {
@@ -76,13 +79,14 @@ namespace PickUpOrder.Controllers
             return View(0);
         }
 
-        // Help - Render the help page.
+        // Help (GET) - Render the help page.
+        [HttpGet]
         public ActionResult Help()
         {
             // If the user is logged in, redirect to the appropriate page.
             if (Request.Cookies.AllKeys.Contains("UserID"))
             {
-                var type =
+                AccountType type =
                     Account.GetCookieType(Request.Cookies["UserID"].Value);
                 switch (type)
                 {
@@ -99,9 +103,9 @@ namespace PickUpOrder.Controllers
             return View();
         }
 
-        [HttpPost]
         // Registration (POST) - Get and process registration
         //                       information.
+        [HttpPost]
         public ActionResult Registration(AccountType type)
         {
             // If the user is logged in, redirect to the appropriate page.
@@ -128,7 +132,9 @@ namespace PickUpOrder.Controllers
             // Attempt to convert the provided name to an email address
             // and return an error if this is not possible.
             try
-            { var address = new MailAddress(email); }
+            {
+                var address = new MailAddress(email);
+            }
             catch (FormatException)
             {
                 switch (type)
@@ -144,7 +150,7 @@ namespace PickUpOrder.Controllers
 
             // If the given email is in the database, return an error.
             var db = new PickUpOrderDBEntities2();
-            var matches =
+            IQueryable<Account> matches =
                 db.Accounts.Where(e => e.Email.Equals(email));
             if (matches.Count() > 0)
             {

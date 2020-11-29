@@ -8,7 +8,8 @@ namespace PickUpOrder.Controllers
 {
 	public class MenuController : Controller
 	{
-		// Menu - Render the list without making any changes.
+		// Menu (GET) - Render the list without making any changes.
+		[HttpGet]
 		public ActionResult Menu()
 		{
 			// If the user is not logged in, redirect to the login page.
@@ -40,23 +41,26 @@ namespace PickUpOrder.Controllers
 			int qty = int.Parse(Request.Form["qty"]);
 
 			// Retrieve the order this is being added to.
-			var user =
-				db.Accounts.Find(Account.GetCookieID(Request.Cookies["UserID"].Value));
-			var targetOrder = db.Orders.Find(user.MostRecentOrder());
+			Account user =
+				db.Accounts.Find(Account.GetCookieID(
+					             Request.Cookies["UserID"].Value));
+			Order targetOrder = db.Orders.Find(user.MostRecentOrder());
 
 			// Process the appropriate changes.
 			if (adding)		
 				targetOrder.AddMultipleItems(toModify, qty);
 			else
 				targetOrder.RemoveMultipleItems(toModify, qty);
-			db.Orders.Find(targetOrder.OrderID).OrderContents = targetOrder.OrderContents;
+			db.Orders.Find(targetOrder.OrderID).OrderContents =
+				targetOrder.OrderContents;
 			db.SaveChanges();
 
 			// Pass the untruncated menu.
 			return View(db.MenuItems);
 		}
 
-		// Help - Render the help page.
+		// Help (GET) - Render the help page.
+		[HttpGet]
 		public ActionResult Help()
 		{
 			// If the user is not logged in, redirect to the login page.
@@ -67,8 +71,8 @@ namespace PickUpOrder.Controllers
 			return View();
 		}
 
-		// Search - If a search query was made, generate a page
-		//          with only the applicable items.
+		// Search (POST) - If a search query was made, generate a page
+		//                 with only the applicable items.
 		[HttpPost]
 		public ActionResult Search()
 		{
@@ -80,13 +84,13 @@ namespace PickUpOrder.Controllers
 			var db = new PickUpOrderDBEntities2();
 
 			// Get the query information.
-			var query = Request.Form["query"];
-			var category = Request.Form["category"];
+			string query = Request.Form["query"];
+			string category = Request.Form["category"];
 
 			// An empty category string means there is no category filter.
 			if (category == "")
 			{
-				var filtered =
+				IQueryable<MenuItem> filtered =
 					db.MenuItems.Where(p => p.Name.Contains(query) ||
 											p.Description.Contains(query));
 
@@ -95,8 +99,8 @@ namespace PickUpOrder.Controllers
 			}
 			else
 			{
-				var catVal = int.Parse(category);
-				var filtered =
+				int catVal = int.Parse(category);
+				IQueryable<MenuItem> filtered =
 					db.MenuItems.Where(p => p.Category == catVal &&
 										   (p.Name.Contains(query) ||
 											p.Description.Contains(query)));
@@ -117,7 +121,7 @@ namespace PickUpOrder.Controllers
 
 			// Get the item being added.
 			var db = new PickUpOrderDBEntities2();
-			var toAdd = db.MenuItems.Find(IDtoAdd);
+			MenuItem toAdd = db.MenuItems.Find(IDtoAdd);
 
 			// This should never be called; it's just for safety.
 			// If the item has been deleted, redirect to the menu page.
@@ -139,7 +143,7 @@ namespace PickUpOrder.Controllers
 
 			// Get the item being removed.
 			var db = new PickUpOrderDBEntities2();
-			var toRemove = db.MenuItems.Find(IDtoRemove);
+			MenuItem toRemove = db.MenuItems.Find(IDtoRemove);
 
 			// This should never be called; it's just for safety.
 			// If the item has been deleted, redirect to the menu page.
@@ -147,14 +151,15 @@ namespace PickUpOrder.Controllers
 				return View("Menu");
 
 			// Get the current order.
-			var userID = Account.GetCookieID(Request.Cookies["UserID"].Value);
-			var orderID = db.Accounts.Find(userID).MostRecentOrder();
+			int userID = Account.GetCookieID(Request.Cookies["UserID"].Value);
+			int? orderID = db.Accounts.Find(userID).MostRecentOrder();
 			if(orderID == null)
 				return View("Menu");
 
 			// Get the number of times toRemove appears in the order.
 			// This is the maximum value for the page's textbox.
-			var itemStr = db.Orders.Find((int) orderID).OrderContents.Split(',');
+			string[] itemStr =
+				db.Orders.Find((int) orderID).OrderContents.Split(',');
 			ViewBag.instances = itemStr.Count(f =>
 			                                  f == toRemove.ItemID.ToString());
 
@@ -179,12 +184,12 @@ namespace PickUpOrder.Controllers
 			var db = new PickUpOrderDBEntities2();
 
 			// Get the user.
-			var curUser =
+			Account curUser =
 				db.Accounts.Find(Account.GetCookieID(
 					             Request.Cookies["UserID"].Value));
 
 			// Set their most recent order to "Received".
-			var toSubmit = curUser.MostRecentOrder();
+			int? toSubmit = curUser.MostRecentOrder();
 			db.Orders.Find(toSubmit).OrderStatus = (int) OrderStatus.Received;
 			db.SaveChanges();
 

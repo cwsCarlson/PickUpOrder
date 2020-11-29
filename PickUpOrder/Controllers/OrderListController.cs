@@ -8,7 +8,8 @@ namespace PickUpOrder.Controllers
 {
     public class OrderListController : Controller
     {
-        // OrderList - Render the list without making any changes.
+        // OrderList (GET) - Render the list without making any changes.
+        [HttpGet]
         public ActionResult OrderList()
         {
             // If the user is not logged in or has inappropriate permissions,
@@ -59,7 +60,8 @@ namespace PickUpOrder.Controllers
             return View(db.Orders.Find(toChange));
         }
 
-        // Help - Render the help page.
+        // Help (GET) - Render the help page.
+        [HttpGet]
         public ActionResult Help()
         {
             // If the user is not logged in or has inappropriate permissions,

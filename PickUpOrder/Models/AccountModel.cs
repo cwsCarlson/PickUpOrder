@@ -54,8 +54,8 @@ namespace PickUpOrder.Models
         // CalculateHash - Applies the hash calculation to input str.
         private string CalculateHash(string str)
         {
-            var encoded = Encoding.UTF8.GetBytes(str);
-            var hashed = SHA256.Create().ComputeHash(encoded);
+            byte[] encoded = Encoding.UTF8.GetBytes(str);
+            byte[] hashed = SHA256.Create().ComputeHash(encoded);
             return Convert.ToBase64String(hashed);
         }
 
@@ -114,7 +114,7 @@ namespace PickUpOrder.Models
 
             // Split the ID string. For each ID value,
             // get the corresponding order and add it to orderObjects.
-            var orderIDs = Orders.Split(',');
+            string[] orderIDs = Orders.Split(',');
             foreach (string order in orderIDs)
             {
                 int id = int.Parse(order);

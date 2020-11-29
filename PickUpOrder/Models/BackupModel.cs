@@ -1,4 +1,6 @@
-﻿using System;
+﻿// BackupModel - Records the last backup time and makes a new one if necessary.
+
+using System;
 using System.Data.SqlClient;
 using System.IO;
 
@@ -27,9 +29,8 @@ namespace PickUpOrder.Models
 
             // Save the current day and convert it to a string.
             lastBackup = DateTime.Today;
-            var dateStr =
-                lastBackup.Year + "-" + lastBackup.Month +
-                "-" + lastBackup.Day;
+            var dateStr = $"{lastBackup.Year}-{lastBackup.Month}-" +
+                $"{lastBackup.Day}";
 
             // Create the save location if it does not yet exist.
             Directory.CreateDirectory("C:\\PickUpOrderDB");
@@ -39,7 +40,7 @@ namespace PickUpOrder.Models
                 { CommandText = "BACKUP DATABASE @DBName TO DISK = @PATH" };
             sqlCommand.Parameters.AddWithValue("@DBName", "PickUpOrderDB");
             sqlCommand.Parameters.AddWithValue("@PATH", "C:\\PickUpOrderDB\\" +
-                                               "Backup-" + dateStr + ".bak");
+                                               $"Backup-{dateStr}.bak");
             sqlCommand.Connection = conn;
             sqlCommand.ExecuteNonQuery();
 

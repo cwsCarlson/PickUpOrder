@@ -13,10 +13,7 @@
     var removals = new Dictionary<MenuItem, int>();
 
     // Sort by category, then convert to a list to ease iteration.
-    var menuContent = Model.OrderBy(e => e.Category).ToList();
-
-    // This is temporary until the user DB is implemented.
-    var mostRecentOrder = db.Orders.Find(1);
+    List<MenuItem> menuContent = Model.OrderBy(e => e.Category).ToList();
 }
 
 @* Define page language. *@
@@ -96,7 +93,10 @@
                         @menuContent[i].Description
                     </td>
                     <td>
-                        $@(((int)menuContent[i].Price / 100.0).ToString("0.00"))
+                        $@(
+                            ((int)menuContent[i].Price /
+                            100.0).ToString("0.00")
+                        )
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "EditItem", "MenuEditor",

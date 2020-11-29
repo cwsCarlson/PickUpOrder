@@ -13,23 +13,23 @@
     var removals = new Dictionary<MenuItem, int>();
 
     // Sort by category, then convert to a list to ease iteration.
-    var menuContent = Model.OrderBy(e => e.Category).ToList();
+    List<MenuItem> menuContent = Model.OrderBy(e => e.Category).ToList();
 
     // Get the current user cookie and use that to get their order list.
-    var curUser =
+    Account curUser =
         db.Accounts.Find(Account.GetCookieID(Request.Cookies["UserID"].Value));
 
     // Get the account's most recent order if it exists.
     // If there isn't one or it is submitted, add a new one.
-    var mostRecentOrder = db.Orders.Find(curUser.MostRecentOrder());
+    Order mostRecentOrder = db.Orders.Find(curUser.MostRecentOrder());
     if (mostRecentOrder == null ||
-        mostRecentOrder.OrderStatus != (int)OrderStatus.NotSubmitted)
+        mostRecentOrder.OrderStatus != (int) OrderStatus.NotSubmitted)
     {
         curUser.AddNewOrder();
         db.SaveChanges();
         mostRecentOrder = db.Orders.Find(curUser.MostRecentOrder());
     }
-    var allOrders = curUser.OrdersToList();
+    List<Order> allOrders = curUser.OrdersToList();
 }
 
 @* Define page language. *@
@@ -59,7 +59,7 @@
                 or the last item has a null price (meaning only deleted items
                 were returned), then inform the user. *@
             @if (menuContent.Count == 0 ||
-                menuContent[menuContent.Count - 1].Price == null)
+                 menuContent[menuContent.Count - 1].Price == null)
             {
                 <h3>
                     There are no menu items to display.<br/>
@@ -91,22 +91,21 @@
                             since they had null categories. *@
                         <tr>
                             <td>
-                                <b>@menuContent[i].Name</b><br />
+                                <b>@menuContent[i].Name</b><br/>
                                 @menuContent[i].Description
                             </td>
                             <td>
                                 $@(
-                                ((int) menuContent[i].Price /
-                                       100.0).ToString("0.00")
-                             )
+                                    ((int) menuContent[i].Price /
+                                    100.0).ToString("0.00")
+                                )
                             </td>
                             <td>
                                 @Html.ActionLink("Add to Order", "AddToOrder",
                                                  "Menu",
-                                                 new
-                                                 {
-                                                       IDtoAdd =
-                                                       menuContent[i].ItemID
+                                                 new {
+                                                    IDtoAdd =
+                                                    menuContent[i].ItemID
                                                  }, null)
                             </td>
                         </tr>
@@ -148,7 +147,10 @@
                             <tr>
                                 <td>@item.Name</td>
                                 <td>
-                                    $@(((int) item.Price / 100.0).ToString("0.00"))
+                                    $@(
+                                        ((int) item.Price /
+                                        100.0).ToString("0.00")
+                                    )
                                 </td>
                                 <td>
                                     @Html.ActionLink("Remove",
@@ -191,7 +193,10 @@
                         </p>
                     }
                 }
-                <h3>Total cost: $@mostRecentOrder.CalcFinalCost().ToString("0.00")</h3>
+                <h3>
+                    Total cost:
+                    $@mostRecentOrder.CalcFinalCost().ToString("0.00")
+                </h3>
 
                 @* The button to submit. *@
                 @Html.ActionLink("Pay & Submit", "Submit", "Menu")
@@ -209,15 +214,16 @@
                         <td>Contents</td>
                         <td>Status</td>
                     </tr>
-                    @* Print in reverse order. Most recently submitted first. *@
-                    @for (int i = allOrders.Count - 2; i >= 0; i--)
+                    @* Print so most recently submitted order is first. *@
+                    @for (var i = allOrders.Count - 2; i >= 0; i--)
                     {
-                        var contents = allOrders[i].ContentsToItemList();
+                        List<MenuItem> contents =
+                            allOrders[i].ContentsToItemList();
                         <tr>
                             <td>@allOrders[i].OrderID</td>
                             <td>
                                 @contents[0].Name
-                                @for (int j = 1; j < contents.Count; j++)
+                                @for (var j = 1; j < contents.Count; j++)
                                 {
                                     <br>@contents[j].Name
                                 }
@@ -229,8 +235,7 @@
             }
         </div>
     </div>
-</body>
-</html>
+</body></html>
 
 @* Define the cell size and main columns. *@
 <style type="text/css">

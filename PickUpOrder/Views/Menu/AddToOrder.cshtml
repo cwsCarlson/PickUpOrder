@@ -18,7 +18,8 @@
     @* The form below allows the user to set the item quantity. *@
     <h3>Quantity</h3>
     @using (Html.BeginForm("Menu", "Menu", new { adding = true,
-                           IDtoModify = ViewBag.toAdd.ItemID }, FormMethod.Post))
+                           IDtoModify = ViewBag.toAdd.ItemID },
+                           FormMethod.Post))
     {
         @* This is the quantity selector. *@
         @Html.TextBox("qty", 1, new { @type = "number", @min = "1",

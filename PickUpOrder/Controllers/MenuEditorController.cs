@@ -1,6 +1,7 @@
 ﻿// MenuEditorController - A controller that prepares all Menu pages.
 
 using PickUpOrder.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -8,7 +9,8 @@ namespace PickUpOrder.Controllers
 {
 	public class MenuEditorController : Controller
 	{
-		// Menu - Render the list without making any changes.
+		// MenuEditor (GET) - Render the list without making any changes.
+		[HttpGet]
 		public ActionResult MenuEditor()
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -16,7 +18,7 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			// Open a database connection.
@@ -26,7 +28,8 @@ namespace PickUpOrder.Controllers
 			return View(db.MenuItems);
 		}
 
-		// Help - Render the help page.
+		// Help (GET) - Render the help page.
+		[HttpGet]
 		public ActionResult Help()
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -34,16 +37,16 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			// Display the view.
 			return View();
 		}
 
+		// Search (POST) - If a search query was made, generate a page
+		//                 with only the applicable items.
 		[HttpPost]
-		// Search - If a search query was made, generate a page
-		//          with only the applicable items.
 		public ActionResult Search()
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -51,20 +54,20 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			// Open a database connection.
 			var db = new PickUpOrderDBEntities2();
 
 			// Get the query information.
-			var query = Request.Form["query"];
-			var category = Request.Form["category"];
+			string query = Request.Form["query"];
+			string category = Request.Form["category"];
 
 			// An empty category string means there is no category filter.
-			if (category == "")
+			if (category.Equals(""))
 			{
-				var filtered =
+				IQueryable<MenuItem> filtered =
 					db.MenuItems.Where(p => p.Name.Contains(query) ||
 											p.Description.Contains(query));
 
@@ -73,8 +76,8 @@ namespace PickUpOrder.Controllers
 			}
 			else
 			{
-				var catVal = int.Parse(category);
-				var filtered =
+				int catVal = int.Parse(category);
+				IQueryable<MenuItem> filtered =
 					db.MenuItems.Where(p => p.Category == catVal &&
 										   (p.Name.Contains(query) ||
 											p.Description.Contains(query)));
@@ -84,8 +87,8 @@ namespace PickUpOrder.Controllers
 			}
 		}
 
+		// AddCategory (GET) - Render the AddCategory page.
 		[HttpGet]
-		// AddCategory - Render the AddCategory page.
 		public ActionResult AddCategory()
         {
 			// If the user is not logged in or has inappropriate permissions,
@@ -93,15 +96,15 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			var newCategory = new Category();
 			return View(newCategory);
         }
 
-		[HttpPost]
 		// AddCategory (POST) - Add the posted category to the menu.
+		[HttpPost]
 		public ActionResult AddCategory(Category toAdd)
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -109,7 +112,7 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			// Open a database connection.
@@ -124,8 +127,8 @@ namespace PickUpOrder.Controllers
 			return View("MenuEditor", db.MenuItems);
 		}
 
+		// AddItem (GET) - Render the AddItem page.
 		[HttpGet]
-		// AddItem - Render the AddItem page.
 		public ActionResult AddItem()
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -133,15 +136,15 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			var newItem = new MenuItem();
             return View(newItem);
         }
 
-		[HttpPost]
 		// AddItem (POST) - Add the posted item to the menu.
+		[HttpPost]
 		public ActionResult AddItem(MenuItem toAdd)
         {
 			// If the user is not logged in or has inappropriate permissions,
@@ -149,7 +152,7 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			// Open a database connection.
@@ -168,8 +171,8 @@ namespace PickUpOrder.Controllers
 			return View("MenuEditor", db.MenuItems);
         }
 
-		[HttpGet]
 		// DeleteCategory (GET) - Render the DeleteCategory page.
+		[HttpGet]
 		public ActionResult DeleteCategory(int IDtoDelete)
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -177,7 +180,7 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			var db = new PickUpOrderDBEntities2();
@@ -185,9 +188,9 @@ namespace PickUpOrder.Controllers
 			return View();
 		}
 
-		[HttpPost]
 		// DeleteCategory (POST) - Remove oldCat from the menu
 		//                         and move its members to newCat.
+		[HttpPost]
 		public ActionResult DeleteCategory(Category oldCat)
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -195,17 +198,18 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			// Open a database connection.
 			var db = new PickUpOrderDBEntities2();
 
 			// Get the value of newCat.
-			var newCat = db.Categories.Find(int.Parse(Request.Form["newCat"]));
+			Category newCat =
+				db.Categories.Find(int.Parse(Request.Form["newCat"]));
 
 			// Change all members of oldCat to newCat.
-			var toModify =
+			List<MenuItem> toModify =
 				db.MenuItems.Where(e => (int) e.Category ==
 				                        oldCat.CategoryID).ToList();
 			foreach (MenuItem i in toModify)
@@ -220,8 +224,8 @@ namespace PickUpOrder.Controllers
 			return View("MenuEditor", db.MenuItems);
 		}
 
-		[HttpGet]
 		// DeleteItem (GET) - Render the DeleteItem page.
+		[HttpGet]
 		public ActionResult DeleteItem(int IDtoDelete)
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -229,15 +233,15 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			var db = new PickUpOrderDBEntities2();
 			return View(db.MenuItems.Find(IDtoDelete));
 		}
 
-		[HttpGet]
 		// NullifyItem (GET) - Nullify toDelete.
+		[HttpGet]
 		public ActionResult NullifyItem(MenuItem toNullify)
 		{
 			// Open a database connection.
@@ -251,8 +255,8 @@ namespace PickUpOrder.Controllers
 			return View("MenuEditor", db.MenuItems);
 		}
 
+		// EditCategory (GET) - Render the EditCategory page.
 		[HttpGet]
-		// EditCategory - Render the EditCategory page.
 		public ActionResult EditCategory(int IDtoModify)
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -260,15 +264,15 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			var db = new PickUpOrderDBEntities2();
 			return View(db.Categories.Find(IDtoModify));
 		}
 
-		[HttpPost]
 		// AddCategory (POST) - Add the posted category to the menu.
+		[HttpPost]
 		public ActionResult EditCategory(Category modified)
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -276,7 +280,7 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			// Open a database connection.
@@ -291,8 +295,8 @@ namespace PickUpOrder.Controllers
 			return View("MenuEditor", db.MenuItems);
 		}
 
+		// EditItem (GET) - Render the EditItem page.
 		[HttpGet]
-		// EditItem - Render the EditItem page.
 		public ActionResult EditItem(int IDtoModify)
         {
 			// If the user is not logged in or has inappropriate permissions,
@@ -300,16 +304,16 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			var db = new PickUpOrderDBEntities2();
 			return View(db.MenuItems.Find(IDtoModify));
         }
 
+		// EditItem (POST) - Apply the value of modified's fields
+		//                   to the item with the same ID number.
 		[HttpPost]
-		// EditItem - Apply the value of modified's fields
-		//            to the item with the same ID number.
 		public ActionResult EditItem(MenuItem modified)
 		{
 			// If the user is not logged in or has inappropriate permissions,
@@ -317,7 +321,7 @@ namespace PickUpOrder.Controllers
 			if (!Request.Cookies.AllKeys.Contains("UserID"))
 				return RedirectToAction("Login", "Login");
 			if (Account.GetCookieType(Request.Cookies["UserID"].Value)
-			   < AccountType.Manager)
+			    < AccountType.Manager)
 				return RedirectToAction("OrderList", "OrderList");
 
 			// Open a database connection.
@@ -329,19 +333,20 @@ namespace PickUpOrder.Controllers
 
 			// If the price has changed, modify all orders that have the item
 			// to reflect the new price.
-			if(modified.Price != db.MenuItems.Find(modified.ItemID).Price)
+			if (modified.Price != db.MenuItems.Find(modified.ItemID).Price)
             {
-				var ordersToMod =
+				IQueryable<Order> ordersToMod =
 					db.Orders.Where(m => m.OrderStatus == 
 					    (int) OrderStatus.NotSubmitted &&
-						(m.OrderContents.Contains(modified.ItemID + ",") ||
+						(m.OrderContents.Contains($"{modified.ItemID},") ||
 						m.OrderContents.EndsWith(modified.ItemID.ToString())));
 				
 				// In each order, see how often the item occurs and modify.
 				foreach(Order o in ordersToMod)
                 {
-					var toChange =
-						o.OrderContents.Count(s => s.Equals(modified.ItemID + ","));
+					int toChange =
+						o.OrderContents.Count(s =>
+						                      s.Equals($"{modified.ItemID},"));
 					if (o.OrderContents.EndsWith(modified.ItemID.ToString()))
 						toChange++;
 					o.RawCost += (int) (toChange * (modified.Price -

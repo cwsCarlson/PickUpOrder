@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Pick-Up Order System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -17,22 +17,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Pick-Up Order System", "Menu", "Menu", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Pick-Up Order System", "Menu", "Menu",
+                                 new { area = "" },
+                                 new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @if (Request.Cookies.AllKeys.Contains("UserID"))
                     {
-                        var cookieVal = Request.Cookies["UserID"].Value;
-                        var priv = Account.GetCookieType(cookieVal);
-                        if (priv >= AccountType.Employee)
+                        string cookieVal = Request.Cookies["UserID"].Value;
+                        AccountType privilege =
+                            Account.GetCookieType(cookieVal);
+                        if (privilege >= AccountType.Employee)
                         {
                             <li>@Html.ActionLink("Menu", "Menu", "Menu")</li>
                             <li>
                                 @Html.ActionLink("Order List", "OrderList",
                                                  "OrderList")
                             </li>
-                            if(priv == AccountType.Manager)
+                            if(privilege == AccountType.Manager)
                             {
                                 <li>
                                 @Html.ActionLink("Menu Editor", "MenuEditor",
