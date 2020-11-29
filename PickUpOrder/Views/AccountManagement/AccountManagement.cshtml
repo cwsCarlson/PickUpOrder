@@ -1,0 +1,16 @@
+﻿@* Management - Links to the pages to change an email and change a password. *@
+
+@{ ViewBag.Title = "Account Management"; }
+
+@* Define page language. *@
+<html lang="en"><body>
+    <h2>Account Management</h2>
+    @Html.ActionLink("Help", "Help", "AccountManagement")<br/>
+    <h3>
+        @Html.ActionLink("Change email", "ChangeEmail", "AccountManagement")
+    </h3>
+    <h3>
+        @Html.ActionLink("Change password", "ChangePassword",
+                         "AccountManagement")
+    </h3>
+</body></html>

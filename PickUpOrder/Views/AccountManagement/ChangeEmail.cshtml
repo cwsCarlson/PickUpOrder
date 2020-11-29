@@ -1,0 +1,62 @@
+﻿@* ChangeEmail - Allows the user to change their email. *@
+
+@model int
+@using PickUpOrder.Models
+@{
+    ViewBag.Title = "Change Email Address";
+    var db = new PickUpOrderDBEntities2();
+    string curAddress =
+        db.Accounts.Find(Account.GetCookieID(
+                         Request.Cookies["UserID"].Value)).Email;
+}
+
+@* Define page language. *@
+<html lang="en"><body>
+    <h2>Change Email Address</h2>
+    @Html.ActionLink("Help", "Help", "AccountManagement")<br />
+    
+    @* This button returns to the management page without making changes. *@
+    @Html.ActionLink("Return without changing", "AccountManagement",
+                     "AccountManagement", null)<br />
+
+    @* If the model's ID indicates an error in a previous submission,
+        print the appropriate error. *@
+    @switch (Model)
+    {
+        case -1:
+            {
+                <b>An invalid email address was provided.</b><br />
+                break;
+            }
+        case -2:
+            {
+                <b>
+                    The email address provided is already associated
+                    with another user.
+                </b><br />
+                break;
+            }
+        case -3:
+            {
+                <b>
+                    The email address you provided is the same as your current one.
+                </b><br />
+                break;
+            }
+    }
+
+    Your current email address is <b>@curAddress</b>.<br />
+    To change it, enter a new address in the box below.
+
+    @using (Html.BeginForm("ProcessEmailChange", "AccountManagement",
+                           FormMethod.Post))
+    {
+        @Html.TextBox("email", "", new
+        {
+            required = "required",
+                                         title = "Email"
+        })
+        <br />
+        <input type="submit" value="Change" />
+    }
+</body></html>

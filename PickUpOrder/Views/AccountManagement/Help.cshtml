@@ -1,0 +1,23 @@
+﻿@* Help - Help for the AccountManagement pages. *@
+
+@{ ViewBag.Title = "Account Management help"; }
+@* Define page language. *@
+<html lang="en"><body>
+    <h2>Help</h2>
+    @Html.ActionLink("Back to previous page", null, null, null,
+                     new { href = Request.UrlReferrer })
+    <br />
+    This page allows you to change your email or password.
+
+    <h3>Change email address</h3>
+    Select "Change email". Enter a new email address and select "Change".<br/>
+    Please note that this new email will be used to sign in;
+    your old email will no longer be used.
+
+    <h3>Change password</h3>
+    Select "Change password". Enter a new password into both boxes
+    and select "Change".<br/>
+    Please remember that passwords are case-sensitive.
+    <hr/>
+    <small>Help version 1.1</small>
+</body></html>
