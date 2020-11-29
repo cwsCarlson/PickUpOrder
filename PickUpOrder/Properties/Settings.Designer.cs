@@ -34,7 +34,7 @@ namespace PickUpOrder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.07")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.065")]
         public double taxPercentage {
             get {
                 return ((double)(this["taxPercentage"]));
